@@ -1,11 +1,6 @@
 package agents.tactics;
 
-import static nl.uu.cs.aplib.AplibEDSL.ABORT;
-import static nl.uu.cs.aplib.AplibEDSL.FIRSTof;
-import static nl.uu.cs.aplib.AplibEDSL.REPEAT;
-import static nl.uu.cs.aplib.AplibEDSL.SEQ;
-import static nl.uu.cs.aplib.AplibEDSL.action;
-import static nl.uu.cs.aplib.AplibEDSL.goal;
+import static nl.uu.cs.aplib.AplibEDSL.*;
 
 import java.util.function.Predicate;
 
@@ -50,7 +45,7 @@ public class GoalLibExtended extends GoalLib{
 		 			.toSolve( 				
 		 					(BeliefState s) -> {
 		 						System.out.println("Explore till: ");
-							return true;}
+							return false;}
 		 					)
 		 				.withTactic(			
 		 					FIRSTof(
@@ -59,8 +54,9 @@ public class GoalLibExtended extends GoalLib{
 		                     )
 		 				)
 		 			.lift();
-		// g.maxbudget(5);
-		 return g;
+		 g.maxbudget(8);
+		 //return g;
+		 return FIRSTof(g, SUCCESS()) ;
 	   }
 	 
 		/*Check if there is still unvisited node to be discovered or not*/
