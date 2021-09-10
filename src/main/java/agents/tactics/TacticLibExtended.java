@@ -3,6 +3,7 @@ package agents.tactics;
 import static nl.uu.cs.aplib.AplibEDSL.FIRSTof;
 import static nl.uu.cs.aplib.AplibEDSL.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.iv4xr.framework.extensions.pathfinding.AStar;
@@ -14,9 +15,9 @@ import nl.uu.cs.aplib.mainConcepts.GoalStructure;
 import nl.uu.cs.aplib.mainConcepts.Tactic;
 import nl.uu.cs.aplib.utils.Pair;
 import world.BeliefState;
-import world.BeliefStateExtended;
 import world.LabEntity;
 import world.LabWorldModel;
+import world.BeliefStateExtended;
 
 public class TacticLibExtended extends TacticLib{
 
@@ -141,6 +142,7 @@ public class TacticLibExtended extends TacticLib{
 	            		 System.out.println("applyAStar goal" + goal);
 	            		 if(goal == -1) return new Pair(false, belief);
 	            		 var x = aStar.findPath(belief.highLevelGragh, start  ,  goal);
+	            		 System.out.println("applyAStar x" + x);
 	            		 if(x == null) return new Pair(false, belief);
 	            		 return new Pair(true, belief);
 	                    })
@@ -157,9 +159,10 @@ public class TacticLibExtended extends TacticLib{
 		
 		Tactic nearestNode =  action("find the nearest neighbor").do1(
 				(BeliefStateExtended belief)-> {
-					System.out.println("nearestNode"); 
+					System.out.println("apply different polices to select a node"); 
 					var currentNode  = belief.highLevelGragh.currentSelectedEntity;
-					float distance   = Float.valueOf(0);
+					float distance   = Float.valueOf(0); 
+					List<Integer> doors = new ArrayList<Integer>();
 					Integer selectedNode = null; 
 					/* this is the first step at the beginning*/
 					if(currentNode == null) {						
@@ -179,28 +182,53 @@ public class TacticLibExtended extends TacticLib{
 						}					
 					} 
 					else {
-						//agent has seen some nodes before, in order to avoid loop, wee ned to select the
+						//agent has seen some nodes before, in order to avoid loop, we need to select the
 						// new node which is not visited before. 
 						var agentLocation = belief.highLevelGragh.currentSelectedEntity;
 						// get the neighbors of the current agent position(current node)
 						var neighbors = belief.highLevelGragh.neighboursNew(agentLocation);
 						System.out.println(" select Nearest Node when it is not the first time" + neighbors + "currrentnode: " + agentLocation);
+						
 						for(Integer element : neighbors) {
+							//check if the node is not selected before: unvisitedNode
 							if(!belief.highLevelGragh.visitedNodes.contains(element)) {
-								System.out.println(" neighbor of the current position" + element);
+								if(belief.highLevelGragh.entities.get(element).id.contains("door")) {doors.add(element);}
+								System.out.println(" neighbor of the current position" + element + belief.highLevelGragh.entities.get(element).id);
 								var y  = Vec3.dist(belief.highLevelGragh.vertices.get(element), belief.highLevelGragh.vertices.get(agentLocation));
+								
 								if(distance == 0) {
 									distance = y; 
 									selectedNode = element;}
 								else {
-									if(y>distance) { distance = y; selectedNode = element; }
+									if(y<distance) { distance = y; selectedNode = element; }
 								}
 							}	
-						}					
+						}	
+					//if there are some unvisited doors in the neighbors, we give the priority to select between them.
+						
+						if(!doors.isEmpty()) {
+							System.out.print("doors in neighberhood1: ");
+							if(doors.size()>1) {
+								System.out.print("doors in neighberhood2: ");
+								distance = 0;
+								for(Integer element : doors) {
+									System.out.print("doors in neighberhood: " + element);
+									var y  = Vec3.dist(belief.highLevelGragh.vertices.get(element), belief.highLevelGragh.vertices.get(agentLocation));
+									if(distance == 0) {
+										distance = y; 
+										selectedNode = element;}
+									else {
+										if(y<distance) { distance = y; selectedNode = element; }
+									}
+								}
+							}else {
+								selectedNode = doors.get(0);
+							}
+						}
 					}
 					if(selectedNode == null) {System.out.println("there is no node to select" ); return new Pair(null,belief);}
 					belief.highLevelGragh.currentSelectedEntity = selectedNode;
-					System.out.println("idddd " + belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id + 
+					System.out.println("selected node" + belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id + 
 					belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).position);
 					return new Pair(selectedNode,belief);				
 					}).lift();
@@ -216,17 +244,15 @@ public class TacticLibExtended extends TacticLib{
 				(BeliefStateExtended belief)-> {
 					System.out.println("unvisitedNode");
 					var selectedNode = belief.highLevelGragh.currentSelectedEntity;
-					if(selectedNode != null) {						
+					if(selectedNode != null) {	
+						// the node is selected at the nearest selected tactic 
 //						if(!belief.highLevelGragh.visitedNodes.contains(selectedNode)){
 							belief.highLevelGragh.visitedNodes.add(selectedNode);
 							return new Pair(selectedNode,belief);
 //						}
 //						return null;
 					}
-					
-					// if this list is empty means the agent is at the first step
-//					if(belief.highLevelGragh.visitedNodes.isEmpty()) return true;
-										
+											
 					return null;
 					}).lift();
 	}
@@ -247,7 +273,7 @@ public class TacticLibExtended extends TacticLib{
 							if(!belief.isOpen(entity.id)) {
 								System.out.println("checkEntityStatus and add a new goal" + entity.id);
 								belief.highLevelGragh.currentBlockedEntity = entity.id;
-								belief.highLevelGragh.visitedNodes.clear();
+								//belief.highLevelGragh.visitedNodes.clear();
 								//when we clean the all visited nodes to force agent to check the previous visited nodes
 								// the agent won't add the current position which is the blocked node to the visited node
 								belief.highLevelGragh.visitedNodes.add(belief.highLevelGragh.getIndexById(belief.highLevelGragh.currentBlockedEntity));
@@ -306,8 +332,7 @@ public class TacticLibExtended extends TacticLib{
 
     
     /* checking blocked entity status */
-	public static Tactic checkBlockedEntityStatus(BeliefState b, TestAgent agent) {
-			
+	public static Tactic checkBlockedEntityStatus(BeliefState b, TestAgent agent) {			
 		var checkingState =   action("back to the current blocked entity to check the status").do1(
 				(BeliefStateExtended belief)-> {
 					var blockedNode = belief.highLevelGragh.currentBlockedEntity;
@@ -316,8 +341,8 @@ public class TacticLibExtended extends TacticLib{
 						belief.highLevelGragh.currentSelectedEntity = belief.highLevelGragh.getIndexById(blockedNode);
 						if(belief.isOpen(blockedNode)) { 
 							//dynamic goal should be removed 
-							//agent.remove(belief.goalsmap.get(blockedNode));;
-							System.out.println("remove a goal : " + belief.goalsmap.get(blockedNode));
+							//System.out.println("remove a goal : " + belief.goalsmap.get(blockedNode));
+							//agent.remove(belief.goalsmap.get(blockedNode));								
 							return belief;}
 						return belief;
 					}
@@ -333,28 +358,28 @@ public class TacticLibExtended extends TacticLib{
 		
 		var checkingState =   action("find a button which is not a direct neighbor").do1(
 				(BeliefStateExtended belief)-> {
-					var visitedNode = belief.highLevelGragh.visitedNodes;
+					//var visitedNode = belief.highLevelGragh.visitedNodes;
 					float distance   = Float.valueOf(0);
 					Integer selectedNode = null; 
 					var agentLocation = belief.highLevelGragh.currentSelectedEntity;
-					System.out.println("visited nodes to open a blocked door " + visitedNode);
+					//System.out.println("visited nodes to open a blocked door " + visitedNode);
 					var entities = belief.highLevelGragh.entities;
 					//if there is no direct neighbors to interact with them, check the other indirect neighbors
 					// which means other entities in the list 
 					for(int i=0; i<entities.size(); i++) {
-							if(visitedNode.contains(i)) continue;
-							if(entities.get(i).getBooleanProperty("isOn") || entities.get(i).id.contains("door")) continue;
-							
-							var y  = Vec3.dist(belief.highLevelGragh.vertices.get(i), belief.highLevelGragh.vertices.get(agentLocation));
-							if(distance == 0) {
-								distance = y; 
-								selectedNode = i;}
-							else {
-								if(y>distance) { distance = y; selectedNode = i; }
-							}						
-						
+						//	if(visitedNode.contains(i)) continue;
+						System.out.println("indirect negh: " + entities.get(i).id + entities.get(i).getBooleanProperty("isOn"));
+							if( belief.isOn(entities.get(i).id) && !entities.get(i).id.contains("door")) {	
+								var y  = Vec3.dist(belief.highLevelGragh.vertices.get(i), belief.highLevelGragh.vertices.get(agentLocation));
+								if(distance == 0) {
+									distance = y; 
+									selectedNode = i;}
+								else {
+									if(y<distance) { distance = y; selectedNode = i; }
+								}	
+							}							
 					}
-					System.out.println("not visited node " + selectedNode);
+					System.out.println("indirect inactive button " + selectedNode + entities.get(selectedNode).id);
 					if(selectedNode != null) { belief.highLevelGragh.currentSelectedEntity = selectedNode; belief.highLevelGragh.visitedNodes.add(selectedNode); return new Pair(selectedNode,belief);}
 					return new Pair(null,belief);
 					})
@@ -367,4 +392,41 @@ public class TacticLibExtended extends TacticLib{
 		
 			return  checkingState;	
 	}	
+	/* Select the nearest node to the current agent position*/
+	public static Tactic selectInactiveButton() {
+		
+		Tactic nearestNode =  action("find the nearest inactive button").do1(
+				(BeliefStateExtended belief)-> {	 
+					var currentNode  = belief.highLevelGragh.currentSelectedEntity;
+					float distance   = Float.valueOf(0); 		
+					Integer selectedNode = null; 
+					//agent has interacted with some nodes before, in order to avoid loop, we need to select the
+					// new node which is not interacted before. 
+					var agentLocation = currentNode;
+					// get the neighbors of the current agent position(current node)
+					var neighbors = belief.highLevelGragh.neighboursNew(agentLocation);
+					System.out.println(" select nearest inactive button " + neighbors + "currrentnode: " + agentLocation);						
+					for(Integer element : neighbors) {
+						//check if the node is not interacted before
+						if(!belief.isOn(belief.highLevelGragh.entities.get(element).id) && !belief.highLevelGragh.entities.get(element).id.contains("door")) {								
+							System.out.println(" neighbor of the current position" + element + belief.highLevelGragh.entities.get(element).id);
+							var y  = Vec3.dist(belief.highLevelGragh.vertices.get(element), belief.highLevelGragh.vertices.get(agentLocation));							
+							if(distance == 0) {
+								distance = y; 
+								selectedNode = element;}
+							else {
+								if(y<distance) { distance = y; selectedNode = element; }
+							}
+						}	
+					}				
+					
+					if(selectedNode == null) {System.out.println("there is no button to interact" ); return new Pair(null,belief);}
+					belief.highLevelGragh.currentSelectedEntity = selectedNode;
+					System.out.println("selected button" + belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id + 
+					belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).position);
+					return new Pair(selectedNode,belief);				
+					}).lift();
+		
+		return nearestNode;
+	}
 }

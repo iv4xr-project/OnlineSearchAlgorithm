@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import alice.tuprolog.InvalidTheoryException;
 import environments.LabRecruitsEnvironment;
 import eu.iv4xr.framework.extensions.pathfinding.SurfaceNavGraph;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.spatial.Vec3;
+import gameTestingContest.Prolog;
 import nl.uu.cs.aplib.mainConcepts.Environment;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
 import world.HighLevelGraph;
@@ -17,13 +19,16 @@ import world.HighLevelGraph;
 public class BeliefStateExtended extends BeliefState {
 	
 	public HighLevelGraph highLevelGragh;
-	
+	public Prolog prolog; 
 
 	public BeliefStateExtended () {
+		super() ;
 		highLevelGragh = new HighLevelGraph();
+		prolog  = new Prolog(this);
+		this.attachProlog() ;
 	}
 	
-	public HashMap<String,GoalStructure> goalsmap = new HashMap<>() ;
+	public HashMap<String,GoalStructure> goalsmap = new HashMap<String,GoalStructure>() ;
 	
 	/**
 	 * Return entities in the same time stamp of the current worm time stamp.
@@ -117,5 +122,45 @@ public class BeliefStateExtended extends BeliefState {
     	return Vec3.dist(p0,recentPositions.get(N-2)) <= 0.02
     		   &&  Vec3.dist(p0,recentPositions.get(N-1)) <= 0.02 ;
          //    && p0.distance(q) > 1.0 ;   should first translate p0 to the on-floor coordinate!
+	}
+	
+    @Override
+    public void updateState() {
+        super.updateState();
+        var observation = this.env().observe(id) ;
+        mergeNewObservationIntoWOM(observation) ;
+//        try {
+//			registerFoundGameObjects();
+//		} catch (InvalidTheoryException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+        
+        // updating recent positions tracking (to detect stuck) here, rater than in mergeNewObservationIntoWOM,
+        // because the latter is also invoked directly by some tactic (Interact) that do not/should not update
+        // positions
+        recentPositions.add(new Vec3(worldmodel.position.x, worldmodel.position.y, worldmodel.position.z)) ;
+        if (recentPositions.size()>4) recentPositions.remove(0) ;
+    }
+    
+	/**
+	 * Register all buttons and doors currently in the agent's belief to the models
+	 * of rooms and connections that it keeps track.
+	 * @throws InvalidTheoryException 
+	 */
+	private void registerFoundGameObjects() throws InvalidTheoryException {
+		var x =  this.knownButtons().size();
+		
+		if(this.knownButtons().size() > 0) {
+			
+		for(WorldEntity e : this.knownButtons()) {
+			var y = e.id;
+			prolog.registerButton(e.id);
+		}}
+		//agent.getState(). why????
+		if(this.knownDoors() != null) {
+		for(WorldEntity e : this.knownDoors()) {
+			prolog.registerDoor(e.id);
+		}}
 	}
 }

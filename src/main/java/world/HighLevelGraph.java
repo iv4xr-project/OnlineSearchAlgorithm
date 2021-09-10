@@ -114,8 +114,7 @@ public class HighLevelGraph implements Navigatable {
     }
 
 	public Iterable<Integer> neighboursNew(int id) {
-		ArrayList<Integer> neighbors;
-		neighbors = new ArrayList<Integer>();
+		ArrayList<Integer> neighbors = new ArrayList<Integer>();
 		
 		return edges.neighbours(id);
 		
@@ -161,10 +160,6 @@ public class HighLevelGraph implements Navigatable {
         return Vec3.dist(a, b);
 	}
 
-	public Iterable neighbours(Object id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public float heuristic(Object from, Object to) {
 		// TODO Auto-generated method stub
@@ -174,6 +169,12 @@ public class HighLevelGraph implements Navigatable {
 	public float distance(Object from, Object to) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Iterable neighbours(Object id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

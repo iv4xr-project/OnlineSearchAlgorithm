@@ -1,10 +1,11 @@
-package onlineSrearch;
+package onlineSearch;
 
 import agents.LabRecruitsTestAgent;
 import agents.TestSettings;
 import static agents.TestSettings.*;
 import agents.tactics.GoalLib;
 import agents.tactics.TacticLib;
+import alice.tuprolog.InvalidTheoryException;
 import environments.LabRecruitsConfig;
 import environments.LabRecruitsEnvironment;
 import eu.iv4xr.framework.mainConcepts.TestDataCollector;
@@ -33,6 +34,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import game.Platform;
+import gameTestingContest.DebugUtil;
 import game.LabRecruitsTestServer;
 import world.BeliefState;
 
@@ -52,7 +54,13 @@ public class onlineSearch {
 	    	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
 	    }
 
-		
+	    //methods for prolog 
+
+		/**
+		 * To keep track which button the agent toggled last.
+		 */
+		// FRAGILE!
+		WorldEntity lastInteractedButton = null;
 	 
 	    @AfterAll
 	    static void close() { if(labRecruitsTestServer!=null) labRecruitsTestServer.close(); }
@@ -75,7 +83,7 @@ public class onlineSearch {
 	    @Test
 	    public void closetReachableTest() throws InterruptedException {
 	    	String levelName = "";
-	    	String fileName = "oneRoom - big and more buttons";
+	    	String fileName = "moreRoom";
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
@@ -126,16 +134,21 @@ public class onlineSearch {
 			    	        				)    		
 			    	        		,
 		
-			    	        		FIRSTof(GoalLibExtended.aStar(beliefState,"door3"), GoalLibExtended.ExtendedAStar(beliefState,testAgent))
+			    	        		FIRSTof(
+			    	        			//	GoalLibExtended.aStar(beliefState,"door3"),	
+			    	        				GoalLibExtended.finalGoal("door3"),
+			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent))
 			    	        		,		    	        		
 			    	        		GoalLibExtended.navigateTo(beliefState)
 			    	        		,
 			    	        		GoalLibExtended.checkEntityStatus(testAgent)
 			    	        		,
-			    	        		GoalLibExtended.aStar(beliefState,"door3")
-		        				)
-		        				)
-		        		
+			    	        		GoalLibExtended.removeDynamicGoal(testAgent)
+			    	        		,
+			    	        //		GoalLibExtended.aStar(beliefState,"door3")	
+			    	        //		,			    	        		
+			    	        		GoalLibExtended.finalGoal("door3")
+		        				))		        		
 		        		);
 		        
 		        
@@ -160,6 +173,32 @@ public class onlineSearch {
 		            cycleNumber++ ; 
 		        	testAgent.update();
 	                
+					// check if a button is just interacted:
+					for(WorldEntity e: testAgent.getState().changedEntities) {
+						if(e.type.equals("Switch") && e.hasPreviousState()) {
+							DebugUtil.log(">> detecting interaction with " + e.id) ;
+							lastInteractedButton = e ;					
+						}
+					}
+					// check doors that change state, and add connections to lastInteractedButton:
+					if(lastInteractedButton != null) {
+						for(WorldEntity e: testAgent.getState().changedEntities) {
+							if(e.type.equals("Door") && e.hasPreviousState()) {
+								try {
+									beliefState.prolog.registerConnection(lastInteractedButton.id,e.id) ;
+								} catch (InvalidTheoryException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+							}	
+						}
+					}
+					
+					if(beliefState.worldmodel.health <= 0) {
+						DebugUtil.log(">>>> the agent died. Aaaw.");
+					//	throw new AgentDieException() ;
+					}
+	        	
 		        	if (cycleNumber>1000) {
 		        		break ;
 		        	}
