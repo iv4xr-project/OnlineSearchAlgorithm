@@ -4,12 +4,15 @@ import static nl.uu.cs.aplib.AplibEDSL.FIRSTof;
 import static nl.uu.cs.aplib.AplibEDSL.action;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import eu.iv4xr.framework.extensions.pathfinding.AStar;
 import eu.iv4xr.framework.mainConcepts.TestAgent;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.spatial.Vec3;
+import nl.uu.cs.aplib.agents.MiniMemory;
 import nl.uu.cs.aplib.mainConcepts.Action;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
 import nl.uu.cs.aplib.mainConcepts.Tactic;
@@ -43,15 +46,15 @@ public class TacticLibExtended extends TacticLib{
 		            	  var element  = belief.highLevelGragh.currentSelectedEntity;
 		            	//  System.out.print("rownavigateto" + element);
 		            	  if(element == null) return null;
-		            	  else {
-		            		var id = belief.highLevelGragh.entities.get(element).id;
-		                	var e = (LabEntity) belief.worldmodel.getElement(id) ;
-		    			    if (e==null) return null ;
-		    			    var p = e.getFloorPosition() ;
+		            	  
+		            	  var id = belief.highLevelGragh.entities.get(element).id;
+		            	  
+		            	  var e = (LabEntity) belief.worldmodel.getElement(id) ;
+		            	  
+		            	  var p = e.getFloorPosition() ;		            	  		            	  		            	  		            	  		            	  		            		                			    			    		    			   
 		    		//	    System.out.print("rownavigateto position" + p);
 		    			    // find path to p, but don't force re-calculation
-		    			    return belief.findPathTo(p,false) ;
-		    			    }
+		    			    return belief.findPathTo(p,false) ;		    			    
 		                }) ;
 		
 		return move.lift() ;
@@ -109,7 +112,7 @@ public class TacticLibExtended extends TacticLib{
 	    	return move ;
 	    }
 
-	/* update the graph of object after visiting new entities*/
+	/* update the graph of objects after visiting new entities*/
 	public static Tactic updateGragh(TestAgent agent) {
 		
 		return action("update high level gragh with new neighbors nodes")
@@ -162,8 +165,10 @@ public class TacticLibExtended extends TacticLib{
 					System.out.println("apply different polices to select a node"); 
 					var currentNode  = belief.highLevelGragh.currentSelectedEntity;
 					float distance   = Float.valueOf(0); 
+					ArrayList<Float> distances = new ArrayList<Float>();
 					List<Integer> doors = new ArrayList<Integer>();
 					Integer selectedNode = null; 
+					var goalPosition = belief.highLevelGragh.goalPosition;
 					/* this is the first step at the beginning*/
 					if(currentNode == null) {						
 						var agentLocation = belief.worldmodel.position;
@@ -171,13 +176,27 @@ public class TacticLibExtended extends TacticLib{
 						 * vertices that agent has seen. we choose the nearest one. 
 						 * */
 						for(int i = 0 ; i<belief.highLevelGragh.entities.size(); i++) {
+							var goalDistance  = goalPosition != null ? Vec3.dist(belief.highLevelGragh.vertices.get(i), goalPosition) : null;
 							var y  = Vec3.dist(belief.highLevelGragh.vertices.get(i), agentLocation);			
 							if(distance == 0) {
 								distance = y; 
 								selectedNode = i;	
+								//considering agent position and nearest node to the goal position
+								if(goalPosition != null) {
+								distances.add(y);
+								distances.add(goalDistance);}
 							}
-							else {			
+							else {	
+								if(goalPosition == null) {
+							//just consider the nearest node to the agent position
 								if(y>distance) { distance = y; selectedNode = i; }
+								}else {
+							//	System.out.println("distances"+ belief.highLevelGragh.entities.get(i).id+ distances.get(0) +","+ distances.get(1) +","+ y +","+  goalDistance);
+							// considering agent position and nearest node to the goal position
+								if((y>distances.get(0) && goalDistance < distances.get(1)) || 
+										(y<distances.get(0) && goalDistance < distances.get(1)) ) {
+									distances.set(0, y); distances.set(1, goalDistance);  selectedNode = i; 
+									}	}							
 							}
 						}					
 					} 
@@ -194,25 +213,38 @@ public class TacticLibExtended extends TacticLib{
 							if(!belief.highLevelGragh.visitedNodes.contains(element)) {
 								if(belief.highLevelGragh.entities.get(element).id.contains("door")) {doors.add(element);}
 								System.out.println(" neighbor of the current position" + element + belief.highLevelGragh.entities.get(element).id);
+								var goalDistance  = goalPosition != null ? Vec3.dist(belief.highLevelGragh.vertices.get(element), goalPosition) : null;
 								var y  = Vec3.dist(belief.highLevelGragh.vertices.get(element), belief.highLevelGragh.vertices.get(agentLocation));
 								
 								if(distance == 0) {
 									distance = y; 
-									selectedNode = element;}
+									selectedNode = element;
+									//considering agent position and nearest node to the goal position
+									if(goalPosition != null) {
+									distances.add(y);
+									distances.add(goalDistance);}
+								}
 								else {
+									if(goalPosition == null) {
+									//just consider the nearest node to the agent position
 									if(y<distance) { distance = y; selectedNode = element; }
+									}else {
+									// considering agent position and nearest node to the goal position
+									if((y>distances.get(0) && goalDistance < distances.get(1)) || 
+											(y<distances.get(0) && goalDistance < distances.get(1)) ) {
+										distances.set(0, y); distances.set(1, goalDistance);  selectedNode = element; 
+										}
+									}
 								}
 							}	
 						}	
 					//if there are some unvisited doors in the neighbors, we give the priority to select between them.
 						
-						if(!doors.isEmpty()) {
-							System.out.print("doors in neighberhood1: ");
-							if(doors.size()>1) {
-								System.out.print("doors in neighberhood2: ");
+						if(!doors.isEmpty()) {							
+							if(doors.size()>1) {								
 								distance = 0;
 								for(Integer element : doors) {
-									System.out.print("doors in neighberhood: " + element);
+									System.out.println("doors in neighberhood: " + element);
 									var y  = Vec3.dist(belief.highLevelGragh.vertices.get(element), belief.highLevelGragh.vertices.get(agentLocation));
 									if(distance == 0) {
 										distance = y; 
@@ -354,32 +386,52 @@ public class TacticLibExtended extends TacticLib{
 	}	
     
 	/* find the nearest indirect neighbors in order to interact with them to open the current blocked node*/
-	public static Tactic indirectNeighbors() {
-		
+	public static Tactic indirectNeighbors() {	
 		var checkingState =   action("find a button which is not a direct neighbor").do1(
 				(BeliefStateExtended belief)-> {
 					//var visitedNode = belief.highLevelGragh.visitedNodes;
 					float distance   = Float.valueOf(0);
+					ArrayList<Float> distances = new ArrayList<Float>();
 					Integer selectedNode = null; 
 					var agentLocation = belief.highLevelGragh.currentSelectedEntity;
+					var neighbor = belief.highLevelGragh.neighboursNew(agentLocation);
+					var goalPosition = belief.highLevelGragh.goalPosition;
 					//System.out.println("visited nodes to open a blocked door " + visitedNode);
 					var entities = belief.highLevelGragh.entities;
 					//if there is no direct neighbors to interact with them, check the other indirect neighbors
 					// which means other entities in the list 
 					for(int i=0; i<entities.size(); i++) {
 						//	if(visitedNode.contains(i)) continue;
-						System.out.println("indirect negh: " + entities.get(i).id + entities.get(i).getBooleanProperty("isOn"));
-							if( belief.isOn(entities.get(i).id) && !entities.get(i).id.contains("door")) {	
-								var y  = Vec3.dist(belief.highLevelGragh.vertices.get(i), belief.highLevelGragh.vertices.get(agentLocation));
+						System.out.println("indirect neigh: " + entities.get(i).id + belief.isOn(entities.get(i).id) );
+						// TODO we can also check the selected node is not in the neighbors set. 	
+						if( belief.highLevelGragh.entities.get(i).type.equals(LabEntity.SWITCH) &&
+								!belief.isOn(entities.get(i).id) && !entities.get(i).id.contains("door")) {	
+							var goalDistance  = goalPosition != null ? Vec3.dist(belief.highLevelGragh.vertices.get(i), goalPosition) : null;	
+							var y  = Vec3.dist(belief.highLevelGragh.vertices.get(i), belief.highLevelGragh.vertices.get(agentLocation));
 								if(distance == 0) {
 									distance = y; 
-									selectedNode = i;}
+									selectedNode = i;
+									//considering agent position and nearest node to the goal position
+								if(goalPosition != null) {
+									distances.add(y);
+									distances.add(goalDistance);}
+									}
 								else {
-									if(y<distance) { distance = y; selectedNode = i; }
+									
+									if(goalPosition == null) {
+										//just consider the nearest node to the agent position
+										if(y<distance) { distance = y; selectedNode = i; }
+									}else {
+										// considering agent position and nearest node to the goal position
+										if((y>distances.get(0) && goalDistance < distances.get(1)) || 
+												(y<distances.get(0) && goalDistance < distances.get(1)) ) {
+											distances.set(0, y); distances.set(1, goalDistance);  selectedNode = i; 
+											}	
+									}
 								}	
 							}							
 					}
-					System.out.println("indirect inactive button " + selectedNode + entities.get(selectedNode).id);
+					//System.out.println("indirect inactive button " + selectedNode + entities.get(selectedNode).id);
 					if(selectedNode != null) { belief.highLevelGragh.currentSelectedEntity = selectedNode; belief.highLevelGragh.visitedNodes.add(selectedNode); return new Pair(selectedNode,belief);}
 					return new Pair(null,belief);
 					})
@@ -408,7 +460,10 @@ public class TacticLibExtended extends TacticLib{
 					System.out.println(" select nearest inactive button " + neighbors + "currrentnode: " + agentLocation);						
 					for(Integer element : neighbors) {
 						//check if the node is not interacted before
-						if(!belief.isOn(belief.highLevelGragh.entities.get(element).id) && !belief.highLevelGragh.entities.get(element).id.contains("door")) {								
+						if(belief.highLevelGragh.entities.get(element).type.equals(LabEntity.SWITCH)
+								&& !belief.isOn(belief.highLevelGragh.entities.get(element).id) 
+								&& !belief.highLevelGragh.entities.get(element).id.contains("door")				
+								) {								
 							System.out.println(" neighbor of the current position" + element + belief.highLevelGragh.entities.get(element).id);
 							var y  = Vec3.dist(belief.highLevelGragh.vertices.get(element), belief.highLevelGragh.vertices.get(agentLocation));							
 							if(distance == 0) {
@@ -429,4 +484,90 @@ public class TacticLibExtended extends TacticLib{
 		
 		return nearestNode;
 	}
+	
+	/**
+	 * Explore the word in the specific direction
+	 * when the agent has seen the entity before,knows the position, but the path to the entity
+	 * is not known yet. To guide the agent to the right direction, we give the position to the
+	 * explore Tactic.    
+	 * */
+    public static Tactic guidedExplore(Vec3 destination) {
+
+    	var memo = new MiniMemory("S0") ;
+    	// three states:
+    	//  S0 ; initial exploration state, a new exploration target must be set
+    	//  inTransit: when the agent is traveling to the set exploration target
+    	//  exhausted: there is no more exploration target left
+    	//
+    	
+    	var explore_ =
+    			unguardedNavigateTo("Explore: traveling to an exploration target")
+    			. on((BeliefState belief) -> {  
+    				System.out.println("guided explore" + memo.stateIs("S0") + memo.stateIs("inTransit")) ;
+    				if(!memo.stateIs("inTransit")) {
+    					 // in this state we must decide a new exploration target:
+    					 System.out.println("if ### Explore: explore" ) ;
+                         //get the location of the closest unexplored node
+        				 var position = belief.worldmodel.getFloorPosition() ;        				 
+        				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
+        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD) ;   				 
+        				 if (path==null || path.isEmpty()) {
+        					memo.moveState("exhausted") ;
+                            System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;
+                            return null ;
+        				 }
+        				 List<Vec3> explorationPath = path.stream()
+        						            .map(v -> belief.pathfinder.vertices.get(v))
+        						            .collect(Collectors.toList()) ;
+        				         				 				         				 
+        				 var target = explorationPath.get(explorationPath.size() - 1) ;        	
+        				 System.out.println("###***** original : " + destination) ;
+        				 System.out.println("###***** setting a new exploration target: " + target) ;
+                         System.out.println("### abspath to exploration target: " + path) ;
+                         System.out.println("### path to exploration target: " + explorationPath) ;
+                         memo.memorized.clear();
+                         memo.memorize(target);
+                         memo.moveState("inTransit") ; // move the exploration state to inTransit...
+                         return new Pair(target, explorationPath);//return the path finding information
+    				}else {
+                         
+    					 System.out.println("inTransit" ) ;
+    					 Vec3 exploration_target = (Vec3) memo.memorized.get(0) ;
+                         // note that exploration_target won't be null because we are in the state
+                         // in-Transit
+                         Vec3 agentLocation = belief.worldmodel.getFloorPosition() ;
+                         Vec3 currentDestination = belief.getGoalLocation() ;
+                         var distToExplorationTarget = Vec3.dist(agentLocation,exploration_target) ;
+                         if (distToExplorationTarget <= EXPLORATION_TARGET_DIST_THRESHOLD // current exploration target is reached
+                             || currentDestination==null
+                             || Vec3.dist(currentDestination,exploration_target) > 0.3) {
+                        	 System.out.println("inTransit if part" ) ;
+                        	 // in all these cases we need to select a new exploration target.
+                        	 // This is done by moving back the exploration state to S0.
+                        	 memo.moveState("S0");
+                         }
+                         if (distToExplorationTarget<=EXPLORATION_TARGET_DIST_THRESHOLD) {
+                        	 System.out.println("### dist to explroration target " + distToExplorationTarget) ;
+                         }
+                         //System.out.println("### inTransit: " + distToExplorationTarget) ;
+                         // System.out.println(">>> explore in-transit: " + memo.stateIs("inTransit")) ;
+                         // System.out.println(">>> exploration target: " + exploration_target) ;
+                         // We should not need to re-calculate the path. If we are "inTransit" the path is
+                         // already in the agent's memory
+                         // return new Tuple(g, belief.findPathTo(g));
+                         System.out.println("inTransit"  + exploration_target) ;
+                         return new Pair(exploration_target,null);
+    				}
+                     // in all other cases, the guard is not enabled:
+    				// return null ;
+                 })
+               . lift();
+
+
+        return FIRSTof(
+        		 forceReplanPath(),
+				 tryToUnstuck(),
+				 explore_) ;
+    }
+	
 }

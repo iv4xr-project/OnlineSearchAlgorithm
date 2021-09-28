@@ -10,6 +10,7 @@ import environments.LabRecruitsEnvironment;
 import eu.iv4xr.framework.extensions.pathfinding.SurfaceNavGraph;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.spatial.Vec3;
+import gameTestingContest.DebugUtil;
 import gameTestingContest.Prolog;
 import nl.uu.cs.aplib.mainConcepts.Environment;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
@@ -99,7 +100,7 @@ public class BeliefStateExtended extends BeliefState {
 		//System.out.println("size: " + highLevelGragh.entities.size() + highLevelGragh.entities.get(0).id);
 
 		
-		highLevelGragh.entities.forEach(e->System.out.println("entities: " + e.id));
+		highLevelGragh.entities.forEach(e->System.out.println("entities: " + e.id ));
 		System.out.println("agdes: " + highLevelGragh.edges.toString());			
 		if(entities.size() >= 2) {	
 //			highLevelGragh.neighbours(highLevelGragh.getIndexById("button1"));
@@ -112,7 +113,7 @@ public class BeliefStateExtended extends BeliefState {
 	
 	@Override
 	public boolean isStuck() {
-		System.out.println("====== checking stcuk" ) ;
+	
     	int N = recentPositions.size() ;
     	if(N<3) return false ;
     	Vec3 p0 = recentPositions.get(N-3) ;
@@ -127,14 +128,42 @@ public class BeliefStateExtended extends BeliefState {
     @Override
     public void updateState() {
         super.updateState();
-        var observation = this.env().observe(id) ;
-        mergeNewObservationIntoWOM(observation) ;
-//        try {
-//			registerFoundGameObjects();
-//		} catch (InvalidTheoryException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
+        var observation = this.env().observe(id) ;            
+        
+        //update prolog
+        try {
+			registerFoundGameObjects();
+		} catch (InvalidTheoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	/**
+    	 * To keep track which button the agent toggled last.
+    	 */
+    	// FRAGILE!
+    	WorldEntity lastInteractedButton = null;
+		// check if a button is just interacted:
+//		for(WorldEntity e: changedEntities) {
+//			if(e.type.equals("Switch") && e.hasPreviousState()) {
+//				DebugUtil.log(">> detecting interaction with " + e.id) ;
+//				lastInteractedButton = e ;					
+//			}
 //		}
+//		// check doors that change state, and add connections to lastInteractedButton:
+//		if(lastInteractedButton != null) {
+//			for(WorldEntity e: changedEntities) {
+//				var di = e.id;
+//				if(e.type.equals("Door") && e.hasPreviousState()) {
+//					try {
+//						prolog.registerConnection(lastInteractedButton.id,e.id);
+//					} catch (InvalidTheoryException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+//				}	
+//			}
+//		}
+        
         
         // updating recent positions tracking (to detect stuck) here, rater than in mergeNewObservationIntoWOM,
         // because the latter is also invoked directly by some tactic (Interact) that do not/should not update
@@ -149,12 +178,9 @@ public class BeliefStateExtended extends BeliefState {
 	 * @throws InvalidTheoryException 
 	 */
 	private void registerFoundGameObjects() throws InvalidTheoryException {
-		var x =  this.knownButtons().size();
-		
-		if(this.knownButtons().size() > 0) {
-			
-		for(WorldEntity e : this.knownButtons()) {
-			var y = e.id;
+	
+		if(this.knownButtons().size() > 0) {			
+		for(WorldEntity e : this.knownButtons()) {			
 			prolog.registerButton(e.id);
 		}}
 		//agent.getState(). why????

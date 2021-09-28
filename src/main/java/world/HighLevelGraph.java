@@ -46,6 +46,8 @@ public class HighLevelGraph implements Navigatable {
     /** Current node which the agent is there*/
     public String currentBlockedEntity;
     
+    /** Approximate position of the target*/
+    public Vec3 goalPosition;
     
 	public HighLevelGraph() {
 		this.entities = new ArrayList<WorldEntity>();

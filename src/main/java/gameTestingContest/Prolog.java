@@ -1,12 +1,11 @@
 package gameTestingContest;
 
 import static nl.uu.cs.aplib.agents.PrologReasoner.and;
+import static nl.uu.cs.aplib.agents.PrologReasoner.not;
 import static nl.uu.cs.aplib.agents.PrologReasoner.predicate;
 import static nl.uu.cs.aplib.agents.PrologReasoner.rule;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import alice.tuprolog.InvalidTheoryException;
@@ -16,6 +15,7 @@ import eu.iv4xr.framework.spatial.Obstacle;
 import eu.iv4xr.framework.spatial.Vec3;
 import nl.uu.cs.aplib.agents.PrologReasoner.PredicateName;
 import nl.uu.cs.aplib.agents.PrologReasoner.Rule;
+import nl.uu.cs.aplib.utils.Pair;
 import world.BeliefState;
 import world.BeliefStateExtended;
 import world.HighLevelGraph;
@@ -138,10 +138,7 @@ public class Prolog {
 		if (!added) {
 			// button is in a new room, create the room too:
 			String newRoom = "room" + rooms.size();
-			belief.prolog().facts(isRoom.on(newRoom), inRoom.on(newRoom, button));
-			var s = button;
-			var w  = belief.worldmodel;
-			var bbb = belief.worldmodel.getElement(button);
+			belief.prolog().facts(isRoom.on(newRoom), inRoom.on(newRoom, button));			
 			WorldEntity b_ = belief.worldmodel.getElement(button);
 			belief.worldmodel.position = b_.position.copy();
 			belief.worldmodel.position.y = agentOriginalPosition.y;
@@ -335,5 +332,40 @@ public class Prolog {
 		var path = belief.findPathTo(b.getFloorPosition(),true) ;
 		return path != null ;
 	}
-		
+	
+	Set<Pair<String,String>> getConnections() {
+		Set<Pair<String,String>> cons = new HashSet<>() ;
+		for(WorldEntity B : belief.knownButtons()) {
+			var doors = pQueryAll("D", and(isDoor.on("D"), wiredTo.on(B.id,"D"))) ;
+			for(var D : doors) {
+				cons.add(new Pair(B.id,D)) ;
+			}
+		}
+		return cons ;
+	}
+	
+	public void report() {
+		 System.out.println("buttons" + 
+				 belief.prolog().queryAll(
+	   					 	and(isButton.on("B")
+	   					 ))
+	   	 					.stream().map(Q -> Q.str_("B"))
+	   	 					.collect(Collectors.toList())) ;	
+		 
+		 System.out.println("doors" + 
+				 belief.prolog().queryAll(
+	   					 	and(isDoor.on("D")))
+	   	 					.stream().map(Q -> Q.str_("D"))
+	   	 					.collect(Collectors.toList())) ;
+		 Set<Pair<String, String>> report = getConnections();
+		 
+		 for (Pair<String, String> connection : report) {
+	            System.out.println("conections: "+"   Button " + connection.fst + " toggles " + connection.snd);
+	        }
+		 		
+			
+	
+	}	
+	
+	
 }

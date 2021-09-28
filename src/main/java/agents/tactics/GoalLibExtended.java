@@ -12,13 +12,14 @@ import nl.uu.cs.aplib.mainConcepts.GoalStructure.GoalsCombinator;
 import nl.uu.cs.aplib.utils.Pair;
 import world.BeliefState;
 import world.BeliefStateExtended;
+import world.HighLevelGraph;
 import world.LabEntity;
 
 
 public class GoalLibExtended extends GoalLib{
 
 	 
-		/*observe the neighbors objects(nodes)*///BeliefState b
+		/*observe the neighbors objects(nodes)*/
 	   public static <State>GoalStructure neighborsObjects(TestAgent agent) {
 
 		 Goal goal =  goal("Update the neighbrs graph")
@@ -99,7 +100,7 @@ public class GoalLibExtended extends GoalLib{
 	   } 
 	  
 		/*select a nearest node from a list of neighbors*/
-	   public static GoalStructure ExtendedAStar(BeliefState belief,TestAgent agent) {		 
+	   public static GoalStructure ExtendedAStar(BeliefState belief,TestAgent agent, Vec3 goalPosition) {		 
 		   
 		  Goal goal1 = goal("select nearest node to the agent position")
 	       		. toSolve(
@@ -182,7 +183,7 @@ public class GoalLibExtended extends GoalLib{
 	   public static GoalStructure navigateTo(BeliefStateExtended b) {
 		   System.out.println("navigateTo");
 	       var goal1 = 
-	         	  goal("This entity is in interaction distance: [%s]")
+	         	  goal("This entity is in visible distance")
 	         	  . toSolve((BeliefStateExtended belief) -> {
 	 
 	         		  var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id;
@@ -190,7 +191,7 @@ public class GoalLibExtended extends GoalLib{
 	         		  var e = (LabEntity) belief.worldmodel.getElement(b.highLevelGragh.entities.get(b.highLevelGragh.currentSelectedEntity).id) ;
 	         		  if (e==null) return false ;
 	         		//  var distsq = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition());
-
+	         		 System.out.println("navigateTo id of the selected node" + e.id);
 	         		 if(entityId.contains("door")) {
 	         			System.out.println("navigateTo22222222 door: " + Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()));
 	         			 return Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()) <= 4 ;
@@ -199,7 +200,7 @@ public class GoalLibExtended extends GoalLib{
 	         			
 	         			 }
 	         		 else {
-	         			System.out.println("navigateTo22222222 button: " + Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq());
+	         			System.out.println("navigateTo22222222 button: " + e.id+ Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq());
 	         			 return	Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
 	         		 }
 	         		  
@@ -337,7 +338,23 @@ public class GoalLibExtended extends GoalLib{
 		                   )) 
 		                .lift();	
 			   
-			   return REPEAT(SEQ(FIRSTof(GoalLibExtended.selectInactiveButton(b, agent),g4,GoalLibExtended.findNeighbors(agent)),GoalLibExtended.navigateTo(b),g2,GoalLib.entityStateRefreshed(b.highLevelGragh.currentBlockedEntity),g3));
+			   return REPEAT(
+					   SEQ(
+							   FIRSTof(GoalLibExtended.selectInactiveButton(b, agent),g4,SEQ(GoalLibExtended.findNeighbors(agent),GoalLibExtended.selectInactiveButton(b, agent))),
+							   GoalLibExtended.navigateTo(b),g2,
+//					 		   SEQ(  GoalLib.entityStateRefreshed(b.highLevelGragh.currentBlockedEntity)	,				   
+//							 GoalLib.entityInCloseRange(b.highLevelGragh.currentBlockedEntity)
+//							 ,g3)
+							   SEQ(
+									   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
+								//	   GoalLib.entityStateRefreshed(b.highLevelGragh.currentBlockedEntity)
+									 //  ,
+									  // GoalLib.positionInCloseRange(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position).lift()
+									   ,
+									   g3)
+									   
+							   )
+					   );
 	   }
 	   
 	   //just for test
@@ -404,7 +421,7 @@ public class GoalLibExtended extends GoalLib{
 	    }
 	 
 	 //check the belief to see if the goal is visible and it is open
-	   public static GoalStructure finalGoal(String goalId) {		 
+	 public static GoalStructure finalGoal(String goalId) {		 
 		   return goal("Check the final goal")				  
 //		    		.toSolve( (Pair<Boolean,BeliefState> s) -> {
 // 						System.out.println("aStar goal" + s.fst);
@@ -441,4 +458,31 @@ public class GoalLibExtended extends GoalLib{
 						)
 		    		.lift();  
 	   } 
+	 
+	/**
+	 * Explore the word to go to the given path
+	 *  */
+	 public static GoalStructure ExplorationTo(Vec3 position, String id) {
+	    	Goal goal =  goal("Explor to the given direction")
+	        		.toSolve((BeliefState belief) -> { 
+	        			System.out.println("position Has Seen" + position +" , "+ belief.worldmodel.getFloorPosition());      			
+	                    
+	        			if(Vec3.sub(belief.worldmodel.getFloorPosition(), position).lengthSq() <= 1.5
+	        					|| (belief.evaluateEntity(id, e -> belief.age(e) == 0)))
+	        			//if(belief.canReach(position) != null)
+	        			return true  ;
+	                    return false;
+	        	       	       }
+	        				)
+	        		.withTactic(
+	        			FIRSTof(
+	        				//TacticLib.navigateTo(position),
+	        				TacticLib.navigateToClosestReachableNode(id),
+	                        TacticLibExtended.guidedExplore(position),        				
+	                        ABORT()))
+	        	
+	        		;  
+	    	
+	    	return goal.lift();
+	    }
 }

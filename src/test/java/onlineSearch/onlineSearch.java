@@ -19,7 +19,7 @@ import nl.uu.cs.aplib.mainConcepts.Goal;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure.GoalsCombinator;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure.PrimitiveGoal;
-
+import nl.uu.cs.aplib.utils.Pair;
 
 import static org.junit.jupiter.api.Assertions.* ;
 
@@ -29,16 +29,21 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import game.Platform;
 import gameTestingContest.DebugUtil;
+import gameTestingContest.Prolog;
 import game.LabRecruitsTestServer;
 import world.BeliefState;
 
 import static nl.uu.cs.aplib.AplibEDSL.*;
+import static nl.uu.cs.aplib.agents.PrologReasoner.and;
+import static nl.uu.cs.aplib.agents.PrologReasoner.not;
+
 import world.BeliefStateExtended;
 import agents.tactics.GoalLibExtended;
 
@@ -49,9 +54,9 @@ public class onlineSearch {
 	    static public void start() {
 	    	// TestSettings.USE_SERVER_FOR_TEST = false ;
 	    	// Uncomment this to make the game's graphic visible:
-	    	  TestSettings.USE_GRAPHICS = true ;
+	    	TestSettings.USE_GRAPHICS = true ;
 	    	String labRecruitesExeRootDir = System.getProperty("user.dir") ;
-	    	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
+	    //	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
 	    }
 
 	    //methods for prolog 
@@ -83,7 +88,8 @@ public class onlineSearch {
 	    @Test
 	    public void closetReachableTest() throws InterruptedException {
 	    	String levelName = "";
-	    	String fileName = "moreRoom";
+	    	//String levelName = "Wishnu-levels//contest";
+	    	String fileName = "multiconnection2";
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
@@ -99,6 +105,7 @@ public class onlineSearch {
 	        		new Scanner(System.in). nextLine() ;
 	        	}
 	            var beliefState = new BeliefStateExtended();
+	            var prolog = new Prolog(beliefState);
 		        // create a test agent
 		        var testAgent = new LabRecruitsTestAgent("agent1") // matches the ID in the CSV file
 	        		    . attachState(beliefState)
@@ -106,23 +113,16 @@ public class onlineSearch {
 
 		       
 		       var agentPosiion = environment.observe("agent1").position;
-		       Vec3 goalPosition = new Vec3(3,0,9);
+		       Vec3 goalPosition = new Vec3(4,1,19);
 			   /* calculate the euclidean distance from agent position to the treasure door, the treasure door
 				 * distance is estimated */
 		        euclideanDistance(agentPosiion, goalPosition);
 		        System.out.println("euclidean dis " + euclideanDistance(agentPosiion, goalPosition));
-		        var agentTimeStam = testAgent.getState().worldmodel.timestamp;
-		        var agentneTimeStam = testAgent.getState().knownEntities();
-		        		
-		        System.out.println("agentTimeStam" + agentTimeStam);
-		        System.out.println("agentneTimeStam" + agentneTimeStam);
-		        System.out.println("observe" + environment.observe("agent1").availableInteractionTypes());
-		        System.out.println("agent position" + environment.observe("agent1").position);
-		        
-		        
+		        String treasureDoor = "door4";
+		        beliefState.highLevelGragh.goalPosition = goalPosition;
 		        var testingTask = SEQ( 
 		        		GoalLibExtended.NEWREPEAT(
-		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,"door3")	
+		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,treasureDoor)	
 		        				, 
 		        				 SEQ(
 			    	        		FIRSTof(GoalLibExtended.neighborsObjects(testAgent),
@@ -132,12 +132,11 @@ public class onlineSearch {
 			    	        								GoalLibExtended.findNeighbors(testAgent)
 			    	        						))
 			    	        				)    		
-			    	        		,
-		
+			    	        		,		
 			    	        		FIRSTof(
 			    	        			//	GoalLibExtended.aStar(beliefState,"door3"),	
-			    	        				GoalLibExtended.finalGoal("door3"),
-			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent))
+			    	        				GoalLibExtended.finalGoal(treasureDoor),
+			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent,goalPosition))
 			    	        		,		    	        		
 			    	        		GoalLibExtended.navigateTo(beliefState)
 			    	        		,
@@ -147,12 +146,12 @@ public class onlineSearch {
 			    	        		,
 			    	        //		GoalLibExtended.aStar(beliefState,"door3")	
 			    	        //		,			    	        		
-			    	        		GoalLibExtended.finalGoal("door3")
+			    	        		GoalLibExtended.finalGoal(treasureDoor)
 		        				))		        		
 		        		);
 		        
 		        
-		        
+		        //var testingTask = SEQ(GoalLibExtended.ExplorationTo(new Vec3(4,0,19)));  
 		        // attaching the goal and test data-collector
 		        var dataCollector = new TestDataCollector();
 		        testAgent . setTestDataCollector(dataCollector).setGoal(testingTask) ;
@@ -173,6 +172,7 @@ public class onlineSearch {
 		            cycleNumber++ ; 
 		        	testAgent.update();
 	                
+		        	
 					// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
 						if(e.type.equals("Switch") && e.hasPreviousState()) {
@@ -182,8 +182,9 @@ public class onlineSearch {
 					}
 					// check doors that change state, and add connections to lastInteractedButton:
 					if(lastInteractedButton != null) {
-						for(WorldEntity e: testAgent.getState().changedEntities) {
+						for(WorldEntity e: testAgent.getState().changedEntities) {							
 							if(e.type.equals("Door") && e.hasPreviousState()) {
+								System.out.println("ther is a dooor " + e.id);
 								try {
 									beliefState.prolog.registerConnection(lastInteractedButton.id,e.id) ;
 								} catch (InvalidTheoryException e1) {
@@ -199,17 +200,19 @@ public class onlineSearch {
 					//	throw new AgentDieException() ;
 					}
 	        	
-		        	if (cycleNumber>1000) {
+		        	if (cycleNumber>180) {
 		        		break ;
 		        	}
 		        }
 		        long endTime = System.currentTimeMillis();
 		        totalTime = endTime - startTime;
 		        //testingTask.printGoalStructureStatus();
+		        		       
 		        
 		        testAgent.printStatus();
 		        var agentneTimeStamss = testAgent.getState().knownEntities();
-		   	 System.out.println("agentneTimeStam" + agentneTimeStamss);
+		   		 prolog.report();  
+	   		 
 	        }
 	        finally { environment.close(); }
 	
