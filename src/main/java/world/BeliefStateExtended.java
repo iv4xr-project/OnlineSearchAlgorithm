@@ -1,5 +1,6 @@
 package world;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +32,14 @@ public class BeliefStateExtended extends BeliefState {
 	
 	public HashMap<String,GoalStructure> goalsmap = new HashMap<String,GoalStructure>() ;
 	
+	public Map<String, List<String>>  buttonDoorConnection = new HashMap<String, List<String>>() ;
+	
 	/**
 	 * Return entities in the same time stamp of the current worm time stamp.
 	 */
 	public List<WorldEntity> newlyObservedEntities() {
-		return knownEntities().stream().filter(e -> e.timestamp == worldmodel.timestamp).collect(Collectors.toList());
+		return knownEntities().stream().filter(e -> e.timestamp == worldmodel.timestamp
+				&& (e.type.equals(LabEntity.DOOR) || (e.type.equals(LabEntity.SWITCH)))).collect(Collectors.toList());
 	}
 
 	/**
@@ -50,11 +54,13 @@ public class BeliefStateExtended extends BeliefState {
 		entities.forEach(e -> {
 			//System.out.println("if " +  e.id);
 			// if the list of entities is empty or the entity is not exist in the list add it to the list
-			if(highLevelGragh.entities.isEmpty() || (highLevelGragh.getIndexById(e.id) == -1)){
-				System.out.println("new entitiy add " +  e.id);
-				newEntity[0] = true;
-				highLevelGragh.addEntites(e);
-				highLevelGragh.addVertices(e);
+			if(highLevelGragh.entities.isEmpty() || (highLevelGragh.getIndexById(e.id) == -1)){					
+				if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
+					System.out.println("new entitiy add " +  e.id);		
+					newEntity[0] = true;
+					highLevelGragh.addEntites(e);
+					highLevelGragh.addVertices(e);
+				}			
 			}
 			/* By default the entity blocking state is false means, if we see a door we
 			  need to change the state to true */

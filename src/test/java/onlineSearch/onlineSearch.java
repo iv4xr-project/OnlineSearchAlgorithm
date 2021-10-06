@@ -56,7 +56,7 @@ public class onlineSearch {
 	    	// Uncomment this to make the game's graphic visible:
 	    	TestSettings.USE_GRAPHICS = true ;
 	    	String labRecruitesExeRootDir = System.getProperty("user.dir") ;
-	    //	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
+	    	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
 	    }
 
 	    //methods for prolog 
@@ -113,7 +113,7 @@ public class onlineSearch {
 
 		       
 		       var agentPosiion = environment.observe("agent1").position;
-		       Vec3 goalPosition = new Vec3(4,1,19);
+		       Vec3 goalPosition =  new  Vec3(4,1,19);  //  new  Vec3(4,1,19); 
 			   /* calculate the euclidean distance from agent position to the treasure door, the treasure door
 				 * distance is estimated */
 		        euclideanDistance(agentPosiion, goalPosition);
@@ -200,7 +200,7 @@ public class onlineSearch {
 					//	throw new AgentDieException() ;
 					}
 	        	
-		        	if (cycleNumber>180) {
+		        	if (cycleNumber>800) {
 		        		break ;
 		        	}
 		        }

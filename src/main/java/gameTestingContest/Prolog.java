@@ -108,8 +108,9 @@ public class Prolog {
 		// now check in which room it can be placed:
 
 		Vec3 agentOriginalPosition = belief.worldmodel.position;
-		Map<String, Boolean> originalDoorBlockingState = (getDoorsBlockingState() == null) ? getDoorsBlockingState() : null;
-		if(belief.pathfinder != null)fakelyMakeAlldoorsBlocking(null);
+		System.out.println("originalDoorBlockingState button " + getDoorsBlockingState());
+		Map<String, Boolean> originalDoorBlockingState = (getDoorsBlockingState() != null) ? getDoorsBlockingState() : null;
+		fakelyMakeAlldoorsBlocking(null);
 
 		var rooms = pQueryAll("R", isRoom.on("R"));
 		boolean added = false;
@@ -154,7 +155,7 @@ public class Prolog {
 
 		// restore the doors' state:
 		belief.worldmodel.position = agentOriginalPosition;
-		if(originalDoorBlockingState != null)restoreDoorsBlockingState(originalDoorBlockingState, null);
+		restoreDoorsBlockingState(originalDoorBlockingState, null);
 
 		if (added) {
 			DebugUtil.log(">>>>> registering " + button);
@@ -173,7 +174,8 @@ public class Prolog {
 		// Now check which rooms it connects:
 
 		Vec3 agentOriginalPosition = belief.worldmodel.position;
-		Map<String, Boolean> originalDoorBlockingState = (getDoorsBlockingState() == null) ? getDoorsBlockingState() : null;
+		System.out.println("originalDoorBlockingState dooor" + getDoorsBlockingState());
+		Map<String, Boolean> originalDoorBlockingState = (getDoorsBlockingState() != null) ? getDoorsBlockingState() : null;
 		fakelyMakeAlldoorsBlocking(door);
 
 		var rooms = pQueryAll("R", isRoom.on("R"));
@@ -202,7 +204,7 @@ public class Prolog {
 
 		// restore the doors' state:
 		belief.worldmodel.position = agentOriginalPosition;
-		if(originalDoorBlockingState != null) restoreDoorsBlockingState(originalDoorBlockingState,door);
+		restoreDoorsBlockingState(originalDoorBlockingState,door);
 		
 		if (numbersOfAdded > 0) {
 			DebugUtil.log(">>>>> registering " + door);
@@ -254,9 +256,11 @@ public class Prolog {
 	void restoreDoorsBlockingState(Map<String,Boolean> originalState, String exception) {
 		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
+			System.out.println("restore door state " + e.id );
 			if (e.type == "Door") {
 				o.isBlocking = originalState.get(e.id) ;
 				if(e.id != exception) {
+					System.out.println("restore door state!!");
 					e.extent.x -= 1f ;
 					e.extent.z -= 1f ;				
 				}
@@ -317,6 +321,7 @@ public class Prolog {
 	
 	Map<String,Boolean> getDoorsBlockingState() {
 		Map<String,Boolean> map = new HashMap<>() ;	
+		System.out.println("*****get doors bloking state" + belief.pathfinder);
 		if(belief.pathfinder == null) return null;
 		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
