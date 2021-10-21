@@ -4,6 +4,7 @@ import static nl.uu.cs.aplib.AplibEDSL.*;
 
 import java.util.function.Predicate;
 
+import alice.tuprolog.InvalidTheoryException;
 import eu.iv4xr.framework.mainConcepts.TestAgent;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.spatial.Vec3;
@@ -72,13 +73,13 @@ public class GoalLibExtended extends GoalLib{
 			System.out.println("checkExplore: " + true);
 			return false;
 		}
-		else {
-			var goalId = "door5";
-			if(belief.highLevelGragh.getIndexById(goalId) != -1) {
-				belief.highLevelGragh.currentSelectedEntity = belief.highLevelGragh.getIndexById(goalId);
-			}
-				
-		}
+//		else {
+//			var goalId = "door5";
+//			if(belief.highLevelGragh.getIndexById(goalId) != -1) {
+//				belief.highLevelGragh.currentSelectedEntity = belief.highLevelGragh.getIndexById(goalId);
+//			}
+//				
+//		}
 		return true;
 	 }
 	 
@@ -109,13 +110,13 @@ public class GoalLibExtended extends GoalLib{
 	   } 
 	  
 		/*select a nearest node from a list of neighbors*/
-	   public static GoalStructure ExtendedAStar(BeliefState belief,TestAgent agent, Vec3 goalPosition) {		 
+	   public static GoalStructure ExtendedAStar(BeliefState belief,TestAgent agent, Vec3 goalPosition, String goalID) {		 
 		   
 		  Goal goal1 = goal("select nearest node to the agent position")
 	       		. toSolve(
 	       				(Pair<String,BeliefState> s) -> {
 	       					System.out.println("select nearest node to the agent position " );
-	       					if(s.fst != null) {System.out.println("there is a node" ); return true;}
+	       					if(s.fst != null) {System.out.println(">>there is a node: " ); return true;}
 	       					return false;
 	       		});
 
@@ -136,7 +137,7 @@ public class GoalLibExtended extends GoalLib{
 	   	
 	   	 GoalStructure g1 = goal1.withTactic(
 	   	        		SEQ( 
-	   	        		   TacticLibExtended.selectNearestNode(), 
+	   	        		   TacticLibExtended.selectNearestNode(goalID), 
 	   	                   ABORT()
 	   	                   )) 
 	   	                .lift();
@@ -154,11 +155,12 @@ public class GoalLibExtended extends GoalLib{
 	   
 	   public static GoalStructure selectInactiveButton(BeliefState belief,TestAgent agent) {		
 		   
-		   return  goal("select nearest button to the agent position")
+		   return  goal("select nearest inactive button to the agent position")
 		       		. toSolve(
 		       				(Pair<String,BeliefState> s) -> {
-		       					System.out.println("select nearest button to the agent position " );
-		       					if(s.fst != null) {System.out.println("there is a button" ); return true;}
+		       					System.out.println("select nearest inactive button to the agent position " );
+		       					if(s.fst != null) {System.out.println(">>there is a button: " ); return true;}
+		       					System.out.println(">> there is no button! " );
 		       					return false;
 		       		}).withTactic(
 		   	        		SEQ( 
@@ -179,9 +181,12 @@ public class GoalLibExtended extends GoalLib{
 		         					return true;}
 		         					return false;
 		         		});	
-		  	 GoalStructure g3 = goal3.withTactic(SEQ(
-		   	    		TacticLibExtended.checkEntityStatus(agent),
-		                 ABORT())).lift();
+		  	 GoalStructure g3 = goal3.withTactic(
+		  			 SEQ(
+		   	    		 TacticLibExtended.checkEntityStatus(agent),
+		                 ABORT()
+		                 )
+		  			 ).lift();
 		  	 
 		   return g3;
 	   }
@@ -195,23 +200,42 @@ public class GoalLibExtended extends GoalLib{
 	         	  . toSolve((BeliefStateExtended belief) -> {
 	 
 	         		  var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id;
-	         		           		   
+	         		  Boolean result ;    		   
 	         		  var e = (LabEntity) belief.worldmodel.getElement(entityId) ;
 	         		  if (e==null) return false ;
 	         		//  var distsq = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition());
-	         		 System.out.println("navigateTo id of the selected node " + e.id);
+	         		 System.out.println(">> navigateTo id of the selected node: " + e.id);
 	         		 if(entityId.contains("door")) {
-	         			System.out.println("navigateTo22222222 door: " + Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()));
-	         			 return Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()) <= 4 ;
+	         			System.out.println("navigateTo a door: " + Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()));
+	         			result = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 4  ;
 //	         			 if(distsq < 1.2) {System.out.println("navigateTo22222222 door: " + entityId);
 //		         		  return true ;} 
 	         			
 	         			 }
 	         		 else {
-	         			System.out.println("navigateTo22222222 button: " + e.id+ Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq());
-	         			 return	Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
+	         			System.out.println("navigateTo a button: " + e.id+ " ,dis, "+ Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq());
+
+	         			result = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
 	         		 }
 	         		  
+					 //update prolog
+				        if(result) {
+				        	
+							try {
+								belief.registerFoundGameObjects(e);
+							} catch (InvalidTheoryException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+					
+					    	/**
+					    	 * To keep track which button the agent toggled last.
+					    	 */
+					    	// FRAGILE!
+					    	WorldEntity lastInteractedButton = null;
+				        }
+				        
+				        return result;
 	         	    })
 	         	  . withTactic(
 	                     FIRSTof( //the tactic used to solve the goal 
@@ -284,14 +308,7 @@ public class GoalLibExtended extends GoalLib{
 	 public static GoalStructure findCorrespondingButton(BeliefStateExtended b, TestAgent agent) {	   
 
 		   System.out.println(" find corresponding button");
-			   Goal goal1 = goal("find a corresponding button to opnen the current door")
-					   . toSolve(
-			       				(Pair<String,BeliefState> s) -> {
-			       					System.out.println("find a corresponding button to opnen the current door");
-			       					if(s.fst != null) return true;
-			       					return false;
-			       		});	
-			   
+			  
 			   Goal goal2 = goal("approach the current node and interact with it")
 			       		. toSolve((BeliefStateExtended belief) -> {
 			  	         	System.out.println("approach the current node and interact with it");
@@ -304,28 +321,29 @@ public class GoalLibExtended extends GoalLib{
 			   Goal goal3 = goal("checking the blocked node's state")
 			       		. toSolve(
 			       				(BeliefStateExtended belief) -> {
-			       				System.out.println("checking the blocked node's state" + belief.highLevelGragh.currentBlockedEntity + "status" + belief.isOpen(belief.highLevelGragh.currentBlockedEntity));
+			       				System.out.println(">>checking the blocked node's state: id, " + belief.highLevelGragh.currentBlockedEntity + ", status: " + belief.isOpen(belief.highLevelGragh.currentBlockedEntity));
 				  	         	if(belief.isOpen(belief.highLevelGragh.currentBlockedEntity))
 				  	         	return true;
 				  	         	return false;
 			  	         	    });
 			
-			   Goal goal4 = goal("look for the not direct neighbors for interactin")
+			   Goal goalIndirectNeighbors = goal("look for the not direct neighbors for interactin")
 			       		. toSolve(
 			       				(Pair<String,BeliefState> s) -> {
 			       					System.out.println("look for the not direct neighbors for interactin");
-			       					if(s.fst != null) {System.out.println("if");return true;}			     					
+			       					if(s.fst != null) {System.out.println(">> there is a indirect button to interact: " ); return true;}			     					
+			       					System.out.println(">> there is no indirect button to interact!!");
 			       					return false;
 			  	         	    });
 
-			   
-			   GoalStructure g1 = goal1.withTactic(
-	  	        		SEQ( 
-	  	        		   TacticLibExtended.selectNearestNode(), 
-	  	        		   TacticLibExtended.unvisitedNode(),
-	  	                   ABORT()
-	  	                   )) 
-	  	                .lift();
+			   Goal goal4 = goal("using the prolog")
+			       		. toSolve(
+			       				(BeliefStateExtended belief) -> {
+			       				System.out.println(">>checking the blocked node's state: id, " + belief.highLevelGragh.currentBlockedEntity + ", status: " + belief.isOpen(belief.highLevelGragh.currentBlockedEntity));
+				  	         //	if(belief.isOpen(belief.highLevelGragh.currentBlockedEntity))
+				  	         //	return true;
+				  	         	return false;
+			  	         	    });
 			   
 			   GoalStructure interact = goal2.withTactic(
 	 	        		SEQ( 
@@ -341,13 +359,20 @@ public class GoalLibExtended extends GoalLib{
 		                   )) 
 		                .lift();	
 			   
-			   GoalStructure indirectNeighbors = goal4.withTactic(
+			   GoalStructure indirectNeighbors = goalIndirectNeighbors.withTactic(
 		        		SEQ( 
 			                TacticLibExtended.indirectNeighbors(),
 			                ABORT()
 		                   )) 
 		                .lift();	
 			   
+			   
+			   GoalStructure g4 = goal4.withTactic(
+		        		SEQ( 
+			                TacticLibExtended.unlockAgent(b,agent),
+			                ABORT()
+		                   )) 
+		                .lift();	
 			   
 			   return REPEAT(
 					   SEQ(
@@ -364,13 +389,19 @@ public class GoalLibExtended extends GoalLib{
 //							 GoalLib.entityInCloseRange(b.highLevelGragh.currentBlockedEntity)
 //							 ,g3)
 							   SEQ(
-									   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
-								//	   GoalLib.entityStateRefreshed(b.highLevelGragh.currentBlockedEntity)
-									 //  ,
-									  // GoalLib.positionInCloseRange(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position).lift()
-									   ,
-									   g3)
-									   
+//									 FIRSTof(
+//									   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)									 
+//									   ,
+//									   g4
+//									   , GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
+//									   )
+//										 
+//									   ,
+//									   g3
+									   IFELSE2(
+											   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity), g3, g4)
+
+									   )						   
 							   )
 					   );
 	   }
@@ -478,12 +509,12 @@ public class GoalLibExtended extends GoalLib{
 	   } 
 	 
 	/**
-	 * Explore the word to go to the given path
+	 * Explore the world to go to the given path
 	 *  */
 	 public static GoalStructure ExplorationTo(Vec3 position, String id) {
 	    	Goal goal =  goal("Explor to the given direction")
 	        		.toSolve((BeliefState belief) -> { 
-	        			System.out.println("position Has Seen" + position +" , "+ belief.worldmodel.getFloorPosition());      			
+	        		//	System.out.println("position Has Seen" + position +" , "+ belief.worldmodel.getFloorPosition());      			
 	                    
 	        			if(Vec3.sub(belief.worldmodel.getFloorPosition(), position).lengthSq() <= 1.5
 	        					|| (belief.evaluateEntity(id, e -> belief.age(e) == 0)))
@@ -495,17 +526,20 @@ public class GoalLibExtended extends GoalLib{
 	        		.withTactic(
 	        			FIRSTof(
 	        				//TacticLib.navigateTo(position),
-	        				TacticLib.navigateToClosestReachableNode(id),
+	        				TacticLibExtended.navigateToClosestReachableNode(id),
 	                        TacticLibExtended.guidedExplore(position),        				
-	                        ABORT()))
-	        	
+	                        ABORT()
+	                        )
+	        			)        	
 	        		;  
 	    	
 	    	return goal.lift();
 	    }
 	 
+	 
+	 
 		/**
-		 * Explore the word to go to the given path: here it is selected node 
+		 * Explore the world to go to the given path: here it is selected node 
 		 *  */
 		 public static GoalStructure ExplorationTo() {
 			
@@ -533,4 +567,43 @@ public class GoalLibExtended extends GoalLib{
 		    	
 		    	return goal.lift();
 		    }
+
+	/* Predicate to check an entity state*/ 
+	 public static Boolean  checkEntityStatePredicate(BeliefStateExtended belief) {
+		 System.out.println("check selected entity state, predicate: " );
+		 var selectedNode = belief.highLevelGragh.currentSelectedEntity;
+			if(selectedNode != null) {		
+				var entity = belief.highLevelGragh.entities.get(selectedNode);
+				if(entity.id.contains("door")){
+					if(!belief.isOpen(entity.id)) {
+						return true;
+					}}
+			
+			}	   
+	    	return false;
+
+	   }
+
+	   public static GoalStructure findingAButton(TestAgent agent) {
+		   
+		  	  Goal goal3 =  goal("add a new goal to open the door")
+		     			. toSolve(
+		         				(Pair<Integer,BeliefStateExtended> s) -> {
+		         					System.out.println("check entity state" + s.fst);
+		         					if(s.fst != null) {System.out.println("check entity state returns true");		
+		         					return true;}
+		         					return false;
+		         		});	
+		  	 GoalStructure g3 = goal3.withTactic(
+		  			 SEQ(
+		   	    		 TacticLibExtended.findingCorrespandingButton(agent),
+		                 ABORT()
+		                 )
+		  			 ).lift();
+		  	 
+		   return g3;
+	   }
+	   
+
+
 }

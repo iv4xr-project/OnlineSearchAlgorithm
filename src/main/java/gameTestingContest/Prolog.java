@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import alice.tuprolog.InvalidTheoryException;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
+import eu.iv4xr.framework.mainConcepts.WorldModel;
 import eu.iv4xr.framework.spatial.LineIntersectable;
 import eu.iv4xr.framework.spatial.Obstacle;
 import eu.iv4xr.framework.spatial.Vec3;
@@ -41,7 +42,7 @@ public class Prolog {
 	static PredicateName wiredTo = predicate("wiredTo") ;
 	static PredicateName notWiredTo = predicate("notWiredTo") ;	
 	static PredicateName neighbor = predicate("neighbor") ;
-	
+	static PredicateName roomReachable = predicate("roomReachable") ;
 	
 	/**
 	 * A rule defining when two rooms are neighboring, namely when they share a door.
@@ -54,7 +55,7 @@ public class Prolog {
 			.and(isRoom.on("R1","D"))
 			.and(isRoom.on("R2","D"))
 			;
-	static PredicateName roomReachable = predicate("roomReachable") ;
+	
 	
 	// Below are three rules defining when a room R2 is reachable from a room R1, through
 	// k number of edges/doors.
@@ -107,30 +108,32 @@ public class Prolog {
 		
 		// now check in which room it can be placed:
 
-		Vec3 agentOriginalPosition = belief.worldmodel.position;
-		System.out.println("originalDoorBlockingState button " + getDoorsBlockingState());
+		Vec3 agentOriginalPosition = belief.worldmodel.position.copy();
+		System.out.print("original positoin" + agentOriginalPosition);
 		Map<String, Boolean> originalDoorBlockingState = (getDoorsBlockingState() != null) ? getDoorsBlockingState() : null;
 		fakelyMakeAlldoorsBlocking(null);
 
 		var rooms = pQueryAll("R", isRoom.on("R"));
 		boolean added = false;
 		for (var roomx : rooms) {
+			System.out.println("roomx: " + roomx);
 			String bt0 = pQuery("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
-			var ee = bt0;
+			System.out.println("bt0: " + bt0);
 			if (bt0 != null) {
 				// the button can be added if there is another button in the room that is
 				// reachable
 				// from it:
 				
-				var hum = belief.worldmodel.getElement(bt0);
 				
 				WorldEntity b0 = belief.worldmodel.getElement(bt0);
 				belief.worldmodel.position = b0.position.copy();
 				belief.worldmodel.position.y = agentOriginalPosition.y;
-
+				
+				System.out.println("get each button position: " + b0.position + belief.worldmodel.position);
 				if (buttonIsReachable(button)) {
 					// add the button:
 					belief.prolog().facts(inRoom.on(roomx, button));
+					System.out.println("is reachable: ");
 					added = true;
 					break;
 				}
@@ -139,7 +142,16 @@ public class Prolog {
 		if (!added) {
 			// button is in a new room, create the room too:
 			String newRoom = "room" + rooms.size();
+			System.out.println(">>>>----------------------------------->>>>>> Room size and the fact: " + newRoom + button);
 			belief.prolog().facts(isRoom.on(newRoom), inRoom.on(newRoom, button));			
+			
+			
+			//test
+			var roomss = pQueryAll("R", isRoom.on("R"));
+			for (var roomx : roomss) {
+				System.out.println("roomxxx: " + roomx);
+				}
+			
 			WorldEntity b_ = belief.worldmodel.getElement(button);
 			belief.worldmodel.position = b_.position.copy();
 			belief.worldmodel.position.y = agentOriginalPosition.y;
@@ -147,12 +159,28 @@ public class Prolog {
 			// check which doors are connected to the new room:
 			var doors = pQueryAll("D", isDoor.on("D"));
 			for(var d0 : doors) {
+				System.out.print("check which doors are connected to the new room:" + d0 + doorIsReachable(d0));
 				if(doorIsReachable(d0)) {
+					System.out.print("register a door here??" + newRoom + d0);
 					belief.prolog().facts(inRoom.on(newRoom,d0)) ;
 				}
 			}	
 		}
 
+		
+		//just to know :
+		
+		var allbuttons = pQueryAll("B", and(isRoom.on("R"), inRoom.on("R", "B"), isButton.on("B")));
+		var allRoom = pQueryAll("R", and(isRoom.on("R")));
+		
+		System.out.println("allbuttons " + allbuttons + "all rooms " + allRoom);
+		
+		for (var roomx : allRoom) {
+			System.out.println("buttons in each room: " + roomx);
+			List<String> bt0 = pQueryAll("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
+			System.out.println("roomx:  bt0" + bt0);
+		}
+		
 		// restore the doors' state:
 		belief.worldmodel.position = agentOriginalPosition;
 		restoreDoorsBlockingState(originalDoorBlockingState, null);
@@ -170,28 +198,30 @@ public class Prolog {
 		}
 		// new door. Add it:
 		belief.prolog().facts(isDoor.on(door));
-
+		System.out.println("register a door in isDoor" + door);
 		// Now check which rooms it connects:
 
-		Vec3 agentOriginalPosition = belief.worldmodel.position;
-		System.out.println("originalDoorBlockingState dooor" + getDoorsBlockingState());
+		Vec3 agentOriginalPosition = belief.worldmodel.position.copy();		
 		Map<String, Boolean> originalDoorBlockingState = (getDoorsBlockingState() != null) ? getDoorsBlockingState() : null;
 		fakelyMakeAlldoorsBlocking(door);
 
+		
 		var rooms = pQueryAll("R", isRoom.on("R"));
 		int numbersOfAdded = 0; // the number of rooms the door has been added to. Max 2.
 		for (var roomx : rooms) {
 			String bt0 = pQuery("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
+			System.out.println("which button is selected for registering a door? " + bt0 + " in which room? " + roomx);
 			if (bt0 != null) {
-				// the door can be added if there is a button the the room that is
+				// the door can be added if there is a button in the room that is
 				// reachable from it:
 
 				WorldEntity b0 = belief.worldmodel.getElement(bt0);
 				belief.worldmodel.position = b0.position.copy();
 				belief.worldmodel.position.y = agentOriginalPosition.y;
-
+				System.out.println("checking door is reachable the button position " + b0.position);
 				if (doorIsReachable(door)) {
 					// add the door to this room:
+					System.out.println("add a door in which room? " + door + roomx);
 					belief.prolog().facts(inRoom.on(roomx, door));
 					numbersOfAdded++;
 					if (numbersOfAdded == 2) {
@@ -202,6 +232,16 @@ public class Prolog {
 			}
 		}
 
+		var allRoom1 = pQueryAll("R", and(isRoom.on("R")));
+		
+		
+		
+		for (var roomx : allRoom1) {
+			System.out.println("doors in each room:register door " + roomx);
+			List<String> bt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
+			System.out.println("door ::" + bt0);
+		}
+		
 		// restore the doors' state:
 		belief.worldmodel.position = agentOriginalPosition;
 		restoreDoorsBlockingState(originalDoorBlockingState,door);
@@ -275,12 +315,37 @@ public class Prolog {
 		//	return findPathTo(d.getFloorPosition(),true) != null ;
 		//}
 		// pretend that the door is open:
+		System.out.println("door state before" + d.getBooleanProperty("isOpen") + d);
 		fakelyUnblockDoor(door) ;
 		var entity_location = d.getFloorPosition() ;
 		var entity_sqcenter = new Vec3((float) Math.floor((double) entity_location.x - 0.5f) + 1f,
 	    		entity_location.y,
 	    		(float) Math.floor((double) entity_location.z - 0.5f) + 1f) ;
-		var path = belief.findPathTo(entity_sqcenter,true) ;
+		System.out.println("door location and center location and agent location" + entity_location + entity_sqcenter + belief.worldmodel.position);
+		List<Vec3> candidates = new LinkedList<>() ;
+	    float delta = 0.5f ;
+	    // adding North and south candidates
+	    candidates.add(Vec3.add(entity_sqcenter, new Vec3(0,0,delta))) ;
+	    candidates.add(Vec3.add(entity_sqcenter, new Vec3(0,0,-delta))) ;
+	    // adding east and west candidates:
+	    candidates.add(Vec3.add(entity_sqcenter, new Vec3(delta,0,0))) ;
+	    candidates.add(Vec3.add(entity_sqcenter, new Vec3(-delta,0,0))) ;
+	    Pair<Vec3, List<Vec3>> path = null;
+	    path = belief.expensiveFindPathTo(entity_sqcenter,true) ;
+	    System.out.println("path to the center of the door" + path);
+	    int s = 0;
+	    if(path == null) {
+		    for (var c : candidates) {
+		    	// if c (a candidate point near the entity) is on the navigable,
+		    	// we should ignore it:
+		    	//if (getCoveringFaces(belief,c) == null) continue ;
+		    	path = belief.expensiveFindPathTo(c, true) ;
+		    	s++;
+		    	System.out.println("***candidators :" + s + c + path);
+		    	if(path != null) break;
+		    }
+	    }
+		// path = belief.expensiveFindPathTo(entity_sqcenter,true) ;
 		// restore the original state:
 		restoreObstacleState(door, ! isOpen) ;
 		return path != null ;		
@@ -288,9 +353,9 @@ public class Prolog {
 	
 	void fakelyUnblockDoor(String door) {
 		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
-			LabEntity e = (LabEntity) o.obstacle ;
-			if (e.id == door) {
-				o.isBlocking = false ;
+			LabEntity e = (LabEntity) o.obstacle ;			
+			if (e.id.equals(door)) {		
+				o.isBlocking = false ;	
 				return ;
 			}
 		}
@@ -299,7 +364,7 @@ public class Prolog {
 	void restoreObstacleState(String door, boolean originalState) {
 		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
-			if (e.id == door) {
+			if (e.id.equals(door)) {
 				o.isBlocking = originalState ;
 				return ;
 			}
@@ -309,11 +374,15 @@ public class Prolog {
 	void fakelyMakeAlldoorsBlocking(String exception) {
 		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
-			if (e.type == "Door") {
+			System.out.println("fakly make all doors blocke, open? " + e.id  + ", "+ e.getBooleanProperty("isOpen"));
+			if (e.type == "Door" && e.getBooleanProperty("isOpen")) {
 				o.isBlocking = true ;
 				if(e.id != exception) {
-					e.extent.x += 1f ;
-					e.extent.z += 1f ;				
+					//extend the smaller one
+					System.out.println("fakly make all doors blocke, x and z " + e.extent.x +", "+ e.extent.y);
+					if(e.extent.x < e.extent.z) {e.extent.x += 0.75f; }					
+					e.extent.z += 0.75f ;	
+					System.out.println("After change: fakly make all doors blocke, x and z " + e.extent.x +", "+ e.extent.y);
 				}
 			}
 		}
@@ -335,7 +404,23 @@ public class Prolog {
 	boolean buttonIsReachable(String button) {
 		LabEntity b = belief.worldmodel.getElement(button) ;
 		var path = belief.findPathTo(b.getFloorPosition(),true) ;
+		System.out.println("path to button " + path + b.getFloorPosition());
 		return path != null ;
+	}
+	
+	Map<String,Boolean> untrap() {
+		Map<String,Boolean> map = new HashMap<>() ;	
+		System.out.println("***** tries to find a button connected to a door in the same room as agent is");
+		LabEntity d = belief.worldmodel.getElement("agent1") ;
+		
+		if(belief.pathfinder == null) return null;
+		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
+			LabEntity e = (LabEntity) o.obstacle ;
+			if (e.type == "Door") {
+				map.put(e.id,o.isBlocking) ;
+			}
+		}
+		return map ;
 	}
 	
 	Set<Pair<String,String>> getConnections() {
@@ -372,5 +457,189 @@ public class Prolog {
 	
 	}	
 	
+	String getCurrentRoom() {
+		Map<String, Boolean> originalDoorBlockingState = getDoorsBlockingState();
+		fakelyMakeAlldoorsBlocking(null);
+		var rooms = pQueryAll("R", isRoom.on("R"));
+		int numbersOfAdded = 0; // the number of rooms the door has been added to. Max 2.
+		String currentRoom = null ;
+		for (var roomx : rooms) {
+			String bt0 = pQuery("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
+			if (bt0 != null) {
+				if (buttonIsReachable(bt0)) {
+					currentRoom = roomx ;
+					break ;
+				}
+			}
+			
+		}
+		restoreDoorsBlockingState(originalDoorBlockingState, null);
+		return currentRoom ;
+	}
 	
+	/*.
+	 * Given a door or button find closed doors such that for each D of these doors, if it is open would make 
+	 * the entity reachable.
+	 * This assumes the entity is not reachable. If it is, an empty list is returned.
+	 */
+	public List<String> getEnablingDoors(String entity) {
+		
+		List<String> enablingCandidates = new LinkedList<>() ;
+		
+		if (isReachable(entity)) {
+			System.out.println("1");
+			return enablingCandidates ;
+		}
+		
+		List<String> candidates ;
+		
+		if (isDoor(entity)) {
+			System.out.println("2");
+			// get doors guarding the neighboring room:
+			candidates = pQueryAll("D",
+					and(inRoom.on("R",entity),
+						neighbor.on("R","R2"),
+					    isDoor.on("D"),
+						inRoom.on("R2","D")
+						,
+						not(inRoom.on("R","D")
+							)
+					)
+				) ;
+		}
+		else {
+			System.out.println("3");
+			// get the doors guarding the room  of the entity
+			candidates =  pQueryAll("D",
+					and(inRoom.on("R",entity),
+						isDoor.on("D"),
+						inRoom.on("R2","D"))
+					) ;
+		}
+		
+		
+		var s  = getCurrentRoom();
+		System.out.println("get current room" + s);
+		
+		//get doors in the locked room
+		var Doors = pQueryAll("D",
+				and(isDoor.on("D"),inRoom.on(s,"D")));
+		
+		var buttonsConnected  = pQueryAll("B",
+				and(isButton.on("B"),inRoom.on(s,"B")));
+		
+		var Connected  = pQueryAll("B",
+				and(isButton.on("B"),inRoom.on(s,"B"), wiredTo.on(buttonsConnected,Doors)));
+	//	
+		for(String B : buttonsConnected) {
+			var doors = pQueryAll("D", and(wiredTo.on(B,"D"), inRoom.on(s,"D")
+					
+					)) ;
+			for(var D : doors) {
+				System.out.println("Connected b" + D + B);
+			}
+		}
+		System.out.println("x,y,w,z" + Doors.size() + buttonsConnected.size() );
+		
+		for(String D : Doors) {
+			System.out.println("x" + D);
+		}
+		for(String D : buttonsConnected) {
+			System.out.println("y" + D);
+		}
+
+		for(String D : Connected) {
+			System.out.println("Connected" + D);
+		}
+		for(String D : candidates) {
+			System.out.println("4");
+			boolean isOpen = belief.isOpen(D) ;
+			fakelyUnblockDoor(D) ;
+			if(isReachable(entity)) {
+				enablingCandidates.add(D) ;
+			}
+			restoreObstacleState(D, ! isOpen) ;
+		}
+		
+		return enablingCandidates ;
+	}
+	
+	/* get the buttons connected to the doors between two neghbor rooms*/
+	public Map<String, List<String>> getEnablingButtons(String  blockedDoorId) {
+		
+		var currentRoom = getCurrentRoom();
+		System.out.println("rooms in neighberhood ::: " + currentRoom + blockedDoorId);
+		
+		var neighborRooms1 = pQueryAll("R",
+				and(
+						neighbor.on(currentRoom,"R")						
+								
+						)
+				   );
+		var neighborRooms2 = pQueryAll("R",
+				and(
+						isRoom.on("R")						
+								
+						)
+				   );
+		var neighborRooms = pQueryAll("R",
+				and(
+						neighbor.on(currentRoom,"R")						
+						,inRoom.on("R" , blockedDoorId)					
+						)
+				   );
+		for (var roomx : neighborRooms2) {
+			System.out.println("doors in each room: " + roomx);
+			List<String> bt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
+			System.out.println("doors: " + bt0);
+		}
+		
+		var alldoors = pQueryAll("D",
+				and(
+						isDoor.on("D")			
+								
+						)
+				   );
+		
+		System.out.println("all doors registered" + alldoors);
+		
+		System.out.println("rooms in neighberhood ::: " +  neighborRooms + neighborRooms1+ neighborRooms2) ;	
+		Map<String, List<String>> buttonsconnectedToDoors = new HashMap<String, List<String>>() ; ;
+//		for(var n: neighborRooms) {
+//			var doors = pQueryAll("D", and( isDoor.on("D"), inRoom.on(currentRoom, "D"), inRoom.on(n, "D"))) ;
+//			System.out.println("doors in between ::: " +  doors + n);
+//			for(var d: doors) {
+//				var buttonsconnected =	pQueryAll("B", and( isButton.on("B"), wiredTo.on("B",d), inRoom.on(currentRoom, "B"))) ;
+//				System.out.println("buttons ::: " +  buttonsconnected +d);
+//				buttonsconnectedToDoors.put(d, buttonsconnected);
+//			}
+//		}
+		List<String> x = Arrays.asList("button3");
+	//	buttonsconnectedToDoors.put("door2", x );
+		System.out.println("uhoom" + buttonsconnectedToDoors.size());
+		return buttonsconnectedToDoors;
+	}
+	
+	public boolean isReachable(String entityId) {
+		if (isDoor(entityId)) {
+			return doorIsReachable(entityId) ;
+		}
+		return buttonIsReachable(entityId) ;
+	}
+	public boolean isLockedInCurrentRoom() {
+		String room = getCurrentRoom() ;
+		if(room == null) return false ;
+		var doors = pQueryAll("D", and(isDoor.on("D"), inRoom.on(room,"D"))) ;
+		boolean anyOpen = doors.stream().anyMatch(D -> belief.isOpen(D)) ;
+		return ! anyOpen ;
+	}
+	public boolean isDoor(String id) {
+		LabEntity e = belief.worldmodel.getElement(id) ;
+		return e.type.equals(LabEntity.DOOR) ;
+	}
+	
+	public boolean isButton(String id) {
+		LabEntity e = belief.worldmodel.getElement(id) ;
+		return e.type.equals(LabEntity.SWITCH) ;
+	}
 }

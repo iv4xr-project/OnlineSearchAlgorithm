@@ -89,7 +89,7 @@ public class onlineSearch {
 	    public void closetReachableTest() throws InterruptedException {
 	    	String levelName = "";
 	    	//String levelName = "Wishnu-levels//contest";
-	    	String fileName = "multiconnection2";
+	    	String fileName = "BM2021_diff1_R4_1_1_M";
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
@@ -113,19 +113,21 @@ public class onlineSearch {
 
 		       
 		       var agentPosiion = environment.observe("agent1").position;
-		       Vec3 goalPosition =  new  Vec3(4,1,19);  //  new  Vec3(4,1,19); 
+		       
+		       Vec3 goalPosition =  new  Vec3(4,1,30);  //  new  Vec3(4,1,19); 
 			   /* calculate the euclidean distance from agent position to the treasure door, the treasure door
 				 * distance is estimated */
 		        euclideanDistance(agentPosiion, goalPosition);
 		        System.out.println("euclidean dis " + euclideanDistance(agentPosiion, goalPosition));
-		        String treasureDoor = "door4";
+		        String treasureDoor = "door5";
 		        beliefState.highLevelGragh.goalPosition = goalPosition;
 		        var testingTask = SEQ( 
 		        		GoalLibExtended.NEWREPEAT(
 		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,treasureDoor)	
 		        				, 
 		        				 SEQ(
-			    	        		FIRSTof(GoalLibExtended.neighborsObjects(testAgent),
+			    	        		FIRSTof(
+			    	        				GoalLibExtended.neighborsObjects(testAgent),
 			    	        				GoalLibExtended.NEWREPEAT(
 			    	        						(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b),
 			    	        						SEQ(
@@ -134,13 +136,20 @@ public class onlineSearch {
 			    	        				)    		
 			    	        		,		
 			    	        		FIRSTof(
-			    	        			//	GoalLibExtended.aStar(beliefState,"door3"),	
+			    	        			//	GoalLibExtended.aStar(beliefState,"door3"),
+			    	        				//if during the exploration to find a new entity, agent sees the goal, we check that it is open or not
 			    	        				GoalLibExtended.finalGoal(treasureDoor),
-			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent,goalPosition))
+			    	        				// if the goal is not achieved yet, we select an entity to navigate to it
+			    	        				//if the all neighbors of the current position has seen before
+			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent,goalPosition, treasureDoor)
+			    	        				)
 			    	        		,		    	        		
 			    	        		GoalLibExtended.navigateTo(beliefState)
 			    	        		,
-			    	        		GoalLibExtended.checkEntityStatus(testAgent)
+			    	        		IFELSE(
+			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.findingAButton(testAgent),FAIL())
+			    	        		//,
+			    	        		//GoalLibExtended.checkEntityStatus(testAgent)
 			    	        		,
 			    	        		GoalLibExtended.removeDynamicGoal(testAgent)
 			    	        		,
@@ -200,7 +209,7 @@ public class onlineSearch {
 					//	throw new AgentDieException() ;
 					}
 	        	
-		        	if (cycleNumber>800) {
+		        	if (cycleNumber>1000) {
 		        		break ;
 		        	}
 		        }

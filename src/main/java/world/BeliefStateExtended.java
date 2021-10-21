@@ -15,6 +15,7 @@ import gameTestingContest.DebugUtil;
 import gameTestingContest.Prolog;
 import nl.uu.cs.aplib.mainConcepts.Environment;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
+import nl.uu.cs.aplib.utils.Pair;
 import world.HighLevelGraph;
 
 
@@ -123,76 +124,97 @@ public class BeliefStateExtended extends BeliefState {
     	int N = recentPositions.size() ;
     	if(N<3) return false ;
     	Vec3 p0 = recentPositions.get(N-3) ;
-    	System.out.println("====== checking stcuk" + N + p0 +  recentPositions.get(N-2) + recentPositions.get(N-1)
-    			) ;
+    //	System.out.println("====== checking stcuk" + N + p0 +  recentPositions.get(N-2) + recentPositions.get(N-1)
+    //			) ;
     	
     	return Vec3.dist(p0,recentPositions.get(N-2)) <= 0.02
     		   &&  Vec3.dist(p0,recentPositions.get(N-1)) <= 0.02 ;
          //    && p0.distance(q) > 1.0 ;   should first translate p0 to the on-floor coordinate!
 	}
 	
-    @Override
-    public void updateState() {
-        super.updateState();
-        var observation = this.env().observe(id) ;            
-        
-        //update prolog
-        try {
-			registerFoundGameObjects();
-		} catch (InvalidTheoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	/**
-    	 * To keep track which button the agent toggled last.
-    	 */
-    	// FRAGILE!
-    	WorldEntity lastInteractedButton = null;
-		// check if a button is just interacted:
-//		for(WorldEntity e: changedEntities) {
-//			if(e.type.equals("Switch") && e.hasPreviousState()) {
-//				DebugUtil.log(">> detecting interaction with " + e.id) ;
-//				lastInteractedButton = e ;					
-//			}
+ //   @Override
+//    public void updateState() {
+//        super.updateState();
+//        var observation = this.env().observe(id) ;            
+//        
+//        //update prolog
+//        try {
+//			registerFoundGameObjects();
+//		} catch (InvalidTheoryException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 //		}
-//		// check doors that change state, and add connections to lastInteractedButton:
-//		if(lastInteractedButton != null) {
-//			for(WorldEntity e: changedEntities) {
-//				var di = e.id;
-//				if(e.type.equals("Door") && e.hasPreviousState()) {
-//					try {
-//						prolog.registerConnection(lastInteractedButton.id,e.id);
-//					} catch (InvalidTheoryException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
-//				}	
-//			}
-//		}
-        
-        
-        // updating recent positions tracking (to detect stuck) here, rater than in mergeNewObservationIntoWOM,
-        // because the latter is also invoked directly by some tactic (Interact) that do not/should not update
-        // positions
-        recentPositions.add(new Vec3(worldmodel.position.x, worldmodel.position.y, worldmodel.position.z)) ;
-        if (recentPositions.size()>4) recentPositions.remove(0) ;
-    }
+//    	/**
+//    	 * To keep track which button the agent toggled last.
+//    	 */
+//    	// FRAGILE!
+//    	WorldEntity lastInteractedButton = null;
+//		// check if a button is just interacted:
+////		for(WorldEntity e: changedEntities) {
+////			if(e.type.equals("Switch") && e.hasPreviousState()) {
+////				DebugUtil.log(">> detecting interaction with " + e.id) ;
+////				lastInteractedButton = e ;					
+////			}
+////		}
+////		// check doors that change state, and add connections to lastInteractedButton:
+////		if(lastInteractedButton != null) {
+////			for(WorldEntity e: changedEntities) {
+////				var di = e.id;
+////				if(e.type.equals("Door") && e.hasPreviousState()) {
+////					try {
+////						prolog.registerConnection(lastInteractedButton.id,e.id);
+////					} catch (InvalidTheoryException e1) {
+////						// TODO Auto-generated catch block
+////						e1.printStackTrace();
+////					}
+////				}	
+////			}
+////		}
+//        
+//        
+//        // updating recent positions tracking (to detect stuck) here, rater than in mergeNewObservationIntoWOM,
+//        // because the latter is also invoked directly by some tactic (Interact) that do not/should not update
+//        // positions
+//        recentPositions.add(new Vec3(worldmodel.position.x, worldmodel.position.y, worldmodel.position.z)) ;
+//        if (recentPositions.size()>4) recentPositions.remove(0) ;
+//    }
     
 	/**
 	 * Register all buttons and doors currently in the agent's belief to the models
 	 * of rooms and connections that it keeps track.
 	 * @throws InvalidTheoryException 
 	 */
-	private void registerFoundGameObjects() throws InvalidTheoryException {
-	
-		if(this.knownButtons().size() > 0) {			
-		for(WorldEntity e : this.knownButtons()) {			
+	public void registerFoundGameObjects(WorldEntity e) throws InvalidTheoryException {
+		
+		if(e.type.equals(LabEntity.SWITCH)) {			
 			prolog.registerButton(e.id);
-		}}
-		//agent.getState(). why????
-		if(this.knownDoors() != null) {
-		for(WorldEntity e : this.knownDoors()) {
+		}
+		if(e.type.equals(LabEntity.DOOR)) {
+			System.out.println("belief state, register a door");
 			prolog.registerDoor(e.id);
-		}}
+		}
 	}
+	
+	/**
+	 * This finding path is the same as the original findPAthTo. The difference is that 
+	 * we call expensiveFindPath in the class pathfinder. Which means all combination of 
+	 * vertices around two position is checked.
+	 * */
+	private Vec3 memorizedGoalLocation;
+    public Pair<Vec3,List<Vec3>> expensiveFindPathTo(Vec3 q, boolean forceIt) {
+    	if (!forceIt && memorizedGoalLocation!=null) {
+    		if (Vec3.dist(q,memorizedGoalLocation) <= DIST_TO_MEMORIZED_GOALLOCATION_SOFT_REPATH_THRESHOLD)
+    			System.out.print("is there any path in the belief state?");
+    			return new Pair(q,null) ;
+    	}
+    	// else we invoke the pathfinder to calculate a path:
+    	// be careful with the threshold 0.05..
+    	var abstractpath = pathfinder.expensiveFindPath(worldmodel.getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
+    	if (abstractpath == null) return null ;
+    	System.out.print("is ther a path ?" + abstractpath);
+    	List<Vec3> path = abstractpath.stream().map(v -> pathfinder.vertices.get(v)).collect(Collectors.toList()) ;
+    	// add the destination path too:
+    	path.add(q) ;
+    	return new Pair(q,path) ;
+    }
 }
