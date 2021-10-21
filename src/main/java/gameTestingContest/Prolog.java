@@ -297,12 +297,25 @@ public class Prolog {
 		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
 			System.out.println("restore door state " + e.id );
+			/*
 			if (e.type == "Door") {
 				o.isBlocking = originalState.get(e.id) ;
 				if(e.id != exception) {
 					System.out.println("restore door state!!");
 					e.extent.x -= 1f ;
 					e.extent.z -= 1f ;				
+				}
+			}
+			*/
+			if (e.type == "Door" && e.getBooleanProperty("isOpen")) {
+				// WP: knowing original-state is not needed anymore??
+				// o.isBlocking = originalState.get(e.id) ;
+				o.isBlocking = false ;
+				if(e.id != exception) {
+					if(e.extent.x > 0.8) {e.extent.x -= 0.75f; }					
+					// WP FIX: should have an else
+					// e.extent.z += 0.75f ;	
+					else e.extent.z -= 0.75f ;	
 				}
 			}
 		}
@@ -323,7 +336,10 @@ public class Prolog {
 	    		(float) Math.floor((double) entity_location.z - 0.5f) + 1f) ;
 		System.out.println("door location and center location and agent location" + entity_location + entity_sqcenter + belief.worldmodel.position);
 		List<Vec3> candidates = new LinkedList<>() ;
+		// WP-FIX making this bigger
+	    //float delta = 0.5f ;
 	    float delta = 0.5f ;
+	    
 	    // adding North and south candidates
 	    candidates.add(Vec3.add(entity_sqcenter, new Vec3(0,0,delta))) ;
 	    candidates.add(Vec3.add(entity_sqcenter, new Vec3(0,0,-delta))) ;
@@ -381,7 +397,10 @@ public class Prolog {
 					//extend the smaller one
 					System.out.println("fakly make all doors blocke, x and z " + e.extent.x +", "+ e.extent.y);
 					if(e.extent.x < e.extent.z) {e.extent.x += 0.75f; }					
-					e.extent.z += 0.75f ;	
+					// WP FIX: should have an else
+					// e.extent.z += 0.75f ;	
+					else e.extent.z += 0.75f ;	
+					
 					System.out.println("After change: fakly make all doors blocke, x and z " + e.extent.x +", "+ e.extent.y);
 				}
 			}
