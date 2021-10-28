@@ -28,7 +28,7 @@ public class BeliefStateExtended extends BeliefState {
 		super() ;
 		highLevelGragh = new HighLevelGraph();
 		prolog  = new Prolog(this);
-		this.attachProlog() ;
+		//this.attachProlog() ;
 	}
 	
 	public HashMap<String,GoalStructure> goalsmap = new HashMap<String,GoalStructure>() ;
@@ -61,7 +61,21 @@ public class BeliefStateExtended extends BeliefState {
 					newEntity[0] = true;
 					highLevelGragh.addEntites(e);
 					highLevelGragh.addVertices(e);
-				}			
+					 //update prolog
+						try {
+							registerFoundGameObjects(e);
+						} catch (InvalidTheoryException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+				
+				    	/**
+				    	 * To keep track which button the agent toggled last.
+				    	 */
+				    	// FRAGILE!
+				    	WorldEntity lastInteractedButton = null;
+			        }
+							
 			}
 			/* By default the entity blocking state is false means, if we see a door we
 			  need to change the state to true */
@@ -197,21 +211,19 @@ public class BeliefStateExtended extends BeliefState {
 	
 	/**
 	 * This finding path is the same as the original findPAthTo. The difference is that 
-	 * we call expensiveFindPath in the class pathfinder. Which means all combination of 
+	 * we call enhanceFindPath in the class pathfinder. Which means all combination of 
 	 * vertices around two position is checked.
 	 * */
 	private Vec3 memorizedGoalLocation;
     public Pair<Vec3,List<Vec3>> expensiveFindPathTo(Vec3 q, boolean forceIt) {
     	if (!forceIt && memorizedGoalLocation!=null) {
     		if (Vec3.dist(q,memorizedGoalLocation) <= DIST_TO_MEMORIZED_GOALLOCATION_SOFT_REPATH_THRESHOLD)
-    			System.out.print("is there any path in the belief state?");
     			return new Pair(q,null) ;
     	}
     	// else we invoke the pathfinder to calculate a path:
     	// be careful with the threshold 0.05..
-    	var abstractpath = pathfinder.expensiveFindPath(worldmodel.getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
+    	var abstractpath = pathfinder.enhanceFindPath(worldmodel.getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
     	if (abstractpath == null) return null ;
-    	System.out.print("is ther a path ?" + abstractpath);
     	List<Vec3> path = abstractpath.stream().map(v -> pathfinder.vertices.get(v)).collect(Collectors.toList()) ;
     	// add the destination path too:
     	path.add(q) ;

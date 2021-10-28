@@ -89,7 +89,8 @@ public class onlineSearch {
 	    public void closetReachableTest() throws InterruptedException {
 	    	String levelName = "";
 	    	//String levelName = "Wishnu-levels//contest";
-	    	String fileName = "BM2021_diff1_R4_1_1_M";
+	    	//String fileName = "BM2021_diff1_R4_1_1_M - ThecomplicatedLevel";
+	    	String fileName = "BM2021_diff1_R4_1_1_M - trap";
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
@@ -121,6 +122,23 @@ public class onlineSearch {
 		        System.out.println("euclidean dis " + euclideanDistance(agentPosiion, goalPosition));
 		        String treasureDoor = "door5";
 		        beliefState.highLevelGragh.goalPosition = goalPosition;
+
+//		        var testingTask = SEQ(
+//		        		GoalLibExtended.navigateTo("button2"),
+//		        		//GoalLib.entityInteracted("button2"),
+//		        		GoalLibExtended.navigateTo("button3"),
+//		        		GoalLib.entityInteracted("button3"),
+//		        		GoalLibExtended.navigateTo("door2"),
+//		        		GoalLibExtended.navigateTo("button4"),
+//		        		//GoalLib.entityInteracted("button4"),
+//		        		GoalLib.entityInteracted("button6"),
+//		        		GoalLibExtended.navigateTo("button6"),		        		
+//		        		GoalLibExtended.navigateTo("door3"),
+//		        		//GoalLibExtended.navigateTo("button3"),
+//		        		GoalLib.entityInteracted("button3"),
+//		        		GoalLibExtended.findingAButtonToUnlockedAgent(beliefState, testAgent)
+//		        		);
+		        
 		        var testingTask = SEQ( 
 		        		GoalLibExtended.NEWREPEAT(
 		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,treasureDoor)	
@@ -152,9 +170,9 @@ public class onlineSearch {
 			    	        		//GoalLibExtended.checkEntityStatus(testAgent)
 			    	        		,
 			    	        		GoalLibExtended.removeDynamicGoal(testAgent)
-			    	        		,
+			    	     //   		,
 			    	        //		GoalLibExtended.aStar(beliefState,"door3")	
-			    	        //		,			    	        		
+			    	        		,			    	        		
 			    	        		GoalLibExtended.finalGoal(treasureDoor)
 		        				))		        		
 		        		);
@@ -181,8 +199,12 @@ public class onlineSearch {
 		            cycleNumber++ ; 
 		        	testAgent.update();
 	                
-		        	
-					// check if a button is just interacted:
+					
+		        	var door1 = testAgent.getState().worldmodel.getElement("door1");
+		        	if(door1 != null )System.out.println("door1: " + door1.extent);
+		        	var door2 = testAgent.getState().worldmodel.getElement("door2");
+		        	if(door2 != null )System.out.println("door2: " + door2.extent);
+		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
 						if(e.type.equals("Switch") && e.hasPreviousState()) {
 							DebugUtil.log(">> detecting interaction with " + e.id) ;
@@ -209,7 +231,7 @@ public class onlineSearch {
 					//	throw new AgentDieException() ;
 					}
 	        	
-		        	if (cycleNumber>1000) {
+		        	if (cycleNumber>2000) {
 		        		break ;
 		        	}
 		        }

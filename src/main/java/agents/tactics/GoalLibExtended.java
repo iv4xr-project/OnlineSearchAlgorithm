@@ -4,6 +4,8 @@ import static nl.uu.cs.aplib.AplibEDSL.*;
 
 import java.util.function.Predicate;
 
+import com.sun.net.httpserver.Authenticator.Success;
+
 import alice.tuprolog.InvalidTheoryException;
 import eu.iv4xr.framework.mainConcepts.TestAgent;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
@@ -218,30 +220,30 @@ public class GoalLibExtended extends GoalLib{
 	         			result = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
 	         		 }
 	         		  
-					 //update prolog
-				        if(result) {
-				        	
-							try {
-								belief.registerFoundGameObjects(e);
-							} catch (InvalidTheoryException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-					
-					    	/**
-					    	 * To keep track which button the agent toggled last.
-					    	 */
-					    	// FRAGILE!
-					    	WorldEntity lastInteractedButton = null;
-				        }
+//					 //update prolog
+//				        if(result) {
+//				        	
+//							try {
+//								belief.registerFoundGameObjects(e);
+//							} catch (InvalidTheoryException e1) {
+//								// TODO Auto-generated catch block
+//								e1.printStackTrace();
+//							}
+//					
+//					    	/**
+//					    	 * To keep track which button the agent toggled last.
+//					    	 */
+//					    	// FRAGILE!
+//					    	WorldEntity lastInteractedButton = null;
+//				        }
 				        
 				        return result;
 	         	    })
 	         	  . withTactic(
 	                     FIRSTof( //the tactic used to solve the goal 
 	                     TacticLibExtended.navigateTo(), //try to move to the entity
-	                    // TacticLibExtended.guidedExplore(), //find the entity
-	                     TacticLib.explore(),
+	                     TacticLibExtended.guidedExplore(), //find the entity
+	                    // TacticLib.explore(),
 	                     ABORT())) 
 	               . lift();
 	       
@@ -336,7 +338,7 @@ public class GoalLibExtended extends GoalLib{
 			       					return false;
 			  	         	    });
 
-			   Goal goal4 = goal("using the prolog")
+			   Goal goalFindingAButtonToUnlockedAgent = goal("using the prolog")
 			       		. toSolve(
 			       				(BeliefStateExtended belief) -> {
 			       				System.out.println(">>checking the blocked node's state: id, " + belief.highLevelGragh.currentBlockedEntity + ", status: " + belief.isOpen(belief.highLevelGragh.currentBlockedEntity));
@@ -352,8 +354,9 @@ public class GoalLibExtended extends GoalLib{
 	 	                   )) 
 	 	                .lift();
 			   
-			   GoalStructure g3 = goal3.withTactic(
+			   GoalStructure checkBlockedEntityStatus = goal3.withTactic(
 		        		SEQ( 
+		        			TacticLib.observe(),	
 			                TacticLibExtended.checkBlockedEntityStatus(b,agent),
 			                ABORT()
 		                   )) 
@@ -367,12 +370,15 @@ public class GoalLibExtended extends GoalLib{
 		                .lift();	
 			   
 			   
-			   GoalStructure g4 = goal4.withTactic(
+			   GoalStructure findingAButtonToUnlockedAgent = goalFindingAButtonToUnlockedAgent.withTactic(
 		        		SEQ( 
-			                TacticLibExtended.unlockAgent(b,agent),
+			                //TacticLibExtended.unlockAgent(b,agent),
+		        			TacticLibExtended.unlockAgentWithTheLastInteractedButton(b, agent),
 			                ABORT()
 		                   )) 
 		                .lift();	
+			   
+			   
 			   
 			   return REPEAT(
 					   SEQ(
@@ -399,8 +405,13 @@ public class GoalLibExtended extends GoalLib{
 //									   ,
 //									   g3
 									   IFELSE2(
-											   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity), g3, g4)
-
+											   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
+											   , 
+											    SUCCESS()
+											   ,
+											   findingAButtonToUnlockedAgent
+											   )
+									   , checkBlockedEntityStatus
 									   )						   
 							   )
 					   );
@@ -584,9 +595,18 @@ public class GoalLibExtended extends GoalLib{
 
 	   }
 
+	 
+	 //interact with a button and check the corresponding door
+	 
+	 public static GoalStructure interactWithAButtonAndCheckDoor(String buttonId, String doorID) {
+		 
+		 return SEQ(GoalLib.entityInteracted(buttonId), GoalLib.entityStateRefreshed(doorID));
+	 }
+	 
+	 
 	   public static GoalStructure findingAButton(TestAgent agent) {
 		   
-		  	  Goal goal3 =  goal("add a new goal to open the door")
+		  	 Goal goal3 =  goal("add a new goal to open the door")
 		     			. toSolve(
 		         				(Pair<Integer,BeliefStateExtended> s) -> {
 		         					System.out.println("check entity state" + s.fst);
@@ -604,6 +624,4 @@ public class GoalLibExtended extends GoalLib{
 		   return g3;
 	   }
 	   
-
-
 }

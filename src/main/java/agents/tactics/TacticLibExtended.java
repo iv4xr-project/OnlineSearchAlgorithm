@@ -225,22 +225,24 @@ public class TacticLibExtended extends TacticLib{
 								}
 								else {
 									if(goalPosition == null) {
-									//just consider the nearest node to the agent position
-									if(y<distance) { distance = y; selectedNode = element; }
+										//just consider the nearest node to the agent position
+										if(y<distance) { distance = y; selectedNode = element; }
 									}else {
-									// considering agent position and nearest node to the goal position
-									if((y>distances.get(0) && goalDistance < distances.get(1)) || 
-											(y<distances.get(0) && goalDistance < distances.get(1)) ) {
-										distances.set(0, y); distances.set(1, goalDistance);  selectedNode = element; 
+										// considering agent position and nearest node to the goal position
+										if((y>distances.get(0) && goalDistance < distances.get(1)) || 
+												(y<distances.get(0) && goalDistance < distances.get(1)) ) {
+											distances.set(0, y); distances.set(1, goalDistance);  selectedNode = element; 
+											}
 										}
-									}
 								}
 							}	
 						}	
 
 					}
 					var tempSelectedNode  = selectedNode;
+					distances.clear();
 					System.out.println("selected any entity in neighborhood: " + selectedNode);
+					
 					if(selectedNode == null) {
 						System.out.println("there is no node in the neighborhood to select" ); 
 						
@@ -290,7 +292,7 @@ public class TacticLibExtended extends TacticLib{
 					
 					//if there are some unvisited doors in the neighbors, we give the priority to select between them.
 					
-					if(!doors.isEmpty()) {							
+					if(!doors.isEmpty() && !belief.highLevelGragh.entities.get(tempSelectedNode).id.contains("door")) {							
 						if(doors.size()>1) {								
 							distance = 0;	
 							for(Integer element : doors) {
@@ -329,15 +331,23 @@ public class TacticLibExtended extends TacticLib{
 					System.out.println("selected a door in neighborhood: " + selectedNode);
 					//end of selecting the nearest door
 					
-					if(!doors.isEmpty()) {	
+					/*
+					 * in the situation that the current position of the agent is a open door means
+					 * that the agent will start to explore (the algorithm structure) the world till it 
+					 * sees an entity. It might go farther and find a new button which is near to the goal
+					 * position(if the goal position is known). In this situation we give the priority to the 
+					 * new entity rather than a door near to current position which was visited before.( two
+					 * doors in neighborhood that we selected one of them to open). 
+					 */
+					if(!doors.isEmpty() && !belief.highLevelGragh.entities.get(tempSelectedNode).id.contains("door")) {	
 						if(goalPosition != null && tempSelectedNode != null) {
 							var goalDistanceTo1  =  Vec3.dist(belief.highLevelGragh.vertices.get(tempSelectedNode), goalPosition) ;
 							var goalDistanceTo2  =   Vec3.dist(belief.highLevelGragh.vertices.get(selectedNode), goalPosition) ;
 							var disBetweenToEntity  =   Vec3.dist(belief.highLevelGragh.vertices.get(selectedNode), belief.highLevelGragh.vertices.get(tempSelectedNode)) ;
-							System.out.println("inja miad222");
-							if(goalDistanceTo1 < goalDistanceTo2 && disBetweenToEntity > 2) {
+							System.out.println("is the agent in the situation to select between a door or a button");
+							if(goalDistanceTo1 < goalDistanceTo2 && disBetweenToEntity > belief.viewDistance) {
 								selectedNode = tempSelectedNode;
-							System.out.println("inja miad");
+							System.out.println("select a button which is near to the goal position rather than a door");
 							}
 						}
 					}
@@ -623,7 +633,7 @@ public class TacticLibExtended extends TacticLib{
                          //get the location of the closest unexplored node
         				 var position = belief.worldmodel.getFloorPosition() ;        				 
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
-        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD) ;   				 
+        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD,belief.viewDistance) ;   				 
         				 if (path==null || path.isEmpty()) {
         					memo.moveState("exhausted") ;
                             System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;
@@ -687,36 +697,139 @@ public class TacticLibExtended extends TacticLib{
     
     /* checking blocked entity status */
   	public static Tactic unlockAgent(BeliefState b, TestAgent agent) {			
-  		var checkingState =   action("use prolog to help an agent to untrapped").do1(
+  		var addNewGoal =   action("use prolog to help an agent to untrapped").do1(
   				(BeliefStateExtended belief)-> {
   					System.out.println("is it in prolog");
   					var isLocked = belief.prolog.isLockedInCurrentRoom();
-  					System.out.println("is locked: " + isLocked);
-  					String entityId = belief.highLevelGragh.currentBlockedEntity;
+  					System.out.println("is locked: " + isLocked + belief.highLevelGragh.currentSelectedEntity);
+  					//if(!isLocked) return null;
+  					String entityId = belief.highLevelGragh.currentBlockedEntity;	
   					var getEnablingButtons = belief.prolog.getEnablingButtons(entityId);
   					System.out.println("get Enabling Doors:size " + getEnablingButtons.size());
-  					
-  					for(int i=0; i< getEnablingButtons.size(); i++) {	
-  						var x = getEnablingButtons.values().toArray()[i];
-  						//map.get(map.keySet().toArray()[0]) to get the value of the first key
-  						var y = getEnablingButtons.keySet().toArray()[0];
-  						System.out.print("get e" + x + y );
+  					if(getEnablingButtons.size()== 0) return null;
+  					float distance   = Float.valueOf(0);
+  					//this should return the agent current position
+  					Vec3 agentPosition = belief.worldmodel.position;
+  					String selectedDoor = null;
+  				    String selectedButon = null;
+  					// if there is only one door select it otherwise select the nearest one to the agent position
+  				    // if there is more than one set of door and button, select a set which the door
+  					// is near to the agent position. suppose the agent was in its way and faced with 
+  				    // the blocked door. So, it should select the one which is near to the agent position
+  				    if(getEnablingButtons.size() == 1) {
+  						var door = getEnablingButtons.keySet().toArray()[0];
+  						System.out.println(door);
+  						selectedDoor = door.toString();
+  					}else {
+	  					for(int i=0; i< getEnablingButtons.size(); i++) {	
+	  						var door = getEnablingButtons.keySet().toArray()[i];
+	  						var buttons = getEnablingButtons.values().toArray()[i];
+	  						//map.get(map.keySet().toArray()[0]) to get the value of the first key
+	  						var dist  = Vec3.dist(agentPosition, belief.worldmodel.getElement(door.toString()).position);
+	  						System.out.print("get enabeling door and correspanding button: " + buttons + door );
+	  						if(distance == 0) {
+	  							distance = dist;
+	  							selectedDoor = door.toString();
+	  						}else {
+	  							if(distance > dist) {
+	  								distance = dist;
+	  								selectedDoor = door.toString();
+	  							}
+	  						}
+	  					} 					
   					}
   					
+  					// get the set of buttons connected to the selected node
+  					var setOFButtons = getEnablingButtons.get(selectedDoor);
+  					System.out.print("setOFButtons" + setOFButtons + setOFButtons.size());
+  					if(setOFButtons.size()> 1) {
+  						//if there are more than one button selected to a door,
+  						// select one which is near to the agent position. 
+  						for(int j=0; j< setOFButtons.size(); j++) {
+  							var button = setOFButtons.get(j);				
+  							var dist = Vec3.dist(agentPosition, belief.worldmodel.getElement(button).position);
+  						
+	  						if(distance == 0) {
+	  							distance = dist;
+	  							selectedDoor = button;
+	  						}else {
+	  							if(distance > dist) {
+	  								distance = dist;
+	  								selectedDoor = button;
+	  							}
+	  						}
+  						}
+  					}else {
+  						System.out.print("setOFButtons is set");
+  						selectedButon = setOFButtons.get(0);
+  					}
+  					System.out.print("selected button and door" + selectedButon + selectedDoor);
+  					// add a new goal to interact with the selected button, 
+  					d GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(selectedButon,selectedDoor);
+					agent.addAfter(unblockedDoor);
+					
   					
-//  					for(String s: getEnablingButtons) {
-//  						System.out.println("get Enabling Doors:s " + s);
-//  					}
-//  					for(int i = 0; i <= getEnablingDoors.size(); i++) {
-//  						System.out.println("get Enabling Doors:i " + getEnablingDoors.get(i));
-//  					}
+					//the inserted goal dos'nt need to be removed after success because we remove the main 
+				    //extra goal 
+  				   //belief.goalsmap.put(selectedDoor,unblockedDoor);				
   					return belief;
   					}).lift();
 		
-  			return  checkingState;	
+  			return  addNewGoal;	
   	}	
     
     
+	/**
+	 * To unlock the agent we can consider the last interacted button as a cause of making this problem.
+	 * Based on the information in the high-level graph, we know the last selected button. So, we can use
+	 * prolog data set in order to get the connected door.   
+	 * */
+  	public static Tactic unlockAgentWithTheLastInteractedButton(BeliefState b, TestAgent agent) {			
+  		var addingNewgoal =   action("use prolog to help an agent to untrapped").do1(
+  				(BeliefStateExtended belief)-> {
+  					System.out.println("is it in prolog");
+  					var isLocked = belief.prolog.isLockedInCurrentRoom();
+  					var currentNode = belief.highLevelGragh.currentSelectedEntity;
+  					String buttonId = belief.highLevelGragh.entities.get(currentNode).id;
+  					String selectedDoor = null;
+  					System.out.println("is locked: " + isLocked + currentNode);
+  					var getEnablingButtons = belief.prolog.getConnectedDoor(buttonId);
+  					float distance   = Float.valueOf(0);
+  					//this should return the agent current position
+  					Vec3 agentPosition = belief.worldmodel.position;
+  					
+  					if(getEnablingButtons.size() == 1) {
+  						var door = getEnablingButtons.get(0);
+  						System.out.println(door);
+  						selectedDoor = door.toString();
+  					}else {
+	  					for(int i=0; i< getEnablingButtons.size(); i++) {	
+	  						var door = getEnablingButtons.get(i);	  				
+	  						//map.get(map.keySet().toArray()[0]) to get the value of the first key
+	  						var dist  = Vec3.dist(agentPosition, belief.worldmodel.getElement(door).position);
+	  						System.out.print("get enabeling door " +  door );
+	  						if(distance == 0) {
+	  							distance = dist;
+	  							selectedDoor = door;
+	  						}else {
+	  							if(distance > dist) {
+	  								distance = dist;
+	  								selectedDoor = door;
+	  							}
+	  						}
+	  					} 					
+  					}
+  					
+  					System.out.print("selected button and door" + buttonId + selectedDoor);
+  					// add a new goal to interact with the selected button, 
+  					GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(buttonId,selectedDoor);
+					agent.addAfter(unblockedDoor);
+					
+  					return belief;
+  				}).lift();
+  				return addingNewgoal;
+  	}
+  	
 	/**
 	 * Navigate to a navigation node closest to the given entity, and is moreover
 	 * reachable by the agent. We consider the agent visibility range for selecting closest nodes.
@@ -838,7 +951,7 @@ public class TacticLibExtended extends TacticLib{
                          //get the location of the closest unexplored node
         				 var position = belief.worldmodel.getFloorPosition() ;        				 
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
-        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD) ;   				 
+        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD, belief.viewDistance) ;   				 
         				 if (path==null || path.isEmpty()) {
         					memo.moveState("exhausted") ;
                             System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;

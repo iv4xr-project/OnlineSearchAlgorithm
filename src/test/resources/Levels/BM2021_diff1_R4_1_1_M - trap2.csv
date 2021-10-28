@@ -1,4 +1,4 @@
-button1,door1,,,,,,,,
+button3,door1,,,,,,,,
 button3,door2,,,,,,,,
 button5,door3,,,,,,,,
 button6,door4,,,,,,,,
@@ -12,8 +12,8 @@ w,f,f,f,f,w,f,f,f,w
 w,f,f:t>e,f,f,w,w,f,f,w
 w,f,w,f,f,f,f,f,f,w
 w,f,f:t>e,f,f,f,f,f,f,w
-w,w,w,w,w,f:d>n^door1,w,f:d>n^door2,w,w
-w,w,w,w,w,f,w,f,w,w
+w,w,w,f:d>n^door1,w,w,w,f:d>n^door2,w,w
+w,w,w,f,w,f,w,f,w,w
 w,f,f,f,f,f,f:b>n^button4,f,f,w
 w,f,f,f,f,f,f,f,f,w
 w,f,f,f,f,w,w,w,w,w
@@ -44,8 +44,8 @@ w,,,,,w,,,,w
 w,,,,,w,w,,,w
 w,,w,,,,,,,w
 w,,,,,,,,,w
-w,w,w,w,w,,w,,w,w
-w,w,w,w,w,,w,,w,
+w,w,w,,w,,w,,w,w
+w,w,w,,w,,w,,w,
 w,,,,,,,,,w
 w,,,,,,,,,w
 w,,,,,w,w,,w,w

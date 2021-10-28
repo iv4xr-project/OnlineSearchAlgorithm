@@ -72,10 +72,11 @@ public class CobaProlog {
 		prolog.facts(inRoom.on("r2","door3")) ;
 		prolog.facts(inRoom.on("r0","door3")) ;
 
-		prolog.facts(wiredTo.on("button1","door0")) ;
-		//prolog.facts(wiredTo.on("button0","door1")) ;
-		//prolog.facts(notWiredTo.on("button3","door0")) ;
-		//prolog.facts(wiredTo.on("button2","door1")) ;
+		//prolog.facts(wiredTo.on("button1","door0")) ;
+		prolog.facts(wiredTo.on("button0","door0")) ;
+		prolog.facts(wiredTo.on("button0","door1")) ;
+		//prolog.facts(notWiredTo.on("button0","door0")) ;
+		
 		
 		
 	//	var neighbor = predicate("neighbor") ;
@@ -147,6 +148,13 @@ public class CobaProlog {
 		String currentRoom = "r0";
 		String GoalLocation = "door2";
 		
+		var neighborRooms1 =pQueryAll("R",
+				and(						
+						neighbor.on(currentRoom,"R")						
+						)		
+						
+				   );
+		System.out.println("neighborRooms1" + neighborRooms1);
 		var Doors = pQueryAll("D",
 				and(isDoor.on("D"),inRoom.on(currentRoom,"D")));
 		
@@ -163,9 +171,15 @@ public class CobaProlog {
 						)
 				   );
 				
+		var neighborRoom121 = 	pQueryAll("R",
+				and(
+						neighbor.on(currentRoom,"R")
+						)
+						);
+		
 		
 		System.out.println("rooms in neighberhood ::: " +  
-				neighborRoom + neighborRoom.size()
+				neighborRoom + neighborRoom.size() + " jusr neigh " + neighborRoom121
 				) ;	
 		
 		var doorsInBetween = pQueryAll("D", and( isDoor.on("D"), inRoom.on(currentRoom, "D"), inRoom.on(neighborRoom, "D")));
@@ -182,6 +196,22 @@ public class CobaProlog {
 			}
 		}
 		System.out.println("buttons add the end ::: " +  buttonsconnected );
+		
+		var corispondingDoor = pQueryAll("D",
+				and(
+						isDoor.on("D")	,		
+					    inRoom.on(currentRoom,"D"),
+					    wiredTo.on("button0","D")
+						)
+				   );
+		
+//		var corispondingDoor = prolog.query(
+//				and(isDoor.on("D"), 
+//						inRoom.on(currentRoom,"D"),
+//						wiredTo.on("button0","D")))
+//		        .str_("D");
+//		
+		System.out.println("get the corisponding door " + corispondingDoor);
 		
 	//	System.out.println(prolog.query(isButton.on("button10")).info.isSuccess()) ;
 		
