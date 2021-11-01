@@ -42,6 +42,27 @@ public class BeliefStateExtended extends BeliefState {
 		return knownEntities().stream().filter(e -> e.timestamp == worldmodel.timestamp
 				&& (e.type.equals(LabEntity.DOOR) || (e.type.equals(LabEntity.SWITCH)))).collect(Collectors.toList());
 	}
+	
+	@Override
+	public void updateState() {
+		super.updateState();
+		for(var e : worldmodel.elements.values()) {
+			if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
+				if(e.timestamp == worldmodel.timestamp) {
+					var sqdist = Vec3.distSq(worldmodel.position,e.position) ;
+					if(sqdist <= 4) {
+						try {
+							registerFoundGameObjects(e);
+						} catch (InvalidTheoryException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+					
+				}
+			}
+		}
+	}
 
 	/**
 	 * Merge the newly observed entities and their connections in the high-level
@@ -62,12 +83,13 @@ public class BeliefStateExtended extends BeliefState {
 					highLevelGragh.addEntites(e);
 					highLevelGragh.addVertices(e);
 					 //update prolog
+					/*
 						try {
 							registerFoundGameObjects(e);
 						} catch (InvalidTheoryException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
-						}
+						} */
 				
 				    	/**
 				    	 * To keep track which button the agent toggled last.
@@ -222,7 +244,7 @@ public class BeliefStateExtended extends BeliefState {
     	}
     	// else we invoke the pathfinder to calculate a path:
     	// be careful with the threshold 0.05..
-    	var abstractpath = pathfinder.enhanceFindPath(worldmodel.getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
+    	var abstractpath = pathfinder.enhancedFindPath(worldmodel.getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
     	if (abstractpath == null) return null ;
     	List<Vec3> path = abstractpath.stream().map(v -> pathfinder.vertices.get(v)).collect(Collectors.toList()) ;
     	// add the destination path too:

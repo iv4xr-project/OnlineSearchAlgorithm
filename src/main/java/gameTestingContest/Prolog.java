@@ -314,16 +314,12 @@ public class Prolog {
 //				}
 //			}
 			
-			if (e.type == "Door" && e.getBooleanProperty("isOpen")) {
+			if (e.type == "Door" && e.getBooleanProperty("isOpen") && !e.id.equals(exception)) {
 				// WP: knowing original-state is not needed anymore??
 				// o.isBlocking = originalState.get(e.id) ;
 				o.isBlocking = false ;
-				if(!e.id.equals(exception)) {
-					if(e.extent.x > 0.8) {e.extent.x -= 0.75f; }					
-					// WP FIX: should have an else
-					// e.extent.z += 0.75f ;	
-					else e.extent.z -= 0.75f ;	
-				}
+			    if(e.extent.x > 0.8) {e.extent.x -= 0.75f; }					
+				else e.extent.z -= 0.75f ;	
 			}
 		}
 	}
@@ -396,15 +392,13 @@ public class Prolog {
 		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
 			System.out.println("fakly make all doors blocke, open? " + e.id  + ", "+ e.getBooleanProperty("isOpen"));
-			if (e.type == "Door" && e.getBooleanProperty("isOpen")) {
-				o.isBlocking = true ;
-				if(!e.id.equals(exception)) {
+			if (e.type == "Door" && e.getBooleanProperty("isOpen") && !e.id.equals(exception)) {
+					o.isBlocking = true ;
 					//extend the smaller one
 					System.out.println("fakly make all doors blocke, x and z " + e.extent.x +", "+ e.extent.y);
 					if(e.extent.x < e.extent.z) {e.extent.x += 0.75f; }					
 					else e.extent.z += 0.75f ;	
 					System.out.println("After change: fakly make all doors blocke, x and z " + e.extent.x +", "+ e.extent.y);
-				}
 			}
 		}
 	}

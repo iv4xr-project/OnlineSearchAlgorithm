@@ -121,7 +121,8 @@ public class TacticLibExtended extends TacticLib{
                 	//prints entities in the same time stamp
                 	belief.newlyObservedEntities().forEach (	
                 			e -> System.out.println("seen in the same time stamp " + e.id + " e timestam: " +  e.timestamp + " curenttimestamp : " 
-                    + belief.worldmodel.timestamp + " id :" + e.id)	
+                    + belief.worldmodel.timestamp + " id :" + e.id
+                    + ", dist:" + Vec3.dist(belief.worldmodel.position, e.position))	
                 			);     	
                 	var x = belief.newlyObservedEntities();
                 	if(x == null) {System.out.println("newlyObservedEntities is null"); return new Pair(null,belief);}
@@ -765,7 +766,7 @@ public class TacticLibExtended extends TacticLib{
   					}
   					System.out.print("selected button and door" + selectedButon + selectedDoor);
   					// add a new goal to interact with the selected button, 
-  					d GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(selectedButon,selectedDoor);
+  					GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(selectedButon,selectedDoor);
 					agent.addAfter(unblockedDoor);
 					
   					

@@ -45,6 +45,7 @@ import static nl.uu.cs.aplib.agents.PrologReasoner.and;
 import static nl.uu.cs.aplib.agents.PrologReasoner.not;
 
 import world.BeliefStateExtended;
+import world.LabEntity;
 import agents.tactics.GoalLibExtended;
 
 public class onlineSearch {
@@ -89,8 +90,9 @@ public class onlineSearch {
 	    public void closetReachableTest() throws InterruptedException {
 	    	String levelName = "";
 	    	//String levelName = "Wishnu-levels//contest";
-	    	//String fileName = "BM2021_diff1_R4_1_1_M - ThecomplicatedLevel";
-	    	String fileName = "BM2021_diff1_R4_1_1_M - trap";
+	    	// String fileName = "BM2021_diff1_R4_1_1_M - ThecomplicatedLevel";
+	    	//String fileName = "BM2021_diff1_R4_1_1_M - trap";
+	    	String fileName = "BM2021_diff1_R4_1_1_M - trap2";
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
@@ -199,11 +201,6 @@ public class onlineSearch {
 		            cycleNumber++ ; 
 		        	testAgent.update();
 	                
-					
-		        	var door1 = testAgent.getState().worldmodel.getElement("door1");
-		        	if(door1 != null )System.out.println("door1: " + door1.extent);
-		        	var door2 = testAgent.getState().worldmodel.getElement("door2");
-		        	if(door2 != null )System.out.println("door2: " + door2.extent);
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
 						if(e.type.equals("Switch") && e.hasPreviousState()) {
@@ -229,7 +226,31 @@ public class onlineSearch {
 					if(beliefState.worldmodel.health <= 0) {
 						DebugUtil.log(">>>> the agent died. Aaaw.");
 					//	throw new AgentDieException() ;
-					}
+					}				
+					
+					/*
+					if (cycleNumber == 100) {
+						System.out.println(">>> obstacles: ") ;
+						for(var o : testAgent.getState().pathfinder.obstacles) {
+							LabEntity e = (LabEntity) o.obstacle ;
+							System.out.println("    Obstacle " + e.id + " @" + e.getFloorPosition() + " extent: " + e.extent)  ;
+							System.out.println("        Blocking:" + o.isBlocking + ", open:" + e.getBooleanProperty("isOpen")) ;
+							System.out.println("        Conflict:" + (o.isBlocking == e.getBooleanProperty("isOpen"))) ;
+						}
+						testAgent.getState().pathfinder.debugCheckNeighbor(17,16) ;
+						testAgent.getState().pathfinder.debugCheckNeighbor(19,16) ;
+						testAgent.getState().pathfinder.debugCheckNeighbor(309,16) ;
+						testAgent.getState().pathfinder.debugCheckPath(19,46);
+						testAgent.getState().pathfinder.debugCheckPath(309,46) ;
+						testAgent.getState().pathfinder.debugCheckPath(16,46) ;
+						testAgent.getState().pathfinder.debugCheckPath_withAllNodesMadeVisible(17,46);
+						testAgent.getState().pathfinder.debugCheckPath_withAllNodesMadeVisible(19,46);
+						testAgent.getState().pathfinder.debugCheckPath_withAllNodesMadeVisible(309,46);
+						testAgent.getState().pathfinder.debugCheckPath_withAllNodesMadeVisible(16,46);
+						
+						break ;
+					} 
+					*/
 	        	
 		        	if (cycleNumber>2000) {
 		        		break ;
@@ -247,6 +268,6 @@ public class onlineSearch {
 	        }
 	        finally { environment.close(); }
 	
-	
-}
+	}
+	    
 }
