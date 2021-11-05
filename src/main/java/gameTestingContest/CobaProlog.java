@@ -49,14 +49,20 @@ public class CobaProlog {
 		prolog.facts(isRoom.on("r0")) ;
 		prolog.facts(isRoom.on("r1")) ;
 		prolog.facts(isRoom.on("r2")) ;
+		prolog.facts(isRoom.on("r3"	)) ;
+		
 		prolog.facts(isButton.on("button0")) ;
 		prolog.facts(isButton.on("button1")) ;
 		prolog.facts(isButton.on("button2")) ;
 		prolog.facts(isButton.on("button3")) ;
+		prolog.facts(isButton.on("button4")) ;
+		prolog.facts(isButton.on("button5")) ;
+		
 		prolog.facts(isDoor.on("door0")) ;
 		prolog.facts(isDoor.on("door1")) ;
 		prolog.facts(isDoor.on("door2")) ;
 		prolog.facts(isDoor.on("door3")) ;
+		prolog.facts(isDoor.on("door4")) ;
 		
 		prolog.facts(inRoom.on("r0","button0")) ;
 		prolog.facts(inRoom.on("r0","button1")) ;
@@ -69,12 +75,19 @@ public class CobaProlog {
 		prolog.facts(inRoom.on("r1","door1")) ;
 		prolog.facts(inRoom.on("r1","door2")) ;
 		
+		prolog.facts(inRoom.on("r2","door2")) ;
 		prolog.facts(inRoom.on("r2","door3")) ;
-		prolog.facts(inRoom.on("r0","door3")) ;
+		prolog.facts(inRoom.on("r3","button5")) ;
+		//prolog.facts(inRoom.on("r0","door3")) ;
+		
+		prolog.facts(inRoom.on("r3","button4")) ;
+		prolog.facts(inRoom.on("r3","door3")) ;
+		prolog.facts(inRoom.on("r3","door4")) ;
 
 		//prolog.facts(wiredTo.on("button1","door0")) ;
 		prolog.facts(wiredTo.on("button0","door0")) ;
 		prolog.facts(wiredTo.on("button0","door1")) ;
+		prolog.facts(wiredTo.on("button4","door4")) ;
 		//prolog.facts(notWiredTo.on("button0","door0")) ;
 		
 		
@@ -95,17 +108,18 @@ public class CobaProlog {
 		Rule roomReachableRule1 = rule(roomReachable.on("R1","R2","1"))
 				.impBy(neighbor.on("R1","R2"))
 				;
-		
-		Rule roomReachableRule2 = rule(roomReachable.on("R1","R2","K+1"))
+		Rule roomReachableRule2 = rule(roomReachable.on("R1","R2","K"))
 				.impBy(neighbor.on("R1","R"))
-				.and(roomReachable.on("R","R2","K"))
+				.and("K > 0")
 				.and("(R1 \\== R2)")
-				.and("K > 0")
+				.and("L is K-1")
+				.and(roomReachable.on("R","R2","L"))
 				;
-		Rule roomReachableRule3 = rule(roomReachable.on("R1","R2","K+1"))
-				.impBy(roomReachable.on("R1","R2","K"))
-				.and("K > 0")
-				;
+		
+		Rule roomReachableRule3 = rule(roomReachable.on("R1","R2","K"))
+				.impBy("K > 0")
+				.and("L is K-1")
+				.and(roomReachable.on("R1","R2","L"));
 		
 		prolog.add(neigborRule,roomReachableRule1,roomReachableRule2,roomReachableRule3) ;
 		
@@ -138,13 +152,28 @@ public class CobaProlog {
 		
 		System.out.println("Reachable from r0: " +  
 		        prolog.queryAll(
-		        roomReachable.on("r0","R","1+1")
+		        roomReachable.on("r0","R","1")
 		        )
 		        .stream().map(Q -> Q.str_("R"))
 		        .collect(Collectors.toList())
 		) ;
 		
+		System.out.println("Reachable from r000: " +  
+		        prolog.queryAll(
+		        roomReachable.on("r0","R","1+1")
+		        )
+		        .stream().map(Q -> Q.str_("R"))
+		        .collect(Collectors.toList())
+		) ;
+		System.out.println("Reachable777 from r0: " +  
+		        prolog.queryAll(
+		        roomReachable.on("r0","R","3")
+		        )
+		        .stream().map(Q -> Q.str_("R"))
+		        .collect(Collectors.toList())
+		) ;
 		
+
 		String currentRoom = "r0";
 		String GoalLocation = "door2";
 		

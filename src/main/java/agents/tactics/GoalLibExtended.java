@@ -372,8 +372,8 @@ public class GoalLibExtended extends GoalLib{
 			   
 			   GoalStructure findingAButtonToUnlockedAgent = goalFindingAButtonToUnlockedAgent.withTactic(
 		        		SEQ( 
-			                //TacticLibExtended.unlockAgent(b,agent),
-		        			TacticLibExtended.unlockAgentWithTheLastInteractedButton(b, agent),
+			                TacticLibExtended.unlockAgent(b,agent),
+		        			//TacticLibExtended.unlockAgentWithTheLastInteractedButton(b, agent),
 			                ABORT()
 		                   )) 
 		                .lift();	
@@ -389,7 +389,15 @@ public class GoalLibExtended extends GoalLib{
 									   GoalLibExtended.selectInactiveButton(b, agent),indirectNeighbors,
 									   SEQ(GoalLibExtended.findNeighbors(agent),GoalLibExtended.selectInactiveButton(b, agent))						 
 									   ),
-							   GoalLibExtended.navigateTo(b),interact,
+							 //  GoalLibExtended.navigateTo(b)
+							   IFELSE2(
+									   GoalLibExtended.navigateTo(b)
+									   , 
+									    SUCCESS()
+									   ,
+									   findingAButtonToUnlockedAgent
+									   )
+							   ,interact,
 							   
 //					 		   SEQ(  GoalLib.entityStateRefreshed(b.highLevelGragh.currentBlockedEntity)	,				   
 //							 GoalLib.entityInCloseRange(b.highLevelGragh.currentBlockedEntity)

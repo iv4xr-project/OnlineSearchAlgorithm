@@ -158,7 +158,7 @@ public class TacticLibExtended extends TacticLib{
 	}
 
 	/* Select the nearest node to the current agent position*/
-	public static Tactic selectNearestNode(String goalID) {
+	public static Tactic selectNearestNode(String goalId) {
 		
 		Tactic nearestNode =  action("find the nearest neighbor").do1(
 				(BeliefStateExtended belief)-> {
@@ -171,6 +171,14 @@ public class TacticLibExtended extends TacticLib{
 					var goalPosition = belief.highLevelGragh.goalPosition;
 					/* this is the first step at the beginning*/
 					if(currentNode == null) {						
+						// if the goal is in the list of entities, it be selected as the next node
+						if(belief.highLevelGragh.getIndexById(goalId) != -1)
+						{
+							System.out.println("The goal has seen: " + goalId);
+							selectedNode = belief.highLevelGragh.getIndexById(goalId);
+							return new Pair(selectedNode,belief);	 
+						}
+						
 						var agentLocation = belief.worldmodel.position;
 						/* because it is the beginning of the game, all vertices are the first set of
 						 * vertices that agent has seen. we choose the nearest one. 
@@ -201,6 +209,14 @@ public class TacticLibExtended extends TacticLib{
 						}					
 					} 
 					else {
+						
+						// if the goal is in the list of entities, it be selected as the next node
+						if(belief.highLevelGragh.getIndexById(goalId) != -1)
+						{
+							System.out.println("The goal has seen: " + goalId);
+							selectedNode = belief.highLevelGragh.getIndexById(goalId);
+							return new Pair(selectedNode,belief);	 
+						}
 						//agent has seen some nodes before, in order to avoid loop, we need to select the
 						// new node which is not visited before. 
 						// get the neighbors of the current agent position(current node)
@@ -255,9 +271,9 @@ public class TacticLibExtended extends TacticLib{
 						 * is near to the goal approximate position. 
 						 */
 						
-						if(belief.highLevelGragh.getIndexById(goalID) != -1) {
+						if(belief.highLevelGragh.getIndexById(goalId) != -1) {
 							System.out.println("the goal has seen but has not selected before. now, we select the goal" ); 
-							selectedNode = belief.highLevelGragh.getIndexById(goalID);
+							selectedNode = belief.highLevelGragh.getIndexById(goalId);
 						}else {												
 							for(int j = 0 ; j<belief.highLevelGragh.entities.size(); j++) {
 								if(!belief.highLevelGragh.visitedNodes.contains(j)) {
@@ -765,7 +781,7 @@ public class TacticLibExtended extends TacticLib{
   					}
   					System.out.print("selected button and door" + selectedButon + selectedDoor);
   					// add a new goal to interact with the selected button, 
-  					d GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(selectedButon,selectedDoor);
+  					GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(selectedButon,selectedDoor);
 					agent.addAfter(unblockedDoor);
 					
   					
@@ -1002,7 +1018,7 @@ public class TacticLibExtended extends TacticLib{
                      // in all other cases, the guard is not enabled:
     				// return null ;
                  })
-               . lift();
+               .lift();
 
 
         return FIRSTof(

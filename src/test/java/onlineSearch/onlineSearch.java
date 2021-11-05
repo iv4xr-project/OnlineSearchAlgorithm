@@ -90,7 +90,7 @@ public class onlineSearch {
 	    	String levelName = "";
 	    	//String levelName = "Wishnu-levels//contest";
 	    	//String fileName = "BM2021_diff1_R4_1_1_M - ThecomplicatedLevel";
-	    	String fileName = "BM2021_diff1_R4_1_1_M - trap";
+	    	String fileName = "BM2021_diff1_R4_1_1_M - trapmultidoors";
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;

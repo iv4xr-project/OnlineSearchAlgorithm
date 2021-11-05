@@ -61,19 +61,6 @@ public class BeliefStateExtended extends BeliefState {
 					newEntity[0] = true;
 					highLevelGragh.addEntites(e);
 					highLevelGragh.addVertices(e);
-					 //update prolog
-						try {
-							registerFoundGameObjects(e);
-						} catch (InvalidTheoryException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-				
-				    	/**
-				    	 * To keep track which button the agent toggled last.
-				    	 */
-				    	// FRAGILE!
-				    	WorldEntity lastInteractedButton = null;
 			        }
 							
 			}
@@ -146,52 +133,26 @@ public class BeliefStateExtended extends BeliefState {
          //    && p0.distance(q) > 1.0 ;   should first translate p0 to the on-floor coordinate!
 	}
 	
- //   @Override
-//    public void updateState() {
-//        super.updateState();
-//        var observation = this.env().observe(id) ;            
-//        
-//        //update prolog
-//        try {
-//			registerFoundGameObjects();
-//		} catch (InvalidTheoryException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	/**
-//    	 * To keep track which button the agent toggled last.
-//    	 */
-//    	// FRAGILE!
-//    	WorldEntity lastInteractedButton = null;
-//		// check if a button is just interacted:
-////		for(WorldEntity e: changedEntities) {
-////			if(e.type.equals("Switch") && e.hasPreviousState()) {
-////				DebugUtil.log(">> detecting interaction with " + e.id) ;
-////				lastInteractedButton = e ;					
-////			}
-////		}
-////		// check doors that change state, and add connections to lastInteractedButton:
-////		if(lastInteractedButton != null) {
-////			for(WorldEntity e: changedEntities) {
-////				var di = e.id;
-////				if(e.type.equals("Door") && e.hasPreviousState()) {
-////					try {
-////						prolog.registerConnection(lastInteractedButton.id,e.id);
-////					} catch (InvalidTheoryException e1) {
-////						// TODO Auto-generated catch block
-////						e1.printStackTrace();
-////					}
-////				}	
-////			}
-////		}
-//        
-//        
-//        // updating recent positions tracking (to detect stuck) here, rater than in mergeNewObservationIntoWOM,
-//        // because the latter is also invoked directly by some tactic (Interact) that do not/should not update
-//        // positions
-//        recentPositions.add(new Vec3(worldmodel.position.x, worldmodel.position.y, worldmodel.position.z)) ;
-//        if (recentPositions.size()>4) recentPositions.remove(0) ;
-//    }
+	@Override
+	public void updateState() {
+		super.updateState();
+		for(var e : worldmodel.elements.values()) {
+			if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
+				if(e.timestamp == worldmodel.timestamp) {
+					var sqdist = Vec3.distSq(worldmodel.position,e.position) ;
+					if(sqdist <= 4) {
+						try {
+							registerFoundGameObjects(e);
+						} catch (InvalidTheoryException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+
+				}
+			}
+		}
+	}
     
 	/**
 	 * Register all buttons and doors currently in the agent's belief to the models
@@ -222,7 +183,7 @@ public class BeliefStateExtended extends BeliefState {
     	}
     	// else we invoke the pathfinder to calculate a path:
     	// be careful with the threshold 0.05..
-    	var abstractpath = pathfinder.enhanceFindPath(worldmodel.getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
+    	var abstractpath = pathfinder.enhancedFindPath(worldmodel.getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
     	if (abstractpath == null) return null ;
     	List<Vec3> path = abstractpath.stream().map(v -> pathfinder.vertices.get(v)).collect(Collectors.toList()) ;
     	// add the destination path too:
