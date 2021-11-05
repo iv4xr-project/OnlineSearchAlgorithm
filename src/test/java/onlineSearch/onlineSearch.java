@@ -89,8 +89,8 @@ public class onlineSearch {
 	    public void closetReachableTest() throws InterruptedException {
 	    	String levelName = "";
 	    	//String levelName = "Wishnu-levels//contest";
-	    	//String fileName = "BM2021_diff1_R4_1_1_M - ThecomplicatedLevel";
-	    	String fileName = "BM2021_diff1_R4_1_1_M - trapmultidoors";
+	    	String fileName = "BM2021_diff1_R4_1_1_M - ThecomplicatedLevel";
+
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
@@ -165,7 +165,7 @@ public class onlineSearch {
 			    	        		GoalLibExtended.navigateTo(beliefState)
 			    	        		,
 			    	        		IFELSE(
-			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.findingAButton(testAgent),FAIL())
+			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.findingAButton(beliefState,testAgent),FAIL())
 			    	        		//,
 			    	        		//GoalLibExtended.checkEntityStatus(testAgent)
 			    	        		,
@@ -200,10 +200,7 @@ public class onlineSearch {
 		        	testAgent.update();
 	                
 					
-		        	var door1 = testAgent.getState().worldmodel.getElement("door1");
-		        	if(door1 != null )System.out.println("door1: " + door1.extent);
-		        	var door2 = testAgent.getState().worldmodel.getElement("door2");
-		        	if(door2 != null )System.out.println("door2: " + door2.extent);
+		        	
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
 						if(e.type.equals("Switch") && e.hasPreviousState()) {
@@ -215,7 +212,6 @@ public class onlineSearch {
 					if(lastInteractedButton != null) {
 						for(WorldEntity e: testAgent.getState().changedEntities) {							
 							if(e.type.equals("Door") && e.hasPreviousState()) {
-								System.out.println("ther is a dooor " + e.id);
 								try {
 									beliefState.prolog.registerConnection(lastInteractedButton.id,e.id) ;
 								} catch (InvalidTheoryException e1) {

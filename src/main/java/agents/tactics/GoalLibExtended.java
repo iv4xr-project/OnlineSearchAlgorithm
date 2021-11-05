@@ -219,24 +219,6 @@ public class GoalLibExtended extends GoalLib{
 
 	         			result = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
 	         		 }
-	         		  
-//					 //update prolog
-//				        if(result) {
-//				        	
-//							try {
-//								belief.registerFoundGameObjects(e);
-//							} catch (InvalidTheoryException e1) {
-//								// TODO Auto-generated catch block
-//								e1.printStackTrace();
-//							}
-//					
-//					    	/**
-//					    	 * To keep track which button the agent toggled last.
-//					    	 */
-//					    	// FRAGILE!
-//					    	WorldEntity lastInteractedButton = null;
-//				        }
-				        
 				        return result;
 	         	    })
 	         	  . withTactic(
@@ -320,14 +302,7 @@ public class GoalLibExtended extends GoalLib{
 			  	         		return true;
 			  	         	    });
 			   
-			   Goal goal3 = goal("checking the blocked node's state")
-			       		. toSolve(
-			       				(BeliefStateExtended belief) -> {
-			       				System.out.println(">>checking the blocked node's state: id, " + belief.highLevelGragh.currentBlockedEntity + ", status: " + belief.isOpen(belief.highLevelGragh.currentBlockedEntity));
-				  	         	if(belief.isOpen(belief.highLevelGragh.currentBlockedEntity))
-				  	         	return true;
-				  	         	return false;
-			  	         	    });
+			  
 			
 			   Goal goalIndirectNeighbors = goal("look for the not direct neighbors for interactin")
 			       		. toSolve(
@@ -337,11 +312,13 @@ public class GoalLibExtended extends GoalLib{
 			       					System.out.println(">> there is no indirect button to interact!!");
 			       					return false;
 			  	         	    });
-
+			   // this goal structure should always returns false. becuase if there is a button, so a goal is
+			   // added after this one. becuase of the goal combinator structure, this should be false that the
+			   // next goal could be invoked.
 			   Goal goalFindingAButtonToUnlockedAgent = goal("using the prolog")
 			       		. toSolve(
 			       				(BeliefStateExtended belief) -> {
-			       				System.out.println(">>checking the blocked node's state: id, " + belief.highLevelGragh.currentBlockedEntity + ", status: " + belief.isOpen(belief.highLevelGragh.currentBlockedEntity));
+			       				System.out.println(">>checkin the prolog to find a button to unlocked the agent");
 				  	         //	if(belief.isOpen(belief.highLevelGragh.currentBlockedEntity))
 				  	         //	return true;
 				  	         	return false;
@@ -353,14 +330,7 @@ public class GoalLibExtended extends GoalLib{
 	 	                    ABORT()
 	 	                   )) 
 	 	                .lift();
-			   
-			   GoalStructure checkBlockedEntityStatus = goal3.withTactic(
-		        		SEQ( 
-		        			TacticLib.observe(),	
-			                TacticLibExtended.checkBlockedEntityStatus(b,agent),
-			                ABORT()
-		                   )) 
-		                .lift();	
+			
 			   
 			   GoalStructure indirectNeighbors = goalIndirectNeighbors.withTactic(
 		        		SEQ( 
@@ -419,12 +389,42 @@ public class GoalLibExtended extends GoalLib{
 											   ,
 											   findingAButtonToUnlockedAgent
 											   )
-									   , checkBlockedEntityStatus
+									   , checkBlockedEntityStatus(b, agent)
 									   )						   
 							   )
 					   );
 	   }
 	   
+	 
+	   /**
+	    * After facing with a blocked entity, the agent looks for a button to open it
+	    * At the ends, it needs to check the blocked entity status.If it is open, we 
+	    * to continue exploring forward, we again set the currentSelectedNode to the 
+	    * door id. 
+	    * */
+	   public static GoalStructure checkBlockedEntityStatus(BeliefStateExtended b, TestAgent agent) {
+	   
+		   return goal("checking the blocked node's state")
+		       		. toSolve(
+		       				(BeliefStateExtended belief) -> {
+		       				System.out.println(">>checking the blocked node's state: id, " + belief.highLevelGragh.currentBlockedEntity + ", status: " + belief.isOpen(belief.highLevelGragh.currentBlockedEntity));
+			  	         	if(belief.isOpen(belief.highLevelGragh.currentBlockedEntity)) {
+			  	         		belief.highLevelGragh.currentSelectedEntity = belief.highLevelGragh.getIndexById(belief.highLevelGragh.currentBlockedEntity);
+			  	         		System.out.println("selected node:::" + belief.highLevelGragh.currentSelectedEntity);
+			  	         		return true;
+			  	         	}  	
+			  	         	return false;
+		  	         	    }).withTactic(
+	      		SEQ( 
+	      			TacticLib.observe(),	
+		                TacticLibExtended.checkBlockedEntityStatus(b,agent),
+		                ABORT()
+	                 )) 
+	              .lift();	
+	 
+	 
+	   }
+	 
 	   //just for test
 	 public static GoalStructure entityInCloseRangeTest(String entityId) {
 	    	//define the goal
@@ -475,7 +475,7 @@ public class GoalLibExtended extends GoalLib{
 				action("remove dynamic goal if exist one").do1(
 						(BeliefStateExtended belief)-> {
 							var blockedNode = belief.highLevelGragh.currentBlockedEntity;
-							System.out.println("checkBlockedEntityStatus " + blockedNode);							
+							System.out.println("check Blocked Entity Status " + blockedNode);							
 							if(!belief.goalsmap.isEmpty()) {
 								//dynamic goal should be removed 
 								System.out.println("remove a goal : " + belief.goalsmap.get(blockedNode));
@@ -610,26 +610,51 @@ public class GoalLibExtended extends GoalLib{
 		 
 		 return SEQ(GoalLib.entityInteracted(buttonId), GoalLib.entityStateRefreshed(doorID));
 	 }
+	 	
 	 
+	/*Checking the prolog data set to find a corresponding button to open the current blocked door */
+	 public static GoalStructure checkPrologToFindACorrespondinButton(TestAgent agent) {
+		 
+		 Goal goal3 =  goal("check the prolog data set to find a corresponding button")
+	     			. toSolve(
+	         				(Pair<Boolean,BeliefStateExtended> s) -> {
+	         					System.out.println("is there a button?" + s.fst);
+	         					if(s.fst) {System.out.println("YES!!");
+	         					return true;}
+	         					System.out.println("NO!!");
+	         					return false;
+	         		});	
+	  	 GoalStructure g3 = goal3.withTactic(
+	  			 SEQ(
+	   	    		 TacticLibExtended.lookForAbutton(agent),
+	                 ABORT()
+	                 )
+	  			 ).lift();
+	  	 return g3;
+	 }
 	 
-	   public static GoalStructure findingAButton(TestAgent agent) {
+	/* Look for a button to open the blocked selected entity*/
+	   public static GoalStructure findingAButton(BeliefStateExtended b,TestAgent agent) {
 		   
-		  	 Goal goal3 =  goal("add a new goal to open the door")
+		  	 Goal goal3 =  goal("add a new goal to open the door, looking for a button to open the correspanding door")
 		     			. toSolve(
 		         				(Pair<Integer,BeliefStateExtended> s) -> {
-		         					System.out.println("check entity state" + s.fst);
-		         					if(s.fst != null) {System.out.println("check entity state returns true");		
-		         					return true;}
+		         					System.out.println("find a nearest button to interact" + s.fst);
+		         					//if(s.fst != null) {System.out.println("there is a button");		
+		         					//return true;}
+		         					//this goal should always returns false because the parents combinator is FirstOF
+		         					//if we use IFELSE combinator. therefore to add a new goal after this one and check it
+		         					//this should return false. if we do not want to use IFELSE then the above comments are true. 
 		         					return false;
 		         		});	
 		  	 GoalStructure g3 = goal3.withTactic(
 		  			 SEQ(
-		   	    		 TacticLibExtended.findingCorrespandingButton(agent),
-		                 ABORT()
+		   	    		 TacticLibExtended.dynamiclyAddGoalToFindButton(agent),        
+		   	    		 ABORT()
 		                 )
 		  			 ).lift();
-		  	 
-		   return g3;
+		  	// return g3;
+		   return IFELSE2(checkPrologToFindACorrespondinButton(agent), checkBlockedEntityStatus(b, agent), g3);
 	   }
 	   
 }

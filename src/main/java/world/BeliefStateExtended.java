@@ -89,8 +89,12 @@ public class BeliefStateExtended extends BeliefState {
 		 * the newly observe entity be a long distance. which means the connection
 		 * between the current node and newly observed entity has broken. we add this
 		 * connection here.
-		 */		
-		if(highLevelGragh.currentSelectedEntity != null) System.out.println("equals" + entities.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity)));
+		 */	
+		
+		if(highLevelGragh.currentSelectedEntity != null) {
+			System.out.println("current selted node:::" + highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity).id);
+			System.out.println("equals" + entities.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity)));
+		}
 		//if(highLevelGragh.currentSelectedEntity != null && !(entities.contains(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity)))) {
 		if(highLevelGragh.currentSelectedEntity != null) {			
 			entities.forEach(e->{

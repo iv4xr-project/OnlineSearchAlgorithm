@@ -479,16 +479,7 @@ public class TacticLibExtended extends TacticLib{
 		var checkingState =   action("back to the current blocked entity to check the status").do1(
 				(BeliefStateExtended belief)-> {
 					var blockedNode = belief.highLevelGragh.currentBlockedEntity;
-					System.out.println("Check Blocked Entity Status " + blockedNode);
-					if(blockedNode != null) {
-						belief.highLevelGragh.currentSelectedEntity = belief.highLevelGragh.getIndexById(blockedNode);
-						if(belief.isOpen(blockedNode)) { 
-							//dynamic goal should be removed 
-							//System.out.println("remove a goal : " + belief.goalsmap.get(blockedNode));
-							//agent.remove(belief.goalsmap.get(blockedNode));								
-							return belief;}
-						return belief;
-					}
+					System.out.println(">>Check Blocked Entity Status " + blockedNode + belief.isOpen(blockedNode));
 					return belief;
 					}).lift();
 		
@@ -920,11 +911,11 @@ public class TacticLibExtended extends TacticLib{
 	}
 
 	
-	public static Tactic findingCorrespandingButton(TestAgent agent) {
+	public static Tactic dynamiclyAddGoalToFindButton(TestAgent agent) {
 		
 		return  action("dynamicly add a goal to find a correspanding button to open the selected door").do1(
 				(BeliefStateExtended belief)-> {
-					System.out.println("checkEntityStatus");
+					System.out.println("damicly add a new goal to open the blocked door");
 					var selectedNode = belief.highLevelGragh.currentSelectedEntity;
 					var entity = belief.highLevelGragh.entities.get(selectedNode);
 					
@@ -933,17 +924,65 @@ public class TacticLibExtended extends TacticLib{
 					//when we clean the all visited nodes to force agent to check the previous visited nodes
 					// the agent won't add the current position which is the blocked node to the visited node
 					belief.highLevelGragh.visitedNodes.add(belief.highLevelGragh.getIndexById(belief.highLevelGragh.currentBlockedEntity));
-					//System.out.println("clear list");
+					
 					GoalStructure unblockedDoor = GoalLibExtended.findCorrespondingButton(belief,agent);
 					agent.addAfter(unblockedDoor);	
+					System.out.println(" a new goal added");
 					belief.goalsmap.put(entity.id,unblockedDoor);
-					System.out.println("chand bar miad inja?");
 					List<String> list = new ArrayList<>();
 					belief.buttonDoorConnection.put(entity.id, list);	
 					return new Pair(selectedNode,belief);						
 					}).lift();
 				
 	}
+	
+	public static Tactic lookForAbutton(TestAgent agent) {
+		
+  		return action("checkig the prolog data set to find the corresponding button").do1(
+  				(BeliefStateExtended belief)-> {
+  					var currentNode = belief.highLevelGragh.currentSelectedEntity;
+  					String entityId = belief.highLevelGragh.entities.get(currentNode).id;
+  					belief.highLevelGragh.currentBlockedEntity = entityId;
+  					String selectedButton = null;
+  					System.out.println("current blocked selected node: " + entityId);
+  					var getEnablingButtons = belief.prolog.getConnectedButton(entityId);
+  					if(getEnablingButtons == null || getEnablingButtons.isEmpty()) return new Pair(false, belief);;
+  					float distance   = Float.valueOf(0);
+  					//this should return the agent current position
+  					Vec3 agentPosition = belief.worldmodel.position;
+  					
+  					if(getEnablingButtons.size() == 1) {
+  						selectedButton = getEnablingButtons.get(0);	
+  					
+  					}else {
+	  					for(int i=0; i< getEnablingButtons.size(); i++) {	
+	  						var button = getEnablingButtons.get(i);	  				
+	  						//map.get(map.keySet().toArray()[0]) to get the value of the first key
+	  						var dist  = Vec3.dist(agentPosition, belief.worldmodel.getElement(button).position);
+	  						System.out.print("get a corresponding button " +  button );
+	  						if(distance == 0) {
+	  							distance = dist;
+	  							selectedButton = button.toString();
+	  						}else {
+	  							if(distance > dist) {
+	  								distance = dist;
+	  								selectedButton = button.toString();
+	  							}
+	  						}
+	  					} 					
+  					}
+  					
+  					System.out.print("selected button" + selectedButton );
+  					// add a new goal to interact with the selected button, 
+  					GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(selectedButton,entityId);
+					agent.addAfter(unblockedDoor);
+					belief.goalsmap.put(entityId,unblockedDoor);
+					List<String> list = new ArrayList<>();
+					belief.buttonDoorConnection.put(entityId, list);
+  					return new Pair(true, belief);
+  				}).lift();
+	}
+	
 
     //------------------ these two are just for testing **** should be removed------------------
     public static Tactic guidedExplore() {
@@ -1127,4 +1166,6 @@ public class TacticLibExtended extends TacticLib{
 				 move.lift()
 			   )  ;
 	}
+	
+	
 }

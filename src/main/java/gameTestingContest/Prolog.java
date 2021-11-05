@@ -95,7 +95,6 @@ public class Prolog {
 			.impBy("K > 0")
 			.and("L is K-1")
 			.and(roomReachable.on("R1","R2","L"));
-	
 	/**
 	 * Execute a prolog query, with var_ as the query variable. Returning a single solution,
 	 * or null if there is none.
@@ -706,7 +705,7 @@ public class Prolog {
 		return enablingCandidates ;
 	}
 	
-	/* get the buttons connected to the doors between two neghbor rooms*/
+	/* get the buttons connected to the doors between two neighbor rooms*/
 	public Map<String, List<String>> getEnablingButtons(String  blockedDoorId) {
 		
 		var currentRoom = getCurrentRoom();
@@ -869,6 +868,63 @@ public class Prolog {
 		System.out.println("all doors cunnected" + alldoorscunnected);
 		
 		return corispondingDoor;
+	}
+	
+	/* Get the connected button/buttons to a given door. if there is any. */
+	public List<String> getConnectedButton(String doorId) {
+		
+		var currentRoom = getCurrentRoom();
+		System.out.println("current room" +  currentRoom + doorId);
+		// check is there any button connected to the given door at the same room
+		
+		List<String> buttonId = new LinkedList<>() ;
+//		var corespondingButtonSameRoom = pQueryAll("B",
+//				and(
+//						isButton.on("B")	,		
+//					    inRoom.on(currentRoom,"B"),
+//					    wiredTo.on(doorId,"B")
+//						)
+//				   );
+//		
+//		if(!corespondingButtonSameRoom.isEmpty()) {			
+//			for(int i = 0; i< corespondingButtonSameRoom.size(); i++ ) {
+//				if (buttonIsReachable(corespondingButtonSameRoom.get(i))) {	
+//					System.out.println("this button is connected to the current selected bloeck entity and it is reachable: " + corespondingButtonSameRoom.get(i));
+//					buttonId.add(corespondingButtonSameRoom.get(i));					
+//				}
+//			}
+//		}else {
+		    // if there is no button at the same room, select button connected to the given door
+			// if there is a button, check it is reachable from the agent position			
+			var correspondingButton = pQueryAll("B", 
+					and( isButton.on("B"), wiredTo.on("B",doorId))
+					) ;
+			System.out.println("correspondingButton " + correspondingButton);
+			var alldoors = pQueryAll("D",
+					and(
+							isDoor.on("D")			
+									
+							)
+					   );
+			
+			System.out.println("all doors registered" + alldoors);
+			
+			
+			for(var d: alldoors) {
+				var buttonsconnected =	pQueryAll("B", and( isButton.on("B"), wiredTo.on("B",d))) ;
+				System.out.println("buttons ::: " +  buttonsconnected + d);		
+			}
+			
+			if(correspondingButton.isEmpty()) return null;
+			for(int i = 0; i< correspondingButton.size(); i++ ) {
+				if (buttonIsReachable(correspondingButton.get(i))) {	
+					System.out.println("this button is connected to the current selected bloeck entity and it is reachable: " + correspondingButton.get(i));
+					buttonId.add(correspondingButton.get(i));
+				}
+			}
+//		}
+		
+		return buttonId;
 	}
 	
 	public boolean isReachable(String entityId) {
