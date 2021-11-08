@@ -44,6 +44,7 @@ public class CobaProlog {
 		var wiredTo = predicate("wiredTo") ;
 		var notWiredTo = predicate("notWiredTo") ;
 		var neighbor = predicate("neighbor") ;
+		var pathBetweenRooms = predicate("pathBetweenRooms") ;
 		
 		var prolog = belief.prolog() ;
 		prolog.facts(isRoom.on("r0")) ;
@@ -121,7 +122,22 @@ public class CobaProlog {
 				.and("L is K-1")
 				.and(roomReachable.on("R1","R2","L"));
 		
-		prolog.add(neigborRule,roomReachableRule1,roomReachableRule2,roomReachableRule3) ;
+		Rule pathBetweenRoomsRule1 = rule(pathBetweenRooms.on("R1","R2","[R1,D,R2]","1"))
+				.and(isDoor.on("D"))
+				.and(inRoom.on("R1","D"))
+				.and(inRoom.on("R2","D"))
+				;
+		
+		Rule pathBetweenRoomsRule2 = rule(pathBetweenRooms.on("R1","R2","[R1 , D | S]","K"))
+				.impBy("K > 0")
+				.and(isDoor.on("D"))
+				.and(inRoom.on("R1","D"))
+				.and(inRoom.on("R","D"))
+				.and("(R1 \\== R2)")
+				.and("L is K-1")
+				.and(pathBetweenRooms.on("R","R2","S","L"))
+				;
+		prolog.add(neigborRule,roomReachableRule1,roomReachableRule2,roomReachableRule3,pathBetweenRoomsRule1, pathBetweenRoomsRule2) ;
 		
 		
 		
@@ -173,7 +189,14 @@ public class CobaProlog {
 		        .collect(Collectors.toList())
 		) ;
 		
-
+		System.out.println("path between from r0 to r3: " +  
+		        prolog.queryAll(
+		        pathBetweenRooms.on("r0","r3","S","3")
+		        )
+		        .stream().map(Q -> Q.str_("S"))
+		        .collect(Collectors.toList())
+		) ;
+		
 		String currentRoom = "r0";
 		String GoalLocation = "door2";
 		

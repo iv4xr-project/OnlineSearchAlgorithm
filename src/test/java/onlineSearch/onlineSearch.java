@@ -89,7 +89,7 @@ public class onlineSearch {
 	    public void closetReachableTest() throws InterruptedException {
 	    	String levelName = "";
 	    	//String levelName = "Wishnu-levels//contest";
-	    	String fileName = "BM2021_diff1_R4_1_1_M - ThecomplicatedLevel";
+	    	String fileName = "BM2021_diff1_R4_1_1_M - Trap";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;

@@ -33,7 +33,7 @@ public class Prolog {
 		System.out.print(this.belief.prolog());
 		try {			
 			this.belief.prolog().add(neigborRule,
-					roomReachableRule1, roomReachableRule2, roomReachableRule3);
+					roomReachableRule1, roomReachableRule2, roomReachableRule3,pathBetweenRoomsRule1,pathBetweenRoomsRule2);
 		} catch (InvalidTheoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -50,6 +50,7 @@ public class Prolog {
 	static PredicateName notWiredTo = predicate("notWiredTo") ;	
 	static PredicateName neighbor = predicate("neighbor") ;
 	static PredicateName roomReachable = predicate("roomReachable") ;
+	static PredicateName pathBetweenRooms = predicate("pathBetweenRooms") ;
 	
 	/**
 	 * A rule defining when two rooms are neighboring, namely when they share a door.
@@ -95,6 +96,22 @@ public class Prolog {
 			.impBy("K > 0")
 			.and("L is K-1")
 			.and(roomReachable.on("R1","R2","L"));
+	
+	Rule pathBetweenRoomsRule1 = rule(pathBetweenRooms.on("R1","R2","[R1,D,R2]","1"))
+			.and(isDoor.on("D"))
+			.and(inRoom.on("R1","D"))
+			.and(inRoom.on("R2","D"))
+			;
+	
+	Rule pathBetweenRoomsRule2 = rule(pathBetweenRooms.on("R1","R2","[R1 , D | S]","K"))
+			.impBy("K > 0")
+			.and(isDoor.on("D"))
+			.and(inRoom.on("R1","D"))
+			.and(inRoom.on("R","D"))
+			.and("(R1 \\== R2)")
+			.and("L is K-1")
+			.and(pathBetweenRooms.on("R","R2","S","L"))
+			;
 	/**
 	 * Execute a prolog query, with var_ as the query variable. Returning a single solution,
 	 * or null if there is none.
@@ -569,7 +586,7 @@ public class Prolog {
 		Map<String, Boolean> originalDoorBlockingState = getDoorsBlockingState();
 		fakelyMakeAlldoorsBlocking(null);
 		var rooms = pQueryAll("R", isRoom.on("R"));
-		Boolean find = null;
+		Boolean find = false;
 		String currentRoom = null ;
 		System.out.println("all rooms in get current room" + rooms);
 
@@ -714,30 +731,24 @@ public class Prolog {
 		
 		
 		System.out.println("Reachable from current room: " +  
-				pQueryAll("R", and(
-		        roomReachable.on(currentRoom,"R","1+1"))
+				pQueryAll("R",
+		        roomReachable.on(currentRoom,"R","1+1")
 		        )
 		) ;
 		
 	
-		var neighborRooms1 =pQueryAll("R",
-				and(						
+		var neighborRooms1 =pQueryAll("R",								
 						neighbor.on(currentRoom,"R")						
-						)		
-						
 				   );
 		System.out.println("neighbor of the corrent room" + neighborRooms1);
 
 		
-		var neighborRooms2 = pQueryAll("R",
-				and(
+		var allRooms = pQueryAll("R",
 						isRoom.on("R")						
-								
-						)
 				   );
-		System.out.println("all rooms: " + neighborRooms2);
+		System.out.println("all rooms: " + allRooms);
 		
-		for (var roomx : neighborRooms2) {
+		for (var roomx : allRooms) {
 			System.out.println("doors in each room: " + roomx);
 			List<String> bt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
 			System.out.println("doors: " + bt0);
@@ -776,8 +787,10 @@ public class Prolog {
 		
 		
 		
+		
 		// this is the main part of this method
 		// select the rooms between the current room and the room which the blocked door is located
+		//this work only if there they are neighbors
 		var neighborRooms = pQueryAll("R",
 				and(
 						isRoom.on("R")	,
@@ -792,16 +805,42 @@ public class Prolog {
 
 		Map<String, List<String>> buttonsconnectedToDoors = new HashMap<String, List<String>>() ;
 		// iterate over all neighborhood rooms that are between current room and the room which the blocked door is located
-		for(var n: neighborRooms) {
-			var doors = pQueryAll("D", and( isDoor.on("D"), inRoom.on(currentRoom, "D"), inRoom.on(n, "D"))) ;
-			System.out.println("doors in between ::: " +  doors + n);
-			for(var d: doors) {
-				var buttonsconnected =	pQueryAll("B", and( isButton.on("B"), wiredTo.on("B",d), inRoom.on(currentRoom, "B"))) ;
-				System.out.println("buttons ::: " +  buttonsconnected + d);
-				if(!buttonsconnected.isEmpty())
-				buttonsconnectedToDoors.put(d, buttonsconnected); 
-			}
+//		for(var n: neighborRooms) {
+//			var doors = pQueryAll("D", and( isDoor.on("D"), inRoom.on(currentRoom, "D"), inRoom.on(n, "D"))) ;
+//			System.out.println("doors in between ::: " +  doors + n);
+//			for(var d: doors) {
+//				var buttonsconnected =	pQueryAll("B", and( isButton.on("B"), wiredTo.on("B",d), inRoom.on(currentRoom, "B"))) ;
+//				System.out.println("buttons ::: " +  buttonsconnected + d);
+//				if(!buttonsconnected.isEmpty())
+//				buttonsconnectedToDoors.put(d, buttonsconnected); 
+//			}
+//		}
+		
+		List<String> finalPath = null;
+		for(int i=0; i<allRooms.size(); i++) {
+			var pathBetweenRooms1 = pQueryAll("S",
+					pathBetweenRooms.on(currentRoom,blockedDoorRoom,"S",i)
+					   );
+			
+			System.out.println("pathbetween to room" + pathBetweenRooms1);
+			if(!pathBetweenRooms1.isEmpty()) { finalPath= pathBetweenRooms1;  break;}
 		}
+		
+		System.out.println("final pathbetween to room" + finalPath);
+		
+		if(!finalPath.isEmpty()) {
+			var getPath  = finalPath.get(0);
+			List<String> resultList = Arrays.asList(getPath.split(","));
+			var door = resultList.get(1);
+			var room = resultList.get(0).replace("[", "");
+			System.out.println("room and door step by step:" + room + door) ;
+			var buttonsconnected =	pQueryAll("B", and( isButton.on("B"), wiredTo.on("B",resultList.get(1)), inRoom.on(resultList.get(0).replace("[", ""), "B"))) ;
+			System.out.println("connected button" + buttonsconnected);
+			System.out.println("buttons ::: " +  buttonsconnected + door);
+			if(!buttonsconnected.isEmpty())
+			buttonsconnectedToDoors.put(door, buttonsconnected); 
+		}
+		
 		return buttonsconnectedToDoors;
 	}
 	

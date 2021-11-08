@@ -176,6 +176,7 @@ public class TacticLibExtended extends TacticLib{
 						{
 							System.out.println("The goal has seen: " + goalId);
 							selectedNode = belief.highLevelGragh.getIndexById(goalId);
+							belief.highLevelGragh.currentSelectedEntity = selectedNode;
 							return new Pair(selectedNode,belief);	 
 						}
 						
@@ -215,6 +216,7 @@ public class TacticLibExtended extends TacticLib{
 						{
 							System.out.println("The goal has seen: " + goalId);
 							selectedNode = belief.highLevelGragh.getIndexById(goalId);
+							belief.highLevelGragh.currentSelectedEntity = selectedNode;
 							return new Pair(selectedNode,belief);	 
 						}
 						//agent has seen some nodes before, in order to avoid loop, we need to select the
@@ -303,7 +305,7 @@ public class TacticLibExtended extends TacticLib{
 								}
 							}									
 						}
-						System.out.println("chize dg select kard" + selectedNode); 
+						System.out.println("Select one unchecked entity" + selectedNode); 
 					}
 					
 					//if there are some unvisited doors in the neighbors, we give the priority to select between them.
