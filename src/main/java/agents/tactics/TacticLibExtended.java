@@ -363,7 +363,7 @@ public class TacticLibExtended extends TacticLib{
 							var goalDistanceTo2  =   Vec3.dist(belief.highLevelGragh.vertices.get(selectedNode), goalPosition) ;
 							var disBetweenToEntity  =   Vec3.dist(belief.highLevelGragh.vertices.get(selectedNode), belief.highLevelGragh.vertices.get(tempSelectedNode)) ;
 							System.out.println("is the agent in the situation to select between a door or a button");
-							if(goalDistanceTo1 < goalDistanceTo2 && disBetweenToEntity > belief.viewDistance) {
+							if(goalDistanceTo1 < goalDistanceTo2 && disBetweenToEntity > belief.getViewDistance()) {
 								selectedNode = tempSelectedNode;
 							System.out.println("select a button which is near to the goal position rather than a door");
 							}
@@ -642,7 +642,7 @@ public class TacticLibExtended extends TacticLib{
                          //get the location of the closest unexplored node
         				 var position = belief.worldmodel.getFloorPosition() ;        				 
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
-        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD,belief.viewDistance, (List<Vec3>) memo.memorized) ;   				 
+        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD,belief.getViewDistance(), (List<Vec3>) memo.memorized) ;   				 
         				 if (path==null || path.isEmpty()) {
         					memo.moveState("exhausted") ;
                             System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;
@@ -874,7 +874,7 @@ public class TacticLibExtended extends TacticLib{
 	    			    List<Pair<Vec3,Float>> candidates = new LinkedList<>() ;
 	    			    int k=0 ;
 	    			    for (Vec3 v : belief.pathfinder.vertices) {
-	    			    	if (belief.pathfinder.seenVertices.get(k) && (Vec3.dist(v, entity_location)) <= belief.viewDistance) {
+	    			    	if (belief.pathfinder.seenVertices.get(k) && (Vec3.dist(v, entity_location)) <= belief.getViewDistance()) {
 	    			    		// v has been seen:
 	    			    		candidates.add(new Pair(v, Vec3.dist(entity_location, v))) ;
 	    			    	}
@@ -1029,8 +1029,8 @@ public class TacticLibExtended extends TacticLib{
      						var nodeLocation = (List<Vec3>) memo.memorized ;
      						System.out.println("hamash : "  + nodeLocation +"   ,  "+ memo.memorized.get(0));
      					}
-        				 System.out.println("***********************view distance " + belief.viewDistance);
-        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD, belief.viewDistance,(List<Vec3>) memo.memorized) ;   				 
+        				 System.out.println("***********************view distance " + belief.getViewDistance());
+        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD, belief.getViewDistance(),(List<Vec3>) memo.memorized) ;   				 
         				 if (path==null || path.isEmpty()) {
         					memo.moveState("exhausted") ;
                             System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;

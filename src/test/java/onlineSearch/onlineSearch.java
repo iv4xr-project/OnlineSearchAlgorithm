@@ -89,13 +89,13 @@ public class onlineSearch {
 	    public void closetReachableTest() throws InterruptedException {
 	    	//String levelName = "";
 	    	String levelName = "Wishnu-levels//contest";
-	    	String fileName = "CR3_3_3_M";
+	    	String fileName = "CR3_1_1";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
-	    	String treasureDoor = "door3";
+	    	String treasureDoor = "door4";
 	    	Vec3 goalPosition =  new  Vec3(4,1,30); 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
@@ -108,7 +108,6 @@ public class onlineSearch {
 	        		new Scanner(System.in). nextLine() ;
 	        	}
 	            var beliefState = new BeliefStateExtended();
-	            beliefState.viewDistance = LRconfig.view_distance;
 	            var prolog = new Prolog(beliefState);
 		        // create a test agent
 		        var testAgent = new LabRecruitsTestAgent("agent1") // matches the ID in the CSV file
@@ -200,7 +199,6 @@ public class onlineSearch {
 		            cycleNumber++ ; 
 		        	testAgent.update();
 	                
-					
 		        	
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
