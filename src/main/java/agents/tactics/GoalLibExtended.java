@@ -392,8 +392,13 @@ public class GoalLibExtended extends GoalLib{
 									   , 
 									    SUCCESS()
 									   ,
-									  SEQ(findingAButtonToUnlockedAgent,GoalLibExtended.navigateTo(b))
-									)
+									  SEQ(
+											  findingAButtonToUnlockedAgent,
+											  GoalLibExtended.navigateTo(b)	  
+											,removeDynamicGoal(agent, "temporaryDoor")
+											  
+											  )
+									  )
 								  ,interact
 								)
 							  , 
