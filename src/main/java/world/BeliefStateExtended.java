@@ -169,7 +169,7 @@ public class BeliefStateExtended extends BeliefState {
 			prolog.registerButton(e.id);
 		}
 		if(e.type.equals(LabEntity.DOOR)) {
-			System.out.println("belief state, register a door");
+			//System.out.println("belief state, register a door");
 			prolog.registerDoor(e.id);
 		}
 	}

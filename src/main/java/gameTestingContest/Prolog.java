@@ -826,19 +826,23 @@ public class Prolog {
 			if(!pathBetweenRooms1.isEmpty()) { finalPath= pathBetweenRooms1;  break;}
 		}
 		
-		System.out.println("final pathbetween to room" + finalPath);
+		System.out.println("final path between to room" + finalPath);
 		
-		if(!finalPath.isEmpty()) {
-			var getPath  = finalPath.get(0);
-			List<String> resultList = Arrays.asList(getPath.split(","));
-			var door = resultList.get(1);
-			var room = resultList.get(0).replace("[", "");
-			System.out.println("room and door step by step:" + room + door) ;
-			var buttonsconnected =	pQueryAll("B", and( isButton.on("B"), wiredTo.on("B",resultList.get(1)), inRoom.on(resultList.get(0).replace("[", ""), "B"))) ;
-			System.out.println("connected button" + buttonsconnected);
-			System.out.println("buttons ::: " +  buttonsconnected + door);
-			if(!buttonsconnected.isEmpty())
-			buttonsconnectedToDoors.put(door, buttonsconnected); 
+		if(!finalPath.isEmpty()) {			
+			for(int i =0; i<finalPath.size(); i++) {
+				var getPath  = finalPath.get(i);
+				List<String> resultList = Arrays.asList(getPath.split(","));
+				var door = resultList.get(1);
+				var room = resultList.get(0).replace("[", "");
+				System.out.println("room and door to scape: " + room +" , "+ door) ;
+				var buttonsconnected =	pQueryAll("B", and( isButton.on("B"), wiredTo.on("B",resultList.get(1)), inRoom.on(resultList.get(0).replace("[", ""), "B"))) ;
+				System.out.println("connected button" + buttonsconnected);
+				if(!buttonsconnected.isEmpty()) {
+					buttonsconnectedToDoors.put(door, buttonsconnected);
+					break;
+				}
+			}
+			 
 		}
 		
 		return buttonsconnectedToDoors;

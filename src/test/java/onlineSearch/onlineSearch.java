@@ -87,14 +87,16 @@ public class onlineSearch {
 	     */
 	    @Test
 	    public void closetReachableTest() throws InterruptedException {
-	    	String levelName = "";
-	    	//String levelName = "Wishnu-levels//contest";
-	    	String fileName = "BM2021_diff1_R4_1_1_M - Trap";
+	    	//String levelName = "";
+	    	String levelName = "Wishnu-levels//contest";
+	    	String fileName = "CR3_3_3_M";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
+	    	String treasureDoor = "door3";
+	    	Vec3 goalPosition =  new  Vec3(4,1,30); 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
 	        int cycleNumber = 0 ;
@@ -106,6 +108,7 @@ public class onlineSearch {
 	        		new Scanner(System.in). nextLine() ;
 	        	}
 	            var beliefState = new BeliefStateExtended();
+	            beliefState.viewDistance = LRconfig.view_distance;
 	            var prolog = new Prolog(beliefState);
 		        // create a test agent
 		        var testAgent = new LabRecruitsTestAgent("agent1") // matches the ID in the CSV file
@@ -115,12 +118,11 @@ public class onlineSearch {
 		       
 		       var agentPosiion = environment.observe("agent1").position;
 		       
-		       Vec3 goalPosition =  new  Vec3(4,1,30);  //  new  Vec3(4,1,19); 
+		       
 			   /* calculate the euclidean distance from agent position to the treasure door, the treasure door
 				 * distance is estimated */
 		        euclideanDistance(agentPosiion, goalPosition);
-		        System.out.println("euclidean dis " + euclideanDistance(agentPosiion, goalPosition));
-		        String treasureDoor = "door5";
+		        System.out.println("euclidean dis " + euclideanDistance(agentPosiion, goalPosition));		        
 		        beliefState.highLevelGragh.goalPosition = goalPosition;
 
 //		        var testingTask = SEQ(
@@ -154,10 +156,9 @@ public class onlineSearch {
 			    	        				)    		
 			    	        		,		
 			    	        		FIRSTof(
-			    	        			//	GoalLibExtended.aStar(beliefState,"door3"),
 			    	        				//if during the exploration to find a new entity, agent sees the goal, we check that it is open or not
 			    	        				GoalLibExtended.finalGoal(treasureDoor),
-			    	        				// if the goal is not achieved yet, we select an entity to navigate to it
+			    	        				// if the goal is not achieved yet, we select an entity to navigate to it based on some specific policies
 			    	        				//if the all neighbors of the current position has seen before
 			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent,goalPosition, treasureDoor)
 			    	        				)
@@ -169,7 +170,7 @@ public class onlineSearch {
 			    	        		//,
 			    	        		//GoalLibExtended.checkEntityStatus(testAgent)
 			    	        		,
-			    	        		GoalLibExtended.removeDynamicGoal(testAgent)
+			    	        		GoalLibExtended.removeDynamicGoal(testAgent, null)
 			    	     //   		,
 			    	        //		GoalLibExtended.aStar(beliefState,"door3")	
 			    	        		,			    	        		
@@ -227,7 +228,7 @@ public class onlineSearch {
 					//	throw new AgentDieException() ;
 					}
 	        	
-		        	if (cycleNumber>2000) {
+		        	if (cycleNumber>1900) {
 		        		break ;
 		        	}
 		        }

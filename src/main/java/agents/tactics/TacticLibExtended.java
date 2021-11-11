@@ -565,7 +565,7 @@ public class TacticLibExtended extends TacticLib{
 		
 		Tactic nearestNode =  action("find the nearest inactive button").do1(
 				(BeliefStateExtended belief)-> {	
-					// we always call this tactic when there we are looking for a button to open a blocked door
+					// we always call this tactic when we are looking for a button to open a blocked door
 					// so, it should always select an entity based on this blocked entity
 					var currentNode  = belief.highLevelGragh.getIndexById(belief.highLevelGragh.currentBlockedEntity);
 					float distance   = Float.valueOf(0); 		
@@ -642,7 +642,7 @@ public class TacticLibExtended extends TacticLib{
                          //get the location of the closest unexplored node
         				 var position = belief.worldmodel.getFloorPosition() ;        				 
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
-        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD,belief.viewDistance) ;   				 
+        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD,belief.viewDistance, (List<Vec3>) memo.memorized) ;   				 
         				 if (path==null || path.isEmpty()) {
         					memo.moveState("exhausted") ;
                             System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;
@@ -657,14 +657,14 @@ public class TacticLibExtended extends TacticLib{
         				 System.out.println("###***** setting a new exploration target: " + target) ;
                          System.out.println("### abspath to exploration target: " + path) ;
                          System.out.println("### path to exploration target: " + explorationPath) ;
-                         memo.memorized.clear();
+                         //memo.memorized.clear();
                          memo.memorize(target);
                          memo.moveState("inTransit") ; // move the exploration state to inTransit...
                          return new Pair(target, explorationPath);//return the path finding information
     				}else {
                          
     					 System.out.println("***inTransit***" ) ;
-    					 Vec3 exploration_target = (Vec3) memo.memorized.get(0) ;
+    					 Vec3 exploration_target = (Vec3) memo.memorized.get(memo.memorized.size()-1) ;
                          // note that exploration_target won't be null because we are in the state
                          // in-Transit
                          Vec3 agentLocation = belief.worldmodel.getFloorPosition() ;
@@ -704,7 +704,11 @@ public class TacticLibExtended extends TacticLib{
 	
     
     
-    /* checking blocked entity status */
+    /** The agent is trapped in some room, while it is moving from entity A to B
+     * It Checks the prolog data set to know is there any door connected to a button that
+     * can open a path to B. If there are more than one door or a door is connected to multi 
+     * button, it selects a door based on some policies.
+     *  */
   	public static Tactic unlockAgent(BeliefState b, TestAgent agent) {			
   		var addNewGoal =   action("use prolog to help an agent to untrapped").do1(
   				(BeliefStateExtended belief)-> {
@@ -733,7 +737,6 @@ public class TacticLibExtended extends TacticLib{
 	  					for(int i=0; i< getEnablingButtons.size(); i++) {	
 	  						var door = getEnablingButtons.keySet().toArray()[i];
 	  						var buttons = getEnablingButtons.values().toArray()[i];
-	  						//map.get(map.keySet().toArray()[0]) to get the value of the first key
 	  						var dist  = Vec3.dist(agentPosition, belief.worldmodel.getElement(door.toString()).position);
 	  						System.out.print("get enabeling door and correspanding button: " + buttons + door );
 	  						if(distance == 0) {
@@ -750,9 +753,9 @@ public class TacticLibExtended extends TacticLib{
   					
   					// get the set of buttons connected to the selected node
   					var setOFButtons = getEnablingButtons.get(selectedDoor);
-  					System.out.print("setOFButtons" + setOFButtons + setOFButtons.size());
+  					System.out.print("set OF Buttons" + setOFButtons + setOFButtons.size());
   					if(setOFButtons.size()> 1) {
-  						//if there are more than one button selected to a door,
+  						//if there are more than one button connected to a door,
   						// select one which is near to the agent position. 
   						for(int j=0; j< setOFButtons.size(); j++) {
   							var button = setOFButtons.get(j);				
@@ -769,18 +772,19 @@ public class TacticLibExtended extends TacticLib{
 	  						}
   						}
   					}else {
-  						System.out.print("setOFButtons is set");
   						selectedButon = setOFButtons.get(0);
   					}
-  					System.out.print("selected button and door" + selectedButon + selectedDoor);
+  					System.out.println(">>> **** Selected button and door" + selectedButon + selectedDoor);
+  					
   					// add a new goal to interact with the selected button, 
   					GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(selectedButon,selectedDoor);
 					agent.addAfter(unblockedDoor);
-					
-  					
 					//the inserted goal dos'nt need to be removed after success because we remove the main 
-				    //extra goal 
-  				   //belief.goalsmap.put(selectedDoor,unblockedDoor);				
+				    //extra goal 	
+					
+					System.out.println(">>**** A new goal to open the blocked door added");
+					belief.goalsmap.put("temporaryDoor",unblockedDoor);
+					
   					return belief;
   					}).lift();
 		
@@ -912,8 +916,14 @@ public class TacticLibExtended extends TacticLib{
 			   )  ;
 	}
 
-	
-	public static Tactic dynamiclyAddGoalToFindButton(TestAgent agent) {
+	/**
+	 * If the selected node is a blocked entity, a new goal to open this blocked entity
+	 * will add as a sub-goal. 
+	 * A list of which buttons are tried to open this door is created. 
+	 * In order to remove the goal after success, we put the information in goalsmap.
+	 * 
+	 * */
+	public static Tactic dynamicallyAddGoalToFindButton(TestAgent agent) {
 		
 		return  action("dynamicly add a goal to find a correspanding button to open the selected door").do1(
 				(BeliefStateExtended belief)-> {
@@ -922,14 +932,12 @@ public class TacticLibExtended extends TacticLib{
 					var entity = belief.highLevelGragh.entities.get(selectedNode);
 					
 					belief.highLevelGragh.currentBlockedEntity = entity.id;
-					//belief.highLevelGragh.visitedNodes.clear();
-					//when we clean the all visited nodes to force agent to check the previous visited nodes
 					// the agent won't add the current position which is the blocked node to the visited node
 					belief.highLevelGragh.visitedNodes.add(belief.highLevelGragh.getIndexById(belief.highLevelGragh.currentBlockedEntity));
 					
 					GoalStructure unblockedDoor = GoalLibExtended.findCorrespondingButton(belief,agent);
 					agent.addAfter(unblockedDoor);	
-					System.out.println(" a new goal added");
+					System.out.println(">>**** A new goal to open the blocked door added");
 					belief.goalsmap.put(entity.id,unblockedDoor);
 					List<String> list = new ArrayList<>();
 					belief.buttonDoorConnection.put(entity.id, list);	
@@ -938,6 +946,14 @@ public class TacticLibExtended extends TacticLib{
 				
 	}
 	
+	/**
+	 * Checking the prolog data set to know is there any button connected to current
+	 * blocked entity. We also apply a policy to select one button, if there are more. 
+	 * the policy is based on the distance, the nearest button to the agent position 
+	 *  will select. 
+	 *  A dynamic goal will be added if there is a button. the goal is to interact 
+	 *  with the button and check the blocked door status.
+	 * */
 	public static Tactic lookForAbutton(TestAgent agent) {
 		
   		return action("checkig the prolog data set to find the corresponding button").do1(
@@ -986,7 +1002,7 @@ public class TacticLibExtended extends TacticLib{
 	}
 	
 
-    //------------------ these two are just for testing **** should be removed------------------
+
     public static Tactic guidedExplore() {
 
     	var memo = new MiniMemory("S0") ;
@@ -1008,7 +1024,13 @@ public class TacticLibExtended extends TacticLib{
                          //get the location of the closest unexplored node
         				 var position = belief.worldmodel.getFloorPosition() ;        				 
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
-        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD, belief.viewDistance) ;   				 
+        				 System.out.println("agent position**********: " + position + "target list " + memo.memorized);
+        				 if (!memo.memorized.isEmpty()) {
+     						var nodeLocation = (List<Vec3>) memo.memorized ;
+     						System.out.println("hamash : "  + nodeLocation +"   ,  "+ memo.memorized.get(0));
+     					}
+        				 System.out.println("***********************view distance " + belief.viewDistance);
+        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD, belief.viewDistance,(List<Vec3>) memo.memorized) ;   				 
         				 if (path==null || path.isEmpty()) {
         					memo.moveState("exhausted") ;
                             System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;
@@ -1023,15 +1045,16 @@ public class TacticLibExtended extends TacticLib{
         				 System.out.println("###***** setting a new exploration target: " + target) ;
                          System.out.println("### abspath to exploration target: " + path) ;
                          System.out.println("### path to exploration target: " + explorationPath) ;
-                         memo.memorized.clear();
+                         //memo.memorized.clear();
                          memo.memorize(target);
                          memo.moveState("inTransit") ; // move the exploration state to inTransit...
                          return new Pair(target, explorationPath);//return the path finding information
     				}else {
                          
-    					 System.out.println("inTransit" ) ;
-    					 Vec3 exploration_target = (Vec3) memo.memorized.get(0) ;
-                         // note that exploration_target won't be null because we are in the state
+    					 System.out.println("inTransit" +  (memo.memorized.size()-1) ) ;
+    					 Vec3 exploration_target = (Vec3) memo.memorized.get(memo.memorized.size()-1) ;
+    					 System.out.println("exploration_target" + exploration_target ) ;
+    					 // note that exploration_target won't be null because we are in the state
                          // in-Transit
                          Vec3 agentLocation = belief.worldmodel.getFloorPosition() ;
                          Vec3 currentDestination = belief.getGoalLocation() ;
