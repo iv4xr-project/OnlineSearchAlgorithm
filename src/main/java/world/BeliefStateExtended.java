@@ -140,6 +140,20 @@ public class BeliefStateExtended extends BeliefState {
 	@Override
 	public void updateState() {
 		super.updateState();
+		// Debug printing:
+		for(var e: this.changedEntities) {
+			if ( e.type.equals(LabEntity.DOOR)) {
+				System.out.print(">>> State change observed: " + e.id + ", time:" + e.timestamp
+						+ ", open: "+ this.isOpen(e.id)) ;
+				if (e.hasPreviousState() ) {
+					System.out.println(", prev open: " + e.getPreviousState().getStringProperty("open")) ;
+				}
+				else {
+					System.out.println("") ;
+				}
+			}
+		}
+		
 		for(var e : worldmodel.elements.values()) {
 			if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
 				if(e.timestamp == worldmodel.timestamp) {
@@ -153,6 +167,17 @@ public class BeliefStateExtended extends BeliefState {
 						}
 					}
 
+				}
+				// Debug printing:
+				if ( e.type.equals(LabEntity.DOOR)) {
+					System.out.print("=== belief " + e.id + ", T:" + e.timestamp + ", start-stutter:" + e.lastStutterTimestamp
+							+ ", open: "+ this.isOpen(e.id)) ;
+					if (e.hasPreviousState() ) {
+						System.out.println(", prev open: " + e.getPreviousState().getStringProperty("isOpen") + ", Told:" + e.getPreviousState().timestamp) ;
+					}
+					else {
+						System.out.println("") ;
+					}
 				}
 			}
 		}

@@ -447,7 +447,18 @@ public class TacticLibExtended extends TacticLib{
                . do2((BeliefStateExtended belief) -> (WorldEntity e) -> {
             	   System.out.println(">>> interact dynamicly " ) ;
                 	  var obs = belief.worldmodel.interact(belief.env(), LabWorldModel.INTERACT, e)  ;
-                	  belief.mergeNewObservationIntoWOM(obs);
+                	  //WP change: we don't do this merge anymore; agent can still get the new
+                	  // state in the next update:
+                	  // belief.mergeNewObservationIntoWOM(obs);
+                	  
+                	  //WP change: adding this wait; ... not an ideal solution as it ignores thread interrupt:
+                	  try {
+                		  // LR has 0.5s timeout before a button can be interacted again, so we need to wait: 
+                		  Thread.sleep(650) ;
+                	  }
+                	  catch(Exception exc) {
+                		  // swallowing thread exception...
+                	  }
                       return belief;
                     })
                . on((BeliefStateExtended belief) -> {
