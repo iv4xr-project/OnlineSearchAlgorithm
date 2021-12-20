@@ -87,16 +87,16 @@ public class onlineSearch {
 	     */
 	    @Test
 	    public void closetReachableTest() throws InterruptedException {
-	    	//String levelName = "";
-	    	String levelName = "CompetitionGrander//bm2021";
-	    	String fileName = "BM2021_diff1_R4_1_1";
+	    	String levelName = "";
+	    	//String levelName = "CompetitionGrander//bm2021";
+	    	String fileName = "ddo_the_sanctuary_withdoors";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
-	    	LRconfig.view_distance = 4f;
-	    	String treasureDoor = "door6";
-	    	Vec3 goalPosition =  new  Vec3(4,1,30); 
+	    	LRconfig.view_distance = 5f;
+	    	String treasureDoor = "doorEntrance";
+	    	Vec3 goalPosition =  null; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
 	        int cycleNumber = 0 ;
@@ -120,24 +120,13 @@ public class onlineSearch {
 		       
 			   /* calculate the euclidean distance from agent position to the treasure door, the treasure door
 				 * distance is estimated */
-		        euclideanDistance(agentPosiion, goalPosition);
-		        System.out.println("euclidean dis " + euclideanDistance(agentPosiion, goalPosition));		        
-		        beliefState.highLevelGragh.goalPosition = goalPosition;
-
+		       // euclideanDistance(agentPosiion, goalPosition);
+		       // System.out.println("euclidean dis " + euclideanDistance(agentPosiion, goalPosition));		        
+		        beliefState.highLevelGragh.goalPosition = goalPosition;	     
+		        
 //		        var testingTask = SEQ(
-//		        		GoalLibExtended.navigateTo("button2"),
-//		        		//GoalLib.entityInteracted("button2"),
-//		        		GoalLibExtended.navigateTo("button3"),
-//		        		GoalLib.entityInteracted("button3"),
-//		        		GoalLibExtended.navigateTo("door2"),
-//		        		GoalLibExtended.navigateTo("button4"),
-//		        		//GoalLib.entityInteracted("button4"),
-//		        		GoalLib.entityInteracted("button6"),
-//		        		GoalLibExtended.navigateTo("button6"),		        		
-//		        		GoalLibExtended.navigateTo("door3"),
-//		        		//GoalLibExtended.navigateTo("button3"),
-//		        		GoalLib.entityInteracted("button3"),
-//		        		GoalLibExtended.findingAButtonToUnlockedAgent(beliefState, testAgent)
+//		        		//GoalLibExtended.entityStateRefreshed(treasureDoor)
+//		        		GoalLibExtended.entityInCloseRange("button25")
 //		        		);
 		        
 		        var testingTask = SEQ( 
@@ -178,7 +167,7 @@ public class onlineSearch {
 		        		);
 		        
 		        
-		        //var testingTask = SEQ(GoalLibExtended.ExplorationTo(new Vec3(4,0,19)));  
+		    //    var testingTask = SEQ(GoalLibExtended.ExplorationTo(new Vec3(4,0,19)));  
 		        // attaching the goal and test data-collector
 		        var dataCollector = new TestDataCollector();
 		        testAgent . setTestDataCollector(dataCollector).setGoal(testingTask) ;
@@ -188,7 +177,9 @@ public class onlineSearch {
 		        //goal not achieved yet
 		        assertFalse(testAgent.success());
 		
-		        
+		    	//testAgent.update();
+                //(48,0,21)  (48,0,20)  25,0, 20  21,0,20
+ 	           
 		        // keep updating the agent
 		        long startTime = System.currentTimeMillis();
 		        while (testingTask.getStatus().inProgress()) {
@@ -197,9 +188,38 @@ public class onlineSearch {
 		            Thread.sleep(100);
 		            
 		            cycleNumber++ ; 
+		            System.out.println("*** update the agent state");
 		        	testAgent.update();
 	                
-		        	
+//	               testAgent.getState().pathfinder.perfect_memory_pathfinding = true;
+//	               List<Pair<Vec3,Vec3>> broken = new LinkedList<>() ;
+//	               
+//	               for(int i=0; i< testAgent.getState().pathfinder.vertices.size(); i++) {
+//	            	   for (int j=i+1; j < testAgent.getState().pathfinder.vertices.size() ; j++) {
+//	            	   Vec3 currentVertix = testAgent.getState().pathfinder.vertices.get(i);  
+//	            	   Vec3 nextVertix = testAgent.getState().pathfinder.vertices.get(j);  
+//	               	 if( (19f <= currentVertix.x && currentVertix.x <=25f)  && Math.abs(currentVertix.y) <= 0.2
+//	                 		   && (currentVertix.z >= 19f &&  currentVertix.z <= 21f)) {
+//	               		// System.out.println("vectores : " + currentVertix);
+//	               		var x  = testAgent.getState().pathfinder.findPath(currentVertix, nextVertix,0.2f);
+//	               		if(x == null) {
+//	               			//System.out.println("is there a path : " + x  + currentVertix + nextVertix);
+//	               			var y  = new Pair(currentVertix,nextVertix);
+//	               			if(!broken.contains(y))
+//	               			broken.add(y) ;
+//	               		}
+//	               	 }
+//	               }}
+//	               broken.sort((pair1,pair2) 
+//		                    -> 
+//		                    ((Float)Vec3.dist(pair1.fst,pair1.snd)).compareTo( (Float)Vec3.dist(pair2.fst,pair2.snd)))  ;
+//	               System.out.println("broken " + broken);
+//	               var s  = Vec3.dist(new Vec3(22.8f,0.03f,19.619999f),new Vec3(22.619999f,0.03f,19.8f));
+//	               System.out.println("smallest: " + s);
+//	               assertTrue(testAgent.getState().pathfinder.findPath(new Vec3(24,0,20), new Vec3(20,0,20), 0.1f) != null);			
+//	               testAgent.getState().pathfinder.perfect_memory_pathfinding = false;
+//	               
+	               
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
 						if(e.type.equals("Switch") && e.hasPreviousState()) {
@@ -226,19 +246,19 @@ public class onlineSearch {
 					//	throw new AgentDieException() ;
 					}
 	        	
-		        	if (cycleNumber>1900) {
+		        	if (cycleNumber>60000) {
 		        		break ;
 		        	}
 		        }
 		        long endTime = System.currentTimeMillis();
 		        totalTime = endTime - startTime;
-		        //testingTask.printGoalStructureStatus();
+		        testingTask.printGoalStructureStatus();
 		        		       
 		        
 		        testAgent.printStatus();
 		        var agentneTimeStamss = testAgent.getState().knownEntities();
 		   		 prolog.report();  
-	   		 
+//	   		 
 	        }
 	        finally { environment.close(); }
 	

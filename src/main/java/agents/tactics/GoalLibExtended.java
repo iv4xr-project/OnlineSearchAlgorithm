@@ -231,7 +231,7 @@ public class GoalLibExtended extends GoalLib{
 	         		  var e = (LabEntity) belief.worldmodel.getElement(entityId) ;
 	         		  if (e==null) return false ;
 	         		//  var distsq = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition());
-	         		 System.out.println(">> navigateTo id of the selected node: " + e.id);
+	  		 System.out.println(">>>>>>>>>>> navigateTo id of the selected node: " + e.id);
 	         		 if(entityId.contains("door")) {
 	         			System.out.println("navigateTo a door: " + Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()));
 	         			result = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 4  ;
@@ -340,15 +340,7 @@ public class GoalLibExtended extends GoalLib{
 			   // this goal structure should always returns false. because if there is a button, so a goal is
 			   // added after this one. because of the goal combinator structure, this should be false that the
 			   // next goal could be invoked.
-			   Goal goalFindingAButtonToUnlockedAgent = goal("using the prolog")
-			       		. toSolve(
-			       				(BeliefStateExtended belief) -> {
-			       				System.out.println(">>checkin the prolog to find a button to unlocked the agent");
-				  	         //	if(belief.isOpen(belief.highLevelGragh.currentBlockedEntity))
-				  	         //	return true;
-				  	         	return true;
-			  	         	    });
-			   
+			   	   
 			   GoalStructure interact = goal2.withTactic(
 	 	        		SEQ( 
 	 		                TacticLibExtended.interact(),
@@ -364,15 +356,7 @@ public class GoalLibExtended extends GoalLib{
 		                   )) 
 		                .lift();	
 			   
-			   
-			   GoalStructure findingAButtonToUnlockedAgent = goalFindingAButtonToUnlockedAgent.withTactic(
-		        		SEQ( 
-			                TacticLibExtended.unlockAgent(b,agent),
-		        			//TacticLibExtended.unlockAgentWithTheLastInteractedButton(b, agent),
-			                ABORT()
-		                   )) 
-		                .lift();	
-			   
+			   	   
 			   
 			   
 			   return NEWREPEAT(
@@ -393,7 +377,7 @@ public class GoalLibExtended extends GoalLib{
 									    SUCCESS()
 									   ,
 									  SEQ(
-											  findingAButtonToUnlockedAgent,
+											  findingAButtonToUnlockedAgent(b,agent),
 											  GoalLibExtended.navigateTo(b)	  
 											,removeDynamicGoal(agent, "temporaryDoor")
 											  
@@ -409,7 +393,7 @@ public class GoalLibExtended extends GoalLib{
 										    SUCCESS()
 										   ,
 										   //findingAButtonToUnlockedAgent
-										  SEQ(findingAButtonToUnlockedAgent,GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity), removeDynamicGoal(agent, "temporaryDoor"))
+										  SEQ(findingAButtonToUnlockedAgent(b,agent),GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity), removeDynamicGoal(agent, "temporaryDoor"))
 										   )
 								   , checkBlockedEntityStatus(b, agent)
 								   )
@@ -419,6 +403,22 @@ public class GoalLibExtended extends GoalLib{
 	   }
 	   
 	 
+	public static GoalStructure findingAButtonToUnlockedAgent(BeliefStateExtended b, TestAgent agent) {
+		return goal("using the prolog")
+	       		. toSolve(
+	       				(BeliefStateExtended belief) -> {
+	       				System.out.println(">>checkin the prolog to find a button to unlocked the agent");
+		  	         //	if(belief.isOpen(belief.highLevelGragh.currentBlockedEntity))
+		  	         //	return true;
+		  	         	return true;
+	  	         	    }).withTactic(
+		     		SEQ( 
+			                TacticLibExtended.unlockAgent(b,agent),
+		     			//TacticLibExtended.unlockAgentWithTheLastInteractedButton(b, agent),
+			                ABORT()
+		                )) 
+             .lift();
+		}
 	   /**
 	    * After facing with a blocked entity, the agent looks for a button to open it
 	    * At the ends, it needs to check the blocked entity status.If it is open,
@@ -558,12 +558,11 @@ public class GoalLibExtended extends GoalLib{
 	 public static GoalStructure ExplorationTo(Vec3 position, String id) {
 	    	Goal goal =  goal("Explor to the given direction")
 	        		.toSolve((BeliefState belief) -> { 
-	        		//	System.out.println("position Has Seen" + position +" , "+ belief.worldmodel.getFloorPosition());      			
-	                    
+	        		//	System.out.println("position Has Seen" + position +" , "+ belief.worldmodel.getFloorPosition());      			       
 	        			if(Vec3.sub(belief.worldmodel.getFloorPosition(), position).lengthSq() <= 1.5
 	        					|| (belief.evaluateEntity(id, e -> belief.age(e) == 0)))
 	        			//if(belief.canReach(position) != null)
-	        			return true  ;
+	        			return true ;
 	                    return false;
 	        	       	       }
 	        				)
@@ -576,7 +575,6 @@ public class GoalLibExtended extends GoalLib{
 	                        )
 	        			)        	
 	        		;  
-	    	
 	    	return goal.lift();
 	    }
 	 
