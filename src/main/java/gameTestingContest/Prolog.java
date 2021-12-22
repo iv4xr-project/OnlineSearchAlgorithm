@@ -289,7 +289,7 @@ public class Prolog {
 			String newRoom = "room" + rooms.size();
 			System.out.println(">>>>----------------------------------->>>>>> Room size and the fact: " + newRoom + door);
 			belief.prolog().facts(isRoom.on(newRoom), inRoom.on(newRoom, door));			
-			LabEntity d = belief.worldmodel.getElement(door) ;
+			LabEntity d = belief.worldmodel().getElement(door) ;
 			var entity_location = d.getFloorPosition() ;
 			var entity_sqcenter = new Vec3((float) Math.floor((double) entity_location.x - 0.5f) + 1f,
 		    		entity_location.y,
@@ -385,7 +385,7 @@ public class Prolog {
 	}
 	
 	void restoreDoorsBlockingState(Map<String,Boolean> originalState, String exception) {
-		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
+		for(Obstacle<LineIntersectable> o : belief.pathfinder().obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
 		//	System.out.println("restore door state " + e.id );
 //			if (e.type == "Door") {
@@ -412,10 +412,10 @@ public class Prolog {
 	}
 	
 	public boolean doorIsReachable(String door) {
-		LabEntity d = belief.worldmodel.getElement(door) ;
+		LabEntity d = belief.worldmodel().getElement(door) ;
 		Boolean isBlockBoolean = null;
 		
-		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
+		for(Obstacle<LineIntersectable> o : belief.pathfinder().obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;			
 			if (e.id.equals(door)) {
 				
@@ -468,7 +468,7 @@ public class Prolog {
 	}
 	
 	void fakelyUnblockDoor(String door) {
-		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
+		for(Obstacle<LineIntersectable> o : belief.pathfinder().obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;			
 			if (e.id.equals(door)) {		
 				System.out.println("fakly unblocking a door:" + door);
@@ -479,7 +479,7 @@ public class Prolog {
 	}
 	
 	void restoreObstacleState(String door, boolean originalState) {
-		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
+		for(Obstacle<LineIntersectable> o : belief.pathfinder().obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
 			if (e.id.equals(door)) {
 				System.out.print("restore Obstacle State a door:" + door + originalState);
@@ -490,7 +490,7 @@ public class Prolog {
 	}
 	
 	void fakelyMakeAlldoorsBlocking(String exception) {
-		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
+		for(Obstacle<LineIntersectable> o : belief.pathfinder().obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
 			//System.out.println("fakly make all doors block, open? " + e.id  + ", "+ e.getBooleanProperty("isOpen"));
 			if (e.type == "Door" && e.getBooleanProperty("isOpen") && !e.id.equals(exception)) {
@@ -508,9 +508,9 @@ public class Prolog {
 	
 	Map<String,Boolean> getDoorsBlockingState() {
 		Map<String,Boolean> map = new HashMap<>() ;	
-		System.out.println("*****get doors bloking state" + belief.pathfinder);
-		if(belief.pathfinder == null) return null;
-		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
+		System.out.println("*****get doors bloking state" + belief.pathfinder());
+		if(belief.pathfinder() == null) return null;
+		for(Obstacle<LineIntersectable> o : belief.pathfinder().obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
 			if (e.type == "Door") {
 				map.put(e.id,o.isBlocking) ;
@@ -520,7 +520,7 @@ public class Prolog {
 	}
 	
 	boolean buttonIsReachable(String button) {
-		LabEntity b = belief.worldmodel.getElement(button) ;
+		LabEntity b = belief.worldmodel().getElement(button) ;
 		//var path = belief.findPathTo(b.getFloorPosition(),true) ;
 	    Pair<Vec3, List<Vec3>> path = null;
 	    path = belief.expensiveFindPathTo(b.getFloorPosition(),true) ;
@@ -533,10 +533,10 @@ public class Prolog {
 	Map<String,Boolean> untrap() {
 		Map<String,Boolean> map = new HashMap<>() ;	
 		System.out.println("***** tries to find a button connected to a door in the same room as agent is");
-		LabEntity d = belief.worldmodel.getElement("agent1") ;
+		LabEntity d = belief.worldmodel().getElement("agent1") ;
 		
-		if(belief.pathfinder == null) return null;
-		for(Obstacle<LineIntersectable> o : belief.pathfinder.obstacles) {
+		if(belief.pathfinder() == null) return null;
+		for(Obstacle<LineIntersectable> o : belief.pathfinder().obstacles) {
 			LabEntity e = (LabEntity) o.obstacle ;
 			if (e.type == "Door") {
 				map.put(e.id,o.isBlocking) ;
@@ -972,12 +972,12 @@ public class Prolog {
 		return ! anyOpen ;
 	}
 	public boolean isDoor(String id) {
-		LabEntity e = belief.worldmodel.getElement(id) ;
+		LabEntity e = belief.worldmodel().getElement(id) ;
 		return e.type.equals(LabEntity.DOOR) ;
 	}
 	
 	public boolean isButton(String id) {
-		LabEntity e = belief.worldmodel.getElement(id) ;
+		LabEntity e = belief.worldmodel().getElement(id) ;
 		return e.type.equals(LabEntity.SWITCH) ;
 	}
 }

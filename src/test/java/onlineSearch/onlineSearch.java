@@ -87,15 +87,15 @@ public class onlineSearch {
 	     */
 	    @Test
 	    public void closetReachableTest() throws InterruptedException {
-	    	String levelName = "";
-	    	//String levelName = "CompetitionGrander//bm2021";
-	    	String fileName = "ddo_the_sanctuary_withdoors";
+	    	//String levelName = "";
+	    	String levelName = "CompetitionGrander//bm2021";
+	    	String fileName = "BM2021_diff1_R4_1_1_M";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 5f;
-	    	String treasureDoor = "doorEntrance";
+	    	String treasureDoor = "door5";
 	    	Vec3 goalPosition =  null; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
@@ -108,6 +108,7 @@ public class onlineSearch {
 	        		new Scanner(System.in). nextLine() ;
 	        	}
 	            var beliefState = new BeliefStateExtended();
+	            
 	            var prolog = new Prolog(beliefState);
 		        // create a test agent
 		        var testAgent = new LabRecruitsTestAgent("agent1") // matches the ID in the CSV file
@@ -151,7 +152,10 @@ public class onlineSearch {
 			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent,goalPosition, treasureDoor)
 			    	        				)
 			    	        		,		    	        		
-			    	        		GoalLibExtended.navigateTo(beliefState)
+			    	        		IFELSE(
+			    	        				(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicate(beliefState),
+			    	        				SEQ(GoalLibExtended.navigateToDoor(beliefState),GoalLibExtended.entityInCloseRange(beliefState)), 
+			    	        				GoalLibExtended.navigateToButton(beliefState))
 			    	        		,
 			    	        		IFELSE(
 			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.findingAButton(beliefState,testAgent),FAIL())
@@ -188,7 +192,6 @@ public class onlineSearch {
 		            Thread.sleep(100);
 		            
 		            cycleNumber++ ; 
-		            System.out.println("*** update the agent state");
 		        	testAgent.update();
 	                
 //	               testAgent.getState().pathfinder.perfect_memory_pathfinding = true;
@@ -241,7 +244,7 @@ public class onlineSearch {
 						}
 					}
 					
-					if(beliefState.worldmodel.health <= 0) {
+					if(beliefState.worldmodel().health <= 0) {
 						DebugUtil.log(">>>> the agent died. Aaaw.");
 					//	throw new AgentDieException() ;
 					}

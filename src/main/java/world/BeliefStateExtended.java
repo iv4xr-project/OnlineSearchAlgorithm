@@ -138,8 +138,8 @@ public class BeliefStateExtended extends BeliefState {
 	}
 	
 	@Override
-	public void updateState() {
-		super.updateState();
+	public void updateState(String id) {
+		super.updateState(worldmodel.agentId);
 		for(var e : worldmodel.elements.values()) {
 			if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
 				if(e.timestamp == worldmodel.timestamp) {
@@ -187,9 +187,9 @@ public class BeliefStateExtended extends BeliefState {
     	}
     	// else we invoke the pathfinder to calculate a path:
     	// be careful with the threshold 0.05..
-    	var abstractpath = pathfinder.enhancedFindPath(worldmodel.getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
+    	var abstractpath = pathfinder().enhancedFindPath(worldmodel().getFloorPosition(),q,BeliefState.DIST_TO_FACE_THRESHOLD) ;
     	if (abstractpath == null) return null ;
-    	List<Vec3> path = abstractpath.stream().map(v -> pathfinder.vertices.get(v)).collect(Collectors.toList()) ;
+    	List<Vec3> path = abstractpath.stream().map(v -> pathfinder().vertices.get(v)).collect(Collectors.toList()) ;
     	// add the destination path too:
     	path.add(q) ;
     	return new Pair(q,path) ;

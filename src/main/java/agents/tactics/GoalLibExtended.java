@@ -70,7 +70,7 @@ public class GoalLibExtended extends GoalLib{
 	   public static  Boolean checkExplore(BeliefStateExtended belief) {
 		  
 		//var explore = belief.pathfinder.explore(belief.getGoalLocation(), BeliefStateExtended.DIST_TO_FACE_THRESHOLD);
-		var explore = belief.pathfinder.explore( belief.worldmodel.getFloorPosition() ,BeliefStateExtended.DIST_TO_FACE_THRESHOLD);
+		var explore = belief.pathfinder().explore( belief.worldmodel().getFloorPosition() ,BeliefStateExtended.DIST_TO_FACE_THRESHOLD);
 		System.out.println("checkExplore: " + explore);
 		if(explore != null)
 		{
@@ -88,7 +88,7 @@ public class GoalLibExtended extends GoalLib{
 		 * */
 	   public static  Boolean checkExploreAndButtons(BeliefStateExtended belief) {
 		  	
-		var explore = belief.pathfinder.explore( belief.worldmodel.getFloorPosition() ,BeliefStateExtended.DIST_TO_FACE_THRESHOLD);
+		var explore = belief.pathfinder().explore( belief.worldmodel().getFloorPosition() ,BeliefStateExtended.DIST_TO_FACE_THRESHOLD);
 		List<String> allButtons = new LinkedList<>() ;
 		String currentBlockedNode = belief.highLevelGragh.currentBlockedEntity; 
 		System.out.println("check Explore: " + explore);
@@ -218,7 +218,94 @@ public class GoalLibExtended extends GoalLib{
 		   return g3;
 	   }
 		
+	   /**
+	    * The type of the selected entity is not identified, based on the type f the entity we call
+	    * different method to reach it. 
+	    * */
+	   public static Boolean  entityTypePredicate(BeliefStateExtended belief) {
+		   System.out.println("predicate: diagnose the type of selected entity " );
+		   var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id;
+		   if(entityId.contains("door")) {
+			   return true;
+		   }
+		   return false;
+  		     
 
+	   }
+	   
+	   /**
+	    * Navigate to the selected button which the id nor the position is not known up front. 
+	    * */
+	   
+	   public static GoalStructure navigateToButton(BeliefStateExtended b) {
+		   return goal("This entity is in visible distance: navigate to button")
+	         	  . toSolve((BeliefStateExtended belief) -> {
+	 
+	         		  var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id; 		   
+	         		  var e = (LabEntity) belief.worldmodel.getElement(entityId) ;
+	         		  if (e==null) return false ;
+	         		  System.out.println(">>>>>>>>>>> navigateTo id of the selected button: " + e.id);
+	         		  return Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
+    
+	         	    })
+	         	  . withTactic(
+	                     FIRSTof(  
+	                     TacticLibExtended.navigateTo(), //try to move to the entity
+	                     TacticLibExtended.guidedExplore(), //find the entity
+	                     ABORT())) 
+	               . lift();
+	   }
+	   
+	   /**
+	    * Navigate to the selected button which the id nor the position is not known up front. 
+	    * */
+	   
+	   public static GoalStructure navigateToDoor(BeliefStateExtended b) {
+	      return   goal("This entity is in visible distance: navigate to door")
+	         	  . toSolve((BeliefStateExtended belief) -> {
+	 
+	         		  var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id; 		   
+	         		  var entity = (LabEntity) belief.worldmodel.getElement(entityId) ;
+	         		  if (entity==null) return false ;
+	         		  System.out.println(">>>>>>>>>>> navigateTo id of the selected door: " + entity.id);
+	         		  System.out.println(">>>>>>>>>>> navigateTo id of the selected door: distance " + Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq());
+	         		 return   (b.evaluateEntity(entityId, e -> b.age(e) == 0)
+	                		  
+	                		  );
+	         		  //return Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
+    
+	         	    })
+	         	  . withTactic(
+	                     FIRSTof(  
+	                     TacticLibExtended.navigateToClosestReachableNode(), //try to move to the entity
+	                     TacticLibExtended.guidedExplore(), //find the entity
+	                     ABORT())) 
+	               . lift();
+		
+	   }
+	   
+	   
+	   /**
+	    * This is the same as original goal structure, but the id of the entity is not given up front.
+	    * */
+	    public static GoalStructure entityInCloseRange(BeliefStateExtended b) {
+	    	//define the goal
+	        Goal goal = new Goal("This entity is closeby: ")
+	        		    . toSolve((BeliefStateExtended belief) -> {
+	                        //check if the agent is close to the goal position
+	        		    	var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id; 		   
+	  	         		  	var entity = (LabEntity) belief.worldmodel.getElement(entityId) ;
+	  	         		  	if (entity==null) return false ;
+	                        return Vec3.dist(belief.worldmodel().getFloorPosition(),entity.getFloorPosition()) <= 1 ;
+	                    });
+	        //define the goal structure
+	        return goal.withTactic(
+	        		 FIRSTof(//the tactic used to solve the goal
+	                   TacticLibExtended.navigateToCloseByPosition(),//move to the goal position
+	                   TacticLibExtended.guidedExplore(), //explore if the goal position is unknown
+	                   ABORT())) 
+	        	  . lift();
+	    }
 	   
 		/*Navigate to an entity while the id of the entity is not define at the beginning nor the position*/
 	   public static GoalStructure navigateTo(BeliefStateExtended b) {
@@ -231,32 +318,35 @@ public class GoalLibExtended extends GoalLib{
 	         		  var e = (LabEntity) belief.worldmodel.getElement(entityId) ;
 	         		  if (e==null) return false ;
 	         		//  var distsq = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition());
-	  		 System.out.println(">>>>>>>>>>> navigateTo id of the selected node: " + e.id);
+	         		  System.out.println(">>>>>>>>>>> navigateTo id of the selected node: " + e.id);
 	         		 if(entityId.contains("door")) {
-	         			System.out.println("navigateTo a door: " + Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()));
-	         			result = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 4  ;
-//	         			 if(distsq < 1.2) {System.out.println("navigateTo22222222 door: " + entityId);
-//		         		  return true ;} 
+	         			System.out.println("navigateTo a door: " + Vec3.dist(belief.worldmodel().getFloorPosition(),e.getFloorPosition()));
+	         			result = Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq() <= 4  ; 
 	         			
 	         			 }
 	         		 else {
-	         			System.out.println("navigateTo a button: " + e.id+ " ,dis, "+ Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq());
+	         			System.out.println("navigateTo a button: " + e.id+ " ,dis, "+ Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq()
+	         					+ " , dis2, " + Vec3.dist(belief.worldmodel().getFloorPosition(), e.getFloorPosition())
+	         					);
 
-	         			result = Vec3.sub(belief.worldmodel.getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
+	         			result = Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
 	         		 }
 				        return result;
 	         	    })
 	         	  . withTactic(
-	                     FIRSTof( //the tactic used to solve the goal 
-	                     TacticLibExtended.navigateTo(), //try to move to the entity
-	                     TacticLibExtended.guidedExplore(), //find the entity
-	                    // TacticLib.explore(),
+	                     FIRSTof( 
+	                     TacticLibExtended.navigateTo(), 
+	                     TacticLibExtended.guidedExplore(), 
 	                     ABORT())) 
 	               . lift();
 	       
 		   return goal1;
 		
 	   }
+	   
+	   
+	   
+	   
 	   
 	   //If then combinator
 //	   public static <State>GoalStructure IFTHEN(Predicate<State> p, GoalStructure subgoal) {
@@ -369,7 +459,9 @@ public class GoalLibExtended extends GoalLib{
 									   GoalLibExtended.selectInactiveButton(b, agent),indirectNeighbors,
 									   SEQ(GoalLibExtended.findNeighbors(agent),GoalLibExtended.selectInactiveButton(b, agent))						 
 									   ),
-				
+							   //navigate to the selected button and interact with it
+							   //if the agent can not navigate to it, means there is something that blocks its way
+							   // therefore it has to unblocked the way first.
 							  SEQ( 
 								  IFELSE2(
 									   GoalLibExtended.navigateTo(b)
@@ -448,25 +540,6 @@ public class GoalLibExtended extends GoalLib{
 	 
 	   }
 	 
-	   //just for test
-	 public static GoalStructure entityInCloseRangeTest(String entityId) {
-	    	//define the goal
-	        Goal goal = new Goal("This entity is closeby: " + entityId)
-	        		    . toSolve((BeliefStateExtended belief) -> {
-	                        //check if the agent is close to the goal position
-	        		    	var e = belief.worldmodel.getElement(entityId) ;
-	        		    	if (e == null) return false ;
-	                        //return Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()) <= 1 ;
-	                        return Vec3.dist(belief.worldmodel.getFloorPosition(),e.getFloorPosition()) <= 1.55 ;
-	                    });
-	        //define the goal structure
-	        return goal.withTactic(
-	        		 FIRSTof(//the tactic used to solve the goal
-	                   TacticLib.navigateToCloseByPosition(entityId),//move to the goal position
-	                   TacticLib.explore(), //explore if the goal position is unknown
-	                   ABORT())) 
-	        	  . lift();
-	    }
 
 	 public static GoalStructure checkDoorState(String id) {
 	    	Goal goal =  goal("Ckecking door state")
@@ -559,7 +632,7 @@ public class GoalLibExtended extends GoalLib{
 	    	Goal goal =  goal("Explor to the given direction")
 	        		.toSolve((BeliefState belief) -> { 
 	        		//	System.out.println("position Has Seen" + position +" , "+ belief.worldmodel.getFloorPosition());      			       
-	        			if(Vec3.sub(belief.worldmodel.getFloorPosition(), position).lengthSq() <= 1.5
+	        			if(Vec3.sub(belief.worldmodel().getFloorPosition(), position).lengthSq() <= 1.5
 	        					|| (belief.evaluateEntity(id, e -> belief.age(e) == 0)))
 	        			//if(belief.canReach(position) != null)
 	        			return true ;
@@ -591,8 +664,8 @@ public class GoalLibExtended extends GoalLib{
   		           		   
 			         		var ee = (LabEntity) belief.worldmodel.getElement(entityId) ;
 			         		var position = ee.position;
-		        			System.out.println("position Has Seen" + position +" , "+ belief.worldmodel.getFloorPosition());      					                    
-		        			if(Vec3.sub(belief.worldmodel.getFloorPosition(), position).lengthSq() <= 1.5
+		        			System.out.println("position Has Seen" + position +" , "+ belief.worldmodel().getFloorPosition());      					                    
+		        			if(Vec3.sub(belief.worldmodel().getFloorPosition(), position).lengthSq() <= 1.5
 		        					|| (belief.evaluateEntity(entityId, e -> belief.age(e) == 0)))
 		        			//if(belief.canReach(position) != null)
 		        			return true  ;

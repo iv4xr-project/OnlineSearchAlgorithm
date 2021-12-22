@@ -82,7 +82,7 @@ public class TacticLibExtended extends TacticLib{
 	                	//System.out.println(">>> memorized dest: " + belief.getGoalLocation()) ;
 	                	//System.out.println(">>> memorized path: " + belief.getMemorizedPath()) ;
 	                	if (belief.getMemorizedPath() != null) {
-	                		belief.worldmodel.moveToward(belief.env(),belief.getCurrentWayPoint());
+	                		belief.env().moveToward(belief.id,belief.worldmodel().getFloorPosition(),belief.getCurrentWayPoint());	
 	                		return belief ;
 	                	}
 	                	else return null ;
@@ -383,7 +383,7 @@ public class TacticLibExtended extends TacticLib{
 							}
 						}
 					}
-					
+					if(selectedNode == null) return new Pair(null,belief);
 					belief.highLevelGragh.currentSelectedEntity = selectedNode;
 					System.out.println(">>>>>>>>>>>********selected node: " + belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id + 
 					belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).position);
@@ -460,7 +460,7 @@ public class TacticLibExtended extends TacticLib{
         Tactic interact = action("Interact")
                . do2((BeliefStateExtended belief) -> (WorldEntity e) -> {
             	   System.out.println(">>> interact dynamicly " ) ;
-                	  var obs = belief.worldmodel.interact(belief.env(), LabWorldModel.INTERACT, e)  ;   
+                	  var obs = belief.env().interact(belief.id, e.id, LabWorldModel.INTERACT)  ;   
                 	//WP change: adding this wait; ... not an ideal solution as it ignores thread interrupt:
                 	  try {
                 		  // LR has 0.5s timeout before a button can be interacted again, so we need to wait: 
@@ -476,18 +476,18 @@ public class TacticLibExtended extends TacticLib{
             	    var selectedNode = belief.highLevelGragh.currentSelectedEntity;
             	    if(selectedNode == null ) return null;
             	    var objectID = belief.highLevelGragh.entities.get(selectedNode).id;
-                	var e = belief.worldmodel.getElement(objectID) ;
+                	var e = belief.worldmodel().getElement(objectID) ;
                 	//System.out.println(">>>> " + objectID + ": " + e) ;
                 	if (e==null) return null ;
-                	System.out.println(">>>>>>>>>>>>>********** interact dynamicly " + e.id  + belief.worldmodel.canInteract(LabWorldModel.INTERACT, e)) ;
-                	if (belief.worldmodel.canInteract(LabWorldModel.INTERACT, e)) {
+                	System.out.println(">>>>>>>>>>>>>********** interact dynamicly " + e.id  + belief.canInteract( e.id)) ;
+                	if (belief.canInteract(e.id)) {
                 		return e ;
                 	}
                 	System.out.println(">>> cannot interact with " + e.id) ;
-            		System.out.println("    Agent pos: " + belief.worldmodel.getFloorPosition()) ;
+            		System.out.println("    Agent pos: " + belief.worldmodel().getFloorPosition()) ;
             		System.out.println("    Entity pos:" + e.getFloorPosition()) ;
             		System.out.println("    Entity extent:" + e.extent) ;
-            		var dist = Vec3.dist(belief.worldmodel.getFloorPosition(), e.getFloorPosition()) ;
+            		var dist = Vec3.dist(belief.worldmodel().getFloorPosition(), e.getFloorPosition()) ;
             		System.out.println("    Dist: " + dist) ;
             		
                 	return null ;
@@ -661,16 +661,16 @@ public class TacticLibExtended extends TacticLib{
     					 // in this state we must decide a new exploration target:
     					 System.out.println("if ### Explore: explore" ) ;
                          //get the location of the closest unexplored node
-        				 var position = belief.worldmodel.getFloorPosition() ;        				 
+        				 var position = belief.worldmodel().getFloorPosition() ;        				 
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
-        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD,belief.getViewDistance(), (List<Vec3>) memo.memorized) ;   				 
+        				 var path = belief.pathfinder().explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD,belief.getViewDistance(), (List<Vec3>) memo.memorized) ;   				 
         				 if (path==null || path.isEmpty()) {
         					memo.moveState("exhausted") ;
                             System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;
                             return null ;
         				 }
         				 List<Vec3> explorationPath = path.stream()
-        						            .map(v -> belief.pathfinder.vertices.get(v))
+        						            .map(v -> belief.pathfinder().vertices.get(v))
         						            .collect(Collectors.toList()) ;
         				         				 				         				 
         				 var target = explorationPath.get(explorationPath.size() - 1) ;        	
@@ -678,7 +678,7 @@ public class TacticLibExtended extends TacticLib{
         				 System.out.println("###***** setting a new exploration target: " + target) ;
                          System.out.println("### abspath to exploration target: " + path) ;
                          System.out.println("### path to exploration target: " + explorationPath) ;
-                         memo.memorized.clear();
+                         //memo.memorized.clear();
                          memo.memorize(target);
                          memo.moveState("inTransit") ; // move the exploration state to inTransit...
                          return new Pair(target, explorationPath);//return the path finding information
@@ -688,7 +688,7 @@ public class TacticLibExtended extends TacticLib{
     					 Vec3 exploration_target = (Vec3) memo.memorized.get(memo.memorized.size()-1) ;
                          // note that exploration_target won't be null because we are in the state
                          // in-Transit
-                         Vec3 agentLocation = belief.worldmodel.getFloorPosition() ;
+                         Vec3 agentLocation = belief.worldmodel().getFloorPosition() ;
                          Vec3 currentDestination = belief.getGoalLocation() ;
                          var distToExplorationTarget = Vec3.dist(agentLocation,exploration_target) ;
                          if (distToExplorationTarget <= EXPLORATION_TARGET_DIST_THRESHOLD // current exploration target is reached
@@ -878,7 +878,7 @@ public class TacticLibExtended extends TacticLib{
 
 				. on((BeliefState belief) -> {
 
-					LabEntity e = belief.worldmodel.getElement(id) ;
+					LabEntity e = belief.worldmodel().getElement(id) ;
     			    if (e==null) return null ;
 
 					Vec3 nodeLocation = null ;
@@ -895,8 +895,8 @@ public class TacticLibExtended extends TacticLib{
     			        var entity_location = e.getFloorPosition() ;
 	    			    List<Pair<Vec3,Float>> candidates = new LinkedList<>() ;
 	    			    int k=0 ;
-	    			    for (Vec3 v : belief.pathfinder.vertices) {
-	    			    	if (belief.pathfinder.seenVertices.get(k) && (Vec3.dist(v, entity_location)) <= belief.getViewDistance()) {
+	    			    for (Vec3 v : belief.pathfinder().vertices) {
+	    			    	if (belief.pathfinder().seenVertices.get(k) && (Vec3.dist(v, entity_location)) <= belief.getViewDistance()) {
 	    			    		// v has been seen:
 	    			    		candidates.add(new Pair(v, Vec3.dist(entity_location, v))) ;
 	    			    	}
@@ -938,6 +938,93 @@ public class TacticLibExtended extends TacticLib{
 			   )  ;
 	}
 
+	
+	/**
+	 * Navigate to a location, nearby the given entity, if the location is reachable.
+	 * Locations east/west/south/north of the entity of distance 0.7 will be tried.
+	 * 
+	 * This is the same as original tactic, but the id of the entity is not given.
+	 */
+	static Tactic navigateToCloseByPosition() {
+
+		MiniMemory memory = new MiniMemory("S0") ;
+
+		Action move =
+				unguardedNavigateTo("Navigate to a position nearby ")
+
+				. on((BeliefStateExtended belief) -> {
+
+					var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id;
+                    
+					LabEntity e = belief.worldmodel().getElement(entityId) ;
+    			    if (e==null) return null ;
+
+					Vec3 closeByLocation = null ;
+					if (!memory.memorized.isEmpty()) {
+						// if the position has been calculated before, retrieve it from memory:
+						closeByLocation = (Vec3) memory.memorized.get(0) ;
+					}
+					Vec3 currentGoalLocation = belief.getGoalLocation() ;
+
+					if (closeByLocation == null
+					    || currentGoalLocation == null
+					    || Vec3.dist(closeByLocation,currentGoalLocation) >= 0.05
+					    || belief.getMemorizedPath() == null) {
+						// in all these cases we need to calculate the location to go
+
+						//var agent_location = belief.worldmodel.getFloorPosition() ;
+	    			    var entity_location = e.getFloorPosition() ;
+	    			    // Calculate the center of the square on which the target entity is located.
+	    			    // Note: the bottom-left position of the bottom-left corner is (0.5,-,0.5) so this need to be taken into
+	    			    // account.
+	    			    // First, substract 0.5 from (x,z) ... then round it down. Add 0.5 to get the center position.
+	    			    // Then add another 0.5 to compensate the 0.5 that we substracted earlier.
+	    			    var entity_sqcenter = new Vec3((float) Math.floor((double) entity_location.x - 0.5f) + 1f,
+	    			    		entity_location.y,
+	    			    		(float) Math.floor((double) entity_location.z - 0.5f) + 1f) ;
+	    			    
+	    			    List<Vec3> candidates = new LinkedList<>() ;
+	    			    float delta = 0.5f ;
+	    			    // adding North and south candidates
+	    			    candidates.add(Vec3.add(entity_sqcenter, new Vec3(0,0,delta))) ;
+	    			    candidates.add(Vec3.add(entity_sqcenter, new Vec3(0,0,-delta))) ;
+	    			    // adding east and west candidates:
+	    			    candidates.add(Vec3.add(entity_sqcenter, new Vec3(delta,0,0))) ;
+	    			    candidates.add(Vec3.add(entity_sqcenter, new Vec3(-delta,0,0))) ;
+
+	    			    // iterate over the candidates, if one would be reachable:
+	    			    for (var c : candidates) {
+	    			    	// if c (a candidate point near the entity) is on the navigable,
+	    			    	// we should ignore it:
+	    			    	if (getCoveringFaces(belief,c) == null) continue ;
+	    			    	var result = belief.findPathTo(c, true) ; 
+	    			    	if (result != null) {
+	    			    		// found our target
+	    			    		System.out.println(">>> a reachable closeby position found :" + c + ", path: " + result.snd) ;
+	    			    		memory.memorized.clear();
+	    			    		memory.memorize(c);
+	    			    		return result ;
+	    			    	}
+	    			    }
+	    			    System.out.println(">>> i tried few nearby locations, but none are reachable :|") ;
+	    			    // no reachable node can be found. We will clear the memory, and declare the tactic as disabled
+	    			    memory.memorized.clear() ;
+	    			    return null ;
+					}
+					else {
+						// else the memorized location and the current goal-location coincide. No need to
+						// recalculate the path, so we will just return the pair (memorized-loc,null)
+						return new Pair (closeByLocation,null) ;
+					}
+				}) ;
+
+		return  FIRSTof(
+				 forceReplanPath(),
+				 tryToUnstuck(),
+				 move.lift()
+			   ) ;
+	}
+	
 	/**
 	 * If the selected node is a blocked entity, a new goal to open this blocked entity
 	 * will add as a sub-goal. 
@@ -1046,19 +1133,19 @@ public class TacticLibExtended extends TacticLib{
     					 // in this state we must decide a new exploration target:
     					 System.out.println("if ### Explore: explore" ) ;
                          //get the location of the closest unexplored node
-        				 var position = belief.worldmodel.getFloorPosition() ;        				 
+        				 var position = belief.worldmodel().getFloorPosition() ;        				 
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
         				 System.out.println("agent position**********: " + position + "*******target list " + memo.memorized);
         				 		
         				 System.out.println("***********************view distance " + belief.getViewDistance());
-        				 var path = belief.pathfinder.explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD, belief.getViewDistance(),(List<Vec3>) memo.memorized) ;   				 
+        				 var path = belief.pathfinder().explore(position,destination,BeliefState.DIST_TO_FACE_THRESHOLD, belief.getViewDistance(),(List<Vec3>) memo.memorized) ;   				 
         				 if (path==null || path.isEmpty()) {
         					memo.moveState("exhausted") ;
                             System.out.println("###*** no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;
                             return null ;
         				 }
         				 List<Vec3> explorationPath = path.stream()
-        						            .map(v -> belief.pathfinder.vertices.get(v))
+        						            .map(v -> belief.pathfinder().vertices.get(v))
         						            .collect(Collectors.toList()) ;
         				         				 				         				 
         				 var target = explorationPath.get(explorationPath.size() - 1) ;        	
@@ -1078,7 +1165,7 @@ public class TacticLibExtended extends TacticLib{
     					 System.out.println("exploration_target" + exploration_target ) ;
     					 // note that exploration_target won't be null because we are in the state
                          // in-Transit
-                         Vec3 agentLocation = belief.worldmodel.getFloorPosition() ;
+                         Vec3 agentLocation = belief.worldmodel().getFloorPosition() ;
                          Vec3 currentDestination = belief.getGoalLocation() ;
                          var distToExplorationTarget = Vec3.dist(agentLocation,exploration_target) ;
                          if (distToExplorationTarget <= EXPLORATION_TARGET_DIST_THRESHOLD // current exploration target is reached
@@ -1120,59 +1207,39 @@ public class TacticLibExtended extends TacticLib{
 	static Tactic navigateToClosestReachableNode() {
 
 		MiniMemory memory = new MiniMemory("S0") ;
-		
+		System.out.println("navigate To Closest Reachable Node without id");
 		Action move =
 				unguardedNavigateTo("Navigate to a navigation vertex nearby ")
 
 				. on((BeliefStateExtended belief) -> {
-					
-					//LabEntity e = belief.worldmodel.getElement(id) ;
-					var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id;
-	           		   
-	         		var e = (LabEntity) belief.worldmodel.getElement(entityId) ;
-//					System.out.println("navigate to close reachable:*** goal location: " + belief.getGoalLocation()
-//					+ "***door1 location: "   + "***agent position"+ belief.worldmodel.getFloorPosition()
-//					+ "***path to entity position"
-//					);
-					
-				//	if(belief.findPathTo(e.position,true) ==null) { return null;}
-    			    
-					if (e==null) return null ;
-					
+
+					 var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id;
+			                             
+					LabEntity e = belief.worldmodel().getElement(entityId) ;
+    			    if (e==null) return null ;
+
 					Vec3 nodeLocation = null ;
 					if (!memory.memorized.isEmpty()) {
 						nodeLocation = (Vec3) memory.memorized.get(0) ;
 					}
-					
 					Vec3 currentGoalLocation = belief.getGoalLocation() ;
-					
-					
-					if(nodeLocation != null && currentGoalLocation != null)
-					System.out.println("navigate to close reachable move:" + 
-					(Vec3.dist(nodeLocation,currentGoalLocation)) + 
-					 "selected node" + nodeLocation + " current goal location "+ currentGoalLocation);
-					
+
 					if (nodeLocation == null
 					    || currentGoalLocation == null
-					    || Vec3.dist(nodeLocation,currentGoalLocation) >= 0.05
-					    ) {
+					    || Vec3.dist(nodeLocation,currentGoalLocation) >= 0.05) {
 						// in all these cases we need to calculate the node to go
-						
+
     			        var entity_location = e.getFloorPosition() ;
-    			        
 	    			    List<Pair<Vec3,Float>> candidates = new LinkedList<>() ;
 	    			    int k=0 ;
-	    			    
-	    			    
-	    			    for (Vec3 v : belief.pathfinder.vertices) {
-	    			    	if (belief.pathfinder.seenVertices.get(k)) {
+	    			    for (Vec3 v : belief.pathfinder().vertices) {
+	    			    	if (belief.pathfinder().seenVertices.get(k) && (Vec3.dist(v, entity_location)) <= belief.getViewDistance()) {
 	    			    		// v has been seen:
-	    			    		candidates.add(new Pair(v, Vec3.dist(entity_location, v))) ;	    			    		
+	    			    		candidates.add(new Pair(v, Vec3.dist(entity_location, v))) ;
 	    			    	}
 	    			    	k++ ;
 	    			    }
-	    			    	    			   
-	    			    
+
 		    		    if (candidates.isEmpty()) return null ;
 		    		    // sort the candidates according to how close they are to the entity e (closest first)
 		    		    candidates.sort((c1,c2) -> c1.snd.compareTo(c2.snd));
@@ -1193,17 +1260,11 @@ public class TacticLibExtended extends TacticLib{
 		    			// no reachable node can be found. We will clear the memory, and declare the tactic as disabled
 		    			memory.memorized.clear() ;
 		    			return null ;
-					}				
+					}
 					else {
 						// else the memorized location and the current goal-location coincide. No need to
 						// recalculate the path, so we will just return the pair (memorized-loc,null)
-						System.out.println("navigate to close reachable: else part: " +  e.timestamp +"++"+ belief.age(entityId) );
-						if(belief.age(entityId) != 0) {
-					//		memory.memorized.clear() ;   
-							return null;
-							}
 						return new Pair (nodeLocation,null) ;
-						
 					}
 				}) ;
 
