@@ -889,7 +889,9 @@ public class TacticLibExtended extends TacticLib{
 
 					if (nodeLocation == null
 					    || currentGoalLocation == null
-					    || Vec3.dist(nodeLocation,currentGoalLocation) >= 0.05) {
+					    || Vec3.dist(nodeLocation,currentGoalLocation) >= 0.05
+					    || !memory.stateIs(e.id)
+							) {
 						// in all these cases we need to calculate the node to go
 
     			        var entity_location = e.getFloorPosition() ;
@@ -916,6 +918,7 @@ public class TacticLibExtended extends TacticLib{
 		    			        System.out.println(">>> a reachable nearby node found :" + c.fst + ", path: " + result.snd) ;
 		    			        memory.memorized.clear();
 		    			        memory.memorize(result.fst);
+		    			        memory.moveState(e.id);
 		    			    	return result ;
 		    			    }
 		    		    }
@@ -969,6 +972,7 @@ public class TacticLibExtended extends TacticLib{
 					if (closeByLocation == null
 					    || currentGoalLocation == null
 					    || Vec3.dist(closeByLocation,currentGoalLocation) >= 0.05
+					    || ! memory.stateIs(e.id)
 					    || belief.getMemorizedPath() == null) {
 						// in all these cases we need to calculate the location to go
 
@@ -1003,6 +1007,7 @@ public class TacticLibExtended extends TacticLib{
 	    			    		System.out.println(">>> a reachable closeby position found :" + c + ", path: " + result.snd) ;
 	    			    		memory.memorized.clear();
 	    			    		memory.memorize(c);
+	    			    		memory.moveState(e.id);
 	    			    		return result ;
 	    			    	}
 	    			    }
@@ -1226,7 +1231,9 @@ public class TacticLibExtended extends TacticLib{
 
 					if (nodeLocation == null
 					    || currentGoalLocation == null
-					    || Vec3.dist(nodeLocation,currentGoalLocation) >= 0.05) {
+					    || Vec3.dist(nodeLocation,currentGoalLocation) >= 0.05
+					    || !memory.stateIs(e.id)
+							) {
 						// in all these cases we need to calculate the node to go
 
     			        var entity_location = e.getFloorPosition() ;
@@ -1253,6 +1260,7 @@ public class TacticLibExtended extends TacticLib{
 		    			        System.out.println(">>> a reachable nearby node found :" + c.fst + ", path: " + result.snd) ;
 		    			        memory.memorized.clear();
 		    			        memory.memorize(result.fst);
+		    			        memory.moveState(e.id);
 		    			    	return result ;
 		    			    }
 		    		    }

@@ -112,7 +112,7 @@ public class GoalLibExtended extends GoalLib{
 	 }
 	   
 	   public static GoalStructure findNeighbors(TestAgent agent) {
-		   
+		   System.out.println(">>>>>>find new neighbors");
 		   return SEQ(GoalLibExtended.exploreTill(agent),GoalLibExtended.neighborsObjects(agent));
 		   
 			
@@ -296,7 +296,7 @@ public class GoalLibExtended extends GoalLib{
 	        		    	var entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id; 		   
 	  	         		  	var entity = (LabEntity) belief.worldmodel.getElement(entityId) ;
 	  	         		  	if (entity==null) return false ;
-	                        return Vec3.dist(belief.worldmodel().getFloorPosition(),entity.getFloorPosition()) <= 1 ;
+	                        return Vec3.dist(belief.worldmodel().getFloorPosition(),entity.getFloorPosition()) <= 1.5 ;
 	                    });
 	        //define the goal structure
 	        return goal.withTactic(

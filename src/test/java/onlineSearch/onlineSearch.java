@@ -59,13 +59,7 @@ public class onlineSearch {
 	    	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
 	    }
 
-	    //methods for prolog 
-
-		/**
-		 * To keep track which button the agent toggled last.
-		 */
-		// FRAGILE!
-		WorldEntity lastInteractedButton = null;
+	   
 	 
 	    @AfterAll
 	    static void close() { if(labRecruitsTestServer!=null) labRecruitsTestServer.close(); }
@@ -87,15 +81,15 @@ public class onlineSearch {
 	     */
 	    @Test
 	    public void closetReachableTest() throws InterruptedException {
-	    	//String levelName = "";
-	    	String levelName = "CompetitionGrander//bm2021";
-	    	String fileName = "BM2021_diff1_R4_1_1_M";
+	    	String levelName = "";
+	    	//String levelName = "CompetitionGrander//bm2021";
+	    	String fileName = "ddo_the_sanctuary_withdoors";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 5f;
-	    	String treasureDoor = "door5";
+	    	String treasureDoor = "doorEntrance";
 	    	Vec3 goalPosition =  null; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
@@ -223,26 +217,7 @@ public class onlineSearch {
 //	               testAgent.getState().pathfinder.perfect_memory_pathfinding = false;
 //	               
 	               
-		        	// check if a button is just interacted:
-					for(WorldEntity e: testAgent.getState().changedEntities) {
-						if(e.type.equals("Switch") && e.hasPreviousState()) {
-							DebugUtil.log(">> detecting interaction with " + e.id) ;
-							lastInteractedButton = e ;					
-						}
-					}
-					// check doors that change state, and add connections to lastInteractedButton:
-					if(lastInteractedButton != null) {
-						for(WorldEntity e: testAgent.getState().changedEntities) {							
-							if(e.type.equals("Door") && e.hasPreviousState()) {
-								try {
-									beliefState.prolog.registerConnection(lastInteractedButton.id,e.id) ;
-								} catch (InvalidTheoryException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
-							}	
-						}
-					}
+  	
 					
 					if(beliefState.worldmodel().health <= 0) {
 						DebugUtil.log(">>>> the agent died. Aaaw.");

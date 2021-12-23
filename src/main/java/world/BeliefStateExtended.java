@@ -144,7 +144,7 @@ public class BeliefStateExtended extends BeliefState {
 			if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
 				if(e.timestamp == worldmodel.timestamp) {
 					var sqdist = Vec3.distSq(worldmodel.position,e.position) ;
-					if(sqdist <= 4) {
+					if(sqdist <= getViewDistance()) {
 						try {
 							registerFoundGameObjects(e);
 						} catch (InvalidTheoryException e1) {
@@ -152,10 +152,28 @@ public class BeliefStateExtended extends BeliefState {
 							e1.printStackTrace();
 						}
 					}
-
 				}
 			}
 		}
+		for(WorldEntity e: changedEntities) {
+			if(e.type.equals("Switch") && e.hasPreviousState()) {
+				DebugUtil.log(">> detecting interaction with " + e.id) ;
+				// check doors that change state, and add connections to lastInteractedButton:
+				for(WorldEntity ed: changedEntities) {							
+					if(e.type.equals("Door") && ed.hasPreviousState()) {
+						try {
+							prolog.registerConnection(e.id,ed.id) ;
+						} catch (InvalidTheoryException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}	
+				}					
+			}
+		}
+		
+		
+		
 	}
     
 	/**
@@ -173,6 +191,8 @@ public class BeliefStateExtended extends BeliefState {
 			prolog.registerDoor(e.id);
 		}
 	}
+	
+	
 	
 	/**
 	 * This finding path is the same as the original findPAthTo. The difference is that 
