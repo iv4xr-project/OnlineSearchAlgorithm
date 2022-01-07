@@ -47,7 +47,7 @@ public class GoalLibExtended extends GoalLib{
 	 
 	 
 		/* explore the environment when there is no entity in the agent visibility range, until it sees a new entity*/
-	   public static <State> GoalStructure exploreTill(TestAgent agent) {
+	   public static <State> GoalStructure exploreTill(TestAgent agent,BeliefStateExtended beliefState) {
 		 var g = goal("explore")
 		 			.toSolve( 				
 		 					(BeliefState s) -> {
@@ -56,16 +56,24 @@ public class GoalLibExtended extends GoalLib{
 		 					)
 		 				.withTactic(			
 		 					FIRSTof(
-		                     TacticLib.explore(),				   
+		                     TacticLibExtended.newExplore(),				   
 		                     ABORT()
 		                     )
 		 				)
 		 			.lift();
 		 g.maxbudget(8);
 		 //return g;
-		 return FIRSTof(g, SUCCESS()) ;
+		 return FIRSTof(SEQ(lift((BeliefStateExtended b) -> GoalLibExtended.clearPath(beliefState)),g), SUCCESS()) ;
 	   }
 	 
+	   public static Boolean clearPath(BeliefStateExtended belief) {
+		   
+			if( belief.getMemorizedPath() != null && !belief.getMemorizedPath().isEmpty()) {
+				belief.clearGoalLocation();
+				}
+			return true;		
+	   }
+	   
 		/*Check if there is still unvisited node to discover or not*/
 	   public static  Boolean checkExplore(BeliefStateExtended belief) {
 		  
@@ -111,9 +119,9 @@ public class GoalLibExtended extends GoalLib{
 		return true;
 	 }
 	   
-	   public static GoalStructure findNeighbors(TestAgent agent) {
+	   public static GoalStructure findNeighbors(TestAgent agent,BeliefStateExtended belief) {
 		   System.out.println(">>>>>>find new neighbors");
-		   return SEQ(GoalLibExtended.exploreTill(agent),GoalLibExtended.neighborsObjects(agent));
+		   return SEQ(GoalLibExtended.exploreTill(agent,belief),GoalLibExtended.neighborsObjects(agent));
 		   
 			
 	 }
@@ -269,10 +277,14 @@ public class GoalLibExtended extends GoalLib{
 	         		  if (entity==null) return false ;
 	         		  System.out.println(">>>>>>>>>>> navigateTo id of the selected door: " + entity.id);
 	         		  System.out.println(">>>>>>>>>>> navigateTo id of the selected door: distance " + Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq());
-	         		 return   (b.evaluateEntity(entityId, e -> b.age(e) == 0)
-	                		  
-	                		  );
-	         		  //return Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq() <= 1 ;
+//	         		 return   (b.evaluateEntity(entityId, e -> b.age(e) == 0)
+//	                		  
+//	                		  );
+	         		if(Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq() <= 1.5
+        					&& (belief.evaluateEntity(entity.id, e -> belief.age(e) == 0)))
+        			//if(belief.canReach(position) != null)
+        			return true ;
+                    return false;
     
 	         	    })
 	         	  . withTactic(
@@ -457,7 +469,7 @@ public class GoalLibExtended extends GoalLib{
 							   // if there is no- button, it reset all buttons once(because of multi-connection setup)
 							   FIRSTof(
 									   GoalLibExtended.selectInactiveButton(b, agent),indirectNeighbors,
-									   SEQ(GoalLibExtended.findNeighbors(agent),GoalLibExtended.selectInactiveButton(b, agent))						 
+									   SEQ(GoalLibExtended.findNeighbors(agent,b),GoalLibExtended.selectInactiveButton(b, agent))						 
 									   ),
 							   //navigate to the selected button and interact with it
 							   //if the agent can not navigate to it, means there is something that blocks its way

@@ -549,6 +549,7 @@ public class Prolog {
 		Set<Pair<String,String>> cons = new HashSet<>() ;
 		for(WorldEntity B : belief.knownButtons()) {
 			var doors = pQueryAll("D", and(isDoor.on("D"), wiredTo.on(B.id,"D"))) ;
+			System.out.println("get connection: " + doors.isEmpty() + doors.size());
 			for(var D : doors) {
 				cons.add(new Pair(B.id,D)) ;
 			}
