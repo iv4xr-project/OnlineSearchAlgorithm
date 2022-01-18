@@ -8,9 +8,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import alice.tuprolog.InvalidTheoryException;
 import eu.iv4xr.framework.extensions.pathfinding.AStar;
 import eu.iv4xr.framework.mainConcepts.TestAgent;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
+import eu.iv4xr.framework.mainConcepts.ObservationEvent.TimeStampedObservationEvent;
 import eu.iv4xr.framework.spatial.Vec3;
 import nl.uu.cs.aplib.agents.MiniMemory;
 import nl.uu.cs.aplib.mainConcepts.Action;
@@ -120,12 +122,20 @@ public class TacticLibExtended extends TacticLib{
                     //State update   
                 	//prints entities in the same time stamp
                 	belief.newlyObservedEntities().forEach (	
-                			e -> System.out.println("seen in the same time stamp " + e.id + " e timestam: " +  e.timestamp + " curenttimestamp : " 
-                    + belief.worldmodel.timestamp + " id :" + e.id)	
-                			);     	
+                			e -> {System.out.println("seen in the same time stamp " + e.id + " e timestam: " +  e.timestamp + " curenttimestamp : " 
+                    + belief.worldmodel.timestamp + " id :" + e.id); 
+//                	try {
+//                		System.out.println("register e " + e.id);
+//						belief.registerFoundGameObjects(e);
+//					} catch (InvalidTheoryException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+                	});     	
                 	var x = belief.newlyObservedEntities();
                 	if(x == null) {System.out.println("newlyObservedEntities is null"); return new Pair(null,belief);}
                 	//belief.mergeNewlyObservedEntities(belief.newlyObservedEntities());
+                	
                 	var y = belief.mergeNewlyObservedEntities(belief.newlyObservedEntities());
                 	if( y == false) { System.out.println("mergeNewlyObservedEntities is null"); return new Pair(null,belief); } 	
                 	return new Pair(true,belief);
@@ -186,6 +196,7 @@ public class TacticLibExtended extends TacticLib{
 						 * vertices that agent has seen. we choose the nearest one. 
 						 * */
 						for(int i = 0 ; i<belief.highLevelGragh.entities.size(); i++) {
+							if(belief.highLevelGragh.entities.get(i).id.contains("door")) {doors.add(i);}
 							var goalDistance  = goalPosition != null ? Vec3.dist(belief.highLevelGragh.vertices.get(i), goalPosition) : null;
 							var y  = Vec3.dist(belief.highLevelGragh.vertices.get(i), agentLocation);			
 							if(distance == 0) {
@@ -233,8 +244,6 @@ public class TacticLibExtended extends TacticLib{
 							System.out.println("visited nodes: " + element + " : "+ belief.highLevelGragh.entities.get(element).id);
 							
 						}
-						
-						
 						for(Integer element : neighbors) {
 							System.out.println(" neighbor of the current position: " + element +" : "+ belief.highLevelGragh.entities.get(element).id);
 							//check if the node is not selected before: unvisitedNode
@@ -321,10 +330,13 @@ public class TacticLibExtended extends TacticLib{
 						System.out.println("Select one unchecked entity" + selectedNode); 
 					}
 					
+					belief.highLevelGragh.entities.forEach(e -> System.out.println("entites id : " + e.id ));
+					System.out.println("There is more than one door : " +doors.size() );
 					//if there are some unvisited doors in the neighbors, we give the priority to select between them.
 					
 					if(!doors.isEmpty() && !belief.highLevelGragh.entities.get(tempSelectedNode).id.contains("door")) {							
-						if(doors.size()>1) {								
+						if(doors.size()>1) {
+							
 							distance = 0;	
 							for(Integer element : doors) {
 								var goalDistance  = goalPosition != null ? Vec3.dist(belief.highLevelGragh.vertices.get(element), goalPosition) : null;
@@ -357,6 +369,7 @@ public class TacticLibExtended extends TacticLib{
 							
 						
 						}else {
+							System.out.println("There is only one door : " + doors.get(0) );
 							selectedNode = doors.get(0);
 						}
 					}
@@ -434,6 +447,7 @@ public class TacticLibExtended extends TacticLib{
 								//when we clean the all visited nodes to force agent to check the previous visited nodes
 								// the agent won't add the current position which is the blocked node to the visited node
 								belief.highLevelGragh.visitedNodes.add(belief.highLevelGragh.getIndexById(belief.highLevelGragh.currentBlockedEntity));
+								
 								//System.out.println("clear list");
 								GoalStructure unblockedDoor = GoalLibExtended.findCorrespondingButton(belief,agent);
 								agent.addAfter(unblockedDoor);	
@@ -538,33 +552,20 @@ public class TacticLibExtended extends TacticLib{
 						if( belief.highLevelGragh.entities.get(i).type.equals(LabEntity.SWITCH) 
 								//&&!belief.isOn(entities.get(i).id) 
 								&&!(belief.buttonDoorConnection.get(currentNodeId).contains(entities.get(i).id))
-								&& !entities.get(i).id.contains("door")) {	
-							var goalDistance  = goalPosition != null ? Vec3.dist(belief.highLevelGragh.vertices.get(i), goalPosition) : null;	
+								&& !entities.get(i).id.contains("door")) {		
 							var y  = Vec3.dist(belief.highLevelGragh.vertices.get(i), belief.highLevelGragh.vertices.get(agentLocation));
 								if(distance == 0) {
 									distance = y; 
 									selectedNode = i;
-									//considering agent position and nearest node to the goal position
-								if(goalPosition != null) {
-									distances.add(y);
-									distances.add(goalDistance);}
 									}
 								else {						
-									if(goalPosition == null) {
-										//just consider the nearest node to the agent position
-										if(y<distance) { distance = y; selectedNode = i; }
-									}else {
-										// considering agent position and nearest node to the goal position
-										if((y>distances.get(0) && goalDistance < distances.get(1)) || 
-												(y<distances.get(0) && goalDistance < distances.get(1)) ) {
-											distances.set(0, y); distances.set(1, goalDistance);  selectedNode = i; 
-											}	
-									}
+									if(y<distance) { distance = y; selectedNode = i; }
 								}	
 							}							
 					}
-				//	System.out.println("indirect inactive button " + selectedNode + entities.get(selectedNode).id);
+					
 					if(selectedNode != null) {
+						System.out.println("indirect inactive button " + selectedNode + entities.get(selectedNode).id);
 						belief.highLevelGragh.currentSelectedEntity = selectedNode; 
 						if(!belief.highLevelGragh.visitedNodes.contains(selectedNode)) belief.highLevelGragh.visitedNodes.add(selectedNode); 		
 						belief.buttonDoorConnection.get(currentNodeId).add(belief.highLevelGragh.entities.get(selectedNode).id);												
@@ -728,8 +729,8 @@ public class TacticLibExtended extends TacticLib{
     
     /** The agent is trapped in some room, while it is moving from entity A to B
      * It Checks the prolog data set to know is there any door connected to a button that
-     * can open a path to B. If there are more than one door or a door is connected to multi 
-     * button, it selects a door based on some policies.
+     * can open a path to B. If there are more than one doors or a door is connected to multi 
+     * buttons, it selects a door based on some policies.
      *  */
   	public static Tactic unlockAgent(BeliefState b, TestAgent agent) {			
   		var addNewGoal =   action("use prolog to help an agent to untrapped").do1(
@@ -801,10 +802,14 @@ public class TacticLibExtended extends TacticLib{
   					// add a new goal to interact with the selected button, 
   					GoalStructure unblockedDoor = GoalLibExtended.interactWithAButtonAndCheckDoor(selectedButon,selectedDoor);
 					agent.addAfter(unblockedDoor);
+					
+					//register the blocked doors name in the data collector
+					agent.registerEvent(new TimeStampedObservationEvent(selectedDoor));
+					
 					//the inserted goal dos'nt need to be removed after success because we remove the main 
 				    //extra goal 	
 					
-					System.out.println(">>**** A new goal to open the blocked door added");
+					System.out.println(">>**** A new goal to open the blocked door added " + selectedDoor);
 					belief.goalsmap.put("temporaryDoor",unblockedDoor);
 					
   					return belief;
@@ -1049,10 +1054,11 @@ public class TacticLibExtended extends TacticLib{
 					belief.highLevelGragh.currentBlockedEntity = entity.id;
 					// the agent won't add the current position which is the blocked node to the visited node
 					belief.highLevelGragh.visitedNodes.add(belief.highLevelGragh.getIndexById(belief.highLevelGragh.currentBlockedEntity));
-					
+					//register the blocked doors name in the data collector
+					agent.registerEvent(new TimeStampedObservationEvent(belief.highLevelGragh.currentBlockedEntity));
 					GoalStructure unblockedDoor = GoalLibExtended.findCorrespondingButton(belief,agent);
 					agent.addAfter(unblockedDoor);	
-					System.out.println(">>**** A new goal to open the blocked door added");
+					System.out.println(">>**** A new goal to open the blocked door added " + belief.highLevelGragh.currentBlockedEntity);
 					belief.goalsmap.put(entity.id,unblockedDoor);
 					List<String> list = new ArrayList<>();
 					if(!belief.buttonDoorConnection.containsKey(entity.id))

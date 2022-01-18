@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import com.sun.net.httpserver.Authenticator.Success;
 
 import alice.tuprolog.InvalidTheoryException;
+import static eu.iv4xr.framework.mainConcepts.ObservationEvent.*;
 import eu.iv4xr.framework.mainConcepts.TestAgent;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.spatial.Vec3;
@@ -119,14 +120,45 @@ public class GoalLibExtended extends GoalLib{
 		return true;
 	 }
 	   
+	 /**
+	  * explore the game world to till the agent sees a new objects
+	  * */
 	   public static GoalStructure findNeighbors(TestAgent agent,BeliefStateExtended belief) {
 		   System.out.println(">>>>>>find new neighbors");
-		   return SEQ(GoalLibExtended.exploreTill(agent,belief),GoalLibExtended.neighborsObjects(agent));
+		   return SEQ(
+				  SEQ(  
+						  lift((b) -> GoalLibExtended.startExploreRecorder(agent)),
+						  GoalLibExtended.exploreTill(agent,belief)
+						  ,lift((b) -> GoalLibExtended.endExploreRecorder(agent))
+				   )
+				   ,GoalLibExtended.neighborsObjects(agent));
 		   
 			
 	 }
 	   
-		/* Apply AStar algorithm to find a path to the given goal */
+	   /**
+	    * recording the data 
+	    * */
+	   public static Boolean  startExploreRecorder(TestAgent agent) {
+		   System.out.println("predicate: start to save the data in explore goal structure " );
+		   agent.registerEvent(new TimeStampedObservationEvent("startExploreRecorder"));
+		   return true;
+  		     
+
+	   }
+	   
+	   /**
+	    * recording the data 
+	    * */
+	   public static Boolean  endExploreRecorder(TestAgent agent) {
+		   System.out.println("predicate: end to save the data in explore goal structure " );
+		   agent.registerEvent(new TimeStampedObservationEvent("endExploreRecorder"));
+		   return true;
+  		     
+
+	   }
+	   
+	  /** Apply AStar algorithm to find a path to the given goal */
 	   public static GoalStructure aStar(BeliefState belief, String goalId) {		 
 		return goal("aStar")
 	 			.toSolve( 				
@@ -474,33 +506,42 @@ public class GoalLibExtended extends GoalLib{
 							   //navigate to the selected button and interact with it
 							   //if the agent can not navigate to it, means there is something that blocks its way
 							   // therefore it has to unblocked the way first.
-							  SEQ( 
-								  IFELSE2(
-									   GoalLibExtended.navigateTo(b)
-									   , 
-									    SUCCESS()
-									   ,
-									  SEQ(
-											  findingAButtonToUnlockedAgent(b,agent),
-											  GoalLibExtended.navigateTo(b)	  
-											,removeDynamicGoal(agent, "temporaryDoor")
-											  
-											  )
-									  )
-								  ,interact
-								)
+							   
+							   // with out checking the prolog 
+							    GoalLibExtended.navigateTo(b) , interact
+							   // if we want to use prolog to unblock the agent, in the situaction that the path to the selected 
+							   // button is locked
+//							   SEQ( 
+//								  IFELSE2(
+//									   GoalLibExtended.navigateTo(b)
+//									   , 
+//									    SUCCESS()
+//									   ,
+//									  SEQ(
+//											  findingAButtonToUnlockedAgent(b,agent),
+//											  GoalLibExtended.navigateTo(b)	  
+//											,removeDynamicGoal(agent, "temporaryDoor")
+//											  
+//											  )
+//									  )
+//								  ,interact
+//								)
 							  , 
-							   SEQ(
-								   IFELSE2(
-										   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
-										   , 
-										    SUCCESS()
-										   ,
-										   //findingAButtonToUnlockedAgent
-										  SEQ(findingAButtonToUnlockedAgent(b,agent),GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity), removeDynamicGoal(agent, "temporaryDoor"))
-										   )
-								   , checkBlockedEntityStatus(b, agent)
-								   )
+							// with out checking the prolog
+							  GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
+							  ,  checkBlockedEntityStatus(b, agent)
+							//if we want to use prolog to unblock the agent
+//							  SEQ(
+//								   IFELSE2(
+//										   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
+//										   , 
+//										    SUCCESS()
+//										   ,
+//										   //findingAButtonToUnlockedAgent
+//										  SEQ(findingAButtonToUnlockedAgent(b,agent),GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity), removeDynamicGoal(agent, "temporaryDoor"))
+//										   )
+//								   , checkBlockedEntityStatus(b, agent)
+//								   )
 							   
 							   )
 					   );
@@ -749,7 +790,9 @@ public class GoalLibExtended extends GoalLib{
 	 * interact with has seen buttons. 
 	 * */
 	   public static GoalStructure findingAButton(BeliefStateExtended b,TestAgent agent) {
-		   return IFELSE2(checkPrologToFindACorrespondinButton(agent), checkBlockedEntityStatus(b, agent), checkKnownButtonToFindButton(agent));
+		   //if we want to use the data constructed, uncomment below line
+		   //return IFELSE2(checkPrologToFindACorrespondinButton(agent), checkBlockedEntityStatus(b, agent), checkKnownButtonToFindButton(agent));
+	   return IFELSE2(FAIL(), checkBlockedEntityStatus(b, agent), checkKnownButtonToFindButton(agent));
 	   }
 
 	   /**
@@ -776,16 +819,4 @@ public class GoalLibExtended extends GoalLib{
 			                 )
 		  			 ).lift();
 	   }
-
-	   
-	   public static GoalStructure test() {
-		   
-		   return  goal("khar ast ayaaaaaaaaaaaaaaaaaaaa")
-	     			. toSolve(
-	         				(Pair<Integer,BeliefStateExtended> s) -> {
-	         					System.out.println("khar ast ayaaaaaaaaaaaaaaaaaaaa");
-	         					return true;
-	         		})	
-			  		.lift();
-	   } 
 }

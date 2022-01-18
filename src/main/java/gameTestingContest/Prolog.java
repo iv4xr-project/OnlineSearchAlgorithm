@@ -548,8 +548,9 @@ public class Prolog {
 	Set<Pair<String,String>> getConnections() {
 		Set<Pair<String,String>> cons = new HashSet<>() ;
 		for(WorldEntity B : belief.knownButtons()) {
+			//System.out.println("get connection: " + B.id );
 			var doors = pQueryAll("D", and(isDoor.on("D"), wiredTo.on(B.id,"D"))) ;
-			System.out.println("get connection: " + doors.isEmpty() + doors.size());
+			//System.out.println("get connection: " + doors.isEmpty() );
 			for(var D : doors) {
 				cons.add(new Pair(B.id,D)) ;
 			}
@@ -570,8 +571,34 @@ public class Prolog {
 	   					 	and(isDoor.on("D")))
 	   	 					.stream().map(Q -> Q.str_("D"))
 	   	 					.collect(Collectors.toList())) ;
-		 Set<Pair<String, String>> report = getConnections();
+
 		 
+		 System.out.println("rooms" + 
+				 belief.prolog().queryAll(
+	   					 	and(isRoom.on("R")))
+	   	 					.stream().map(Q -> Q.str_("R"))
+	   	 					.collect(Collectors.toList())) ;		 
+		 
+		 var allRooms = pQueryAll("R",
+					and(
+							isRoom.on("R")						
+									
+							)
+					   );
+			System.out.println("all rooms: " + allRooms);
+			
+			
+			for (var roomx : allRooms) {
+				System.out.println("doors in each room: " + roomx);
+				List<String> bt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
+				System.out.println("doors: " + bt0);
+				
+				System.out.println("buttons in each room: " + roomx);
+				List<String> dt0 = pQueryAll("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
+				System.out.println("buttons: " + dt0);
+			}
+			
+		 Set<Pair<String, String>> report = getConnections(); 
 		 for (Pair<String, String> connection : report) {
 	            System.out.println("conections: "+"   Button " + connection.fst + " toggles " + connection.snd);
 	        }

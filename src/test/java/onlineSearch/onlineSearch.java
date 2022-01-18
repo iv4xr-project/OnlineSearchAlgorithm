@@ -87,15 +87,15 @@ public class onlineSearch {
 	     */
 	    @Test
 	    public void closetReachableTest() throws InterruptedException {
-	    	String levelName = "";
-	    	//String levelName = "CompetitionGrander//bm2021";
-	    	String fileName = "durk_LR_map";
+	    	//String levelName = "";
+	    	String levelName = "CompetitionGrander//bm2021";
+	    	String fileName = "BM2021_diff1_R3_1_1_H";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
-	    	String treasureDoor = "doorKey2";
+	    	String treasureDoor = "door4";
 	    	Vec3 goalPosition =  null; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
@@ -261,7 +261,13 @@ public class onlineSearch {
 		        
 		        testAgent.printStatus();
 		        var agentneTimeStamss = testAgent.getState().knownEntities();
-		   		 prolog.report();  
+		   		 prolog.report();
+		   		var trace2 = testAgent
+						. getTestDataCollector()
+						. getTestAgentTrace(testAgent.getId()).stream().map( e-> e.getFamilyName()).collect(Collectors.toList());
+				        ;
+				
+				 System.out.println("trace2  " + trace2) ;
 //	   		 
 	        }
 	        finally { environment.close(); }
