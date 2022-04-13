@@ -89,13 +89,13 @@ public class onlineSearch {
 	    public void closetReachableTest() throws InterruptedException {
 	    	//String levelName = "";
 	    	String levelName = "CompetitionGrander//bm2021";
-	    	String fileName = "BM2021_diff1_R3_1_1_H";
+	    	String fileName = "BM2021_diff1_R4_1_1_M";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
-	    	String treasureDoor = "door4";
+	    	String treasureDoor = "door5";
 	    	Vec3 goalPosition =  null; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;

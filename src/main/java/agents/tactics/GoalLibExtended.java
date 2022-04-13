@@ -508,40 +508,40 @@ public class GoalLibExtended extends GoalLib{
 							   // therefore it has to unblocked the way first.
 							   
 							   // with out checking the prolog 
-							    GoalLibExtended.navigateTo(b) , interact
+							//    GoalLibExtended.navigateTo(b) , interact
 							   // if we want to use prolog to unblock the agent, in the situaction that the path to the selected 
 							   // button is locked
-//							   SEQ( 
-//								  IFELSE2(
-//									   GoalLibExtended.navigateTo(b)
-//									   , 
-//									    SUCCESS()
-//									   ,
-//									  SEQ(
-//											  findingAButtonToUnlockedAgent(b,agent),
-//											  GoalLibExtended.navigateTo(b)	  
-//											,removeDynamicGoal(agent, "temporaryDoor")
-//											  
-//											  )
-//									  )
-//								  ,interact
-//								)
+							   SEQ( 
+								  IFELSE2(
+									   GoalLibExtended.navigateTo(b)
+									   , 
+									    SUCCESS()
+									   ,
+									  SEQ(
+											  findingAButtonToUnlockedAgent(b,agent),
+											  GoalLibExtended.navigateTo(b)	  
+											,removeDynamicGoal(agent, "temporaryDoor")
+											  
+											  )
+									  )
+								  ,interact
+								)
 							  , 
 							// with out checking the prolog
-							  GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
-							  ,  checkBlockedEntityStatus(b, agent)
+//							  GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
+//							  ,  checkBlockedEntityStatus(b, agent)
 							//if we want to use prolog to unblock the agent
-//							  SEQ(
-//								   IFELSE2(
-//										   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
-//										   , 
-//										    SUCCESS()
-//										   ,
-//										   //findingAButtonToUnlockedAgent
-//										  SEQ(findingAButtonToUnlockedAgent(b,agent),GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity), removeDynamicGoal(agent, "temporaryDoor"))
-//										   )
-//								   , checkBlockedEntityStatus(b, agent)
-//								   )
+							  SEQ(
+								   IFELSE2(
+										   GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity)
+										   , 
+										    SUCCESS()
+										   ,
+										   //findingAButtonToUnlockedAgent
+										  SEQ(findingAButtonToUnlockedAgent(b,agent),GoalLibExtended.ExplorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity), removeDynamicGoal(agent, "temporaryDoor"))
+										   )
+								   , checkBlockedEntityStatus(b, agent)
+								   )
 							   
 							   )
 					   );
@@ -791,8 +791,8 @@ public class GoalLibExtended extends GoalLib{
 	 * */
 	   public static GoalStructure findingAButton(BeliefStateExtended b,TestAgent agent) {
 		   //if we want to use the data constructed, uncomment below line
-		   //return IFELSE2(checkPrologToFindACorrespondinButton(agent), checkBlockedEntityStatus(b, agent), checkKnownButtonToFindButton(agent));
-	   return IFELSE2(FAIL(), checkBlockedEntityStatus(b, agent), checkKnownButtonToFindButton(agent));
+		   return IFELSE2(checkPrologToFindACorrespondinButton(agent), checkBlockedEntityStatus(b, agent), checkKnownButtonToFindButton(agent));
+	   //return IFELSE2(FAIL(), checkBlockedEntityStatus(b, agent), checkKnownButtonToFindButton(agent));
 	   }
 
 	   /**

@@ -103,14 +103,14 @@ public class onlineSearchWhitDataCollection {
 	    public void closetReachableTest() throws InterruptedException {
 	    	//String levelName = "";
 	    	String levelName = "CompetitionGrander//bm2021";
-	    	String fileName = "BM2021_diff3_R7_3_3";
+	    	String fileName = "BM2021_diff1_R3_1_1_H";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
-	    	String treasureDoor = "door6";
-	    	Vec3 goalPosition = null;  //new Vec3(38,0,7); //null; 
+	    	String treasureDoor = "door3";
+	    	Vec3 goalPosition =  null; //new Vec3(67,0,77); 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
 	        int cycleNumber = 0 ;
@@ -210,6 +210,7 @@ public class onlineSearchWhitDataCollection {
 		        testAgent.registerEvent(new TimeStampedObservationEvent("startTest"));
 		        while (testingTask.getStatus().inProgress()) {
 
+		        	if(cycleNumber == 1) Thread.sleep(1500);
 		        	System.out.println("*** " + cycleNumber + ", " + testAgent.getState().id + " @" + testAgent.getState().worldmodel.position) ;
 		            Thread.sleep(100);
 		            
@@ -269,10 +270,10 @@ public class onlineSearchWhitDataCollection {
 				        ;
 		       // System.out.println("trace2222 " + traceExplore + traceExplore.size()) ;
 		        	         
-		           
+		         //[start,end,start,end....]  
 		        for(int i=0; i<traceExplore.size() ; i++) {
 		        	
-		        	if(traceExplore.get(i) != null &&  i % 2 != 0 && i < traceExplore.size()-1) {
+		        	if(traceExplore.get(i) != null &&  i % 2 == 0 && i < traceExplore.size()-1) {
 		        	//	System.out.println("trace " +  i + traceExplore.get(i)) ;
 		        	    var diff = Duration.between (traceExplore.get(i).getTimestamp() , traceExplore.get(i+1).getTimestamp()).toMillis();
 		        	    sumMiliSec = sumMiliSec + diff;
@@ -280,8 +281,7 @@ public class onlineSearchWhitDataCollection {
 		        	    var diff2 = Duration.between (traceExplore.get(i).getTimestamp() , traceExplore.get(i+1).getTimestamp()).toMinutes();
 		        	  //  System.out.println("diff min  " +  diff2) ;
 		        	    sumMinutes = sumMinutes + diff2;
-		        	}
-		        	
+		        	}        	
 		        }
 		        System.out.println("sum miliii " +  sumMiliSec + " , "+sumMiliSec/1000) ;
 		        System.out.println("sum min  " + sumMinutes) ;
@@ -312,11 +312,11 @@ public class onlineSearchWhitDataCollection {
 				 // save the position 
 				 try {
 					testAgent.getTestDataCollector()
-					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"without-prolog" +File.separator+fileName+ "positionTrace.csv");
+					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"with-prolog" +File.separator+fileName+ "positionTraceViewDis.csv");
 					
 					
 					testAgent.getTestDataCollector()
-					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"without-prolog"+File.separator+fileName+ "EventTrace.csv");
+					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"wiht-prolog"+File.separator+fileName+ "EventTraceViewDis.csv");
 				 } catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
