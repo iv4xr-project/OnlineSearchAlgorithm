@@ -65,8 +65,9 @@ public class HighLevelGraph implements Navigatable {
 		
 	}
 
-	/* Get index of an entity in the array list given it is id, it is because we consider this index
-	 *  as a unique id represent that entity and put this index in the edges*/
+	/** Get index of an entity in the array list given it is id, it is because we consider this index
+	 *  as a unique id represent that entity and put this index in the edges
+	 *  */
     public int getIndexById(String e) {
     	for (int i = 0; i < entities.size(); i++) {
             if (entities !=null && entities.get(i).id.equals(e)) {
@@ -83,7 +84,9 @@ public class HighLevelGraph implements Navigatable {
 		vertices.add(e.position);
 	}
 	
-	
+	/**
+	 * Add edges between newly observed entities and existing entities
+	 */
 	public void addEdgs(List<WorldEntity> entities) {
 		
     	// Connect entities to each other
@@ -91,8 +94,9 @@ public class HighLevelGraph implements Navigatable {
             for (int j = 0; j < entities.size() ; j++) {
             	if (i == j) {continue;}
             	
-            	System.out.println("firstEntity " + entities.get(i).id +" index :"+ getIndexById(entities.get(i).id) + ": "+ i);
-            	System.out.println("secondEntity " + entities.get((j)).id +" index :" + getIndexById(entities.get(j).id )+ ": "+ j);
+            	//print entity information
+            	//System.out.println("firstEntity " + entities.get(i).id +" index :"+ getIndexById(entities.get(i).id) + ": "+ i);
+            	//System.out.println("secondEntity " + entities.get((j)).id +" index :" + getIndexById(entities.get(j).id )+ ": "+ j);
             	
             	int firstEntity = getIndexById(entities.get(i).id);
             	int secondEntity = getIndexById(entities.get(j).id);
@@ -110,7 +114,7 @@ public class HighLevelGraph implements Navigatable {
             		}
             	
             	edges.put(new Edge(firstEntity, secondEntity));
-            	System.out.println("edges.toString() " + this.edges.toString());
+            	//System.out.println("added edges " + this.edges.toString());
             }
         }  	
     }
@@ -118,29 +122,7 @@ public class HighLevelGraph implements Navigatable {
 	public Iterable<Integer> neighboursNew(int id) {
 		ArrayList<Integer> neighbors = new ArrayList<Integer>();
 		
-		return edges.neighbours(id);
-		
-		
-		
-		//edges are like this [0,1]
-//		for(int i=0; i<edges.size() ; i++) {
-//			//System.out.println("edges: " + edges.get(i));
-//			if(edges.get(i).contains(id)) {
-//				var x = edges.get(i);
-//				System.out.println("x: " + x);
-//				
-//				for(Integer element : x) {
-//					if(element != id) {
-//						System.out.println("khodeshe: " + element);
-//						neighbors.add(element);
-//					}			
-//				}			
-//				}
-//		}
-//		System.out.print("neigh: " + neighbors.toString());
-//		return neighbors;
-		
-		
+		return edges.neighbours(id);				
 	}
 
 	/**

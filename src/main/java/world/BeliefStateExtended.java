@@ -44,17 +44,18 @@ public class BeliefStateExtended extends BeliefState {
 	}
 
 	/**
-	 * Merge the newly observed entities and their connections in the high-level
-	 * graph
+	 * Merge the newly observed entities and their connections in the high-level graph
+	 * If all newly observed entities are already in the graph, return null.
+	 * Add connection between entities.
 	 * @return 
 	 */
 	public boolean mergeNewlyObservedEntities(List<WorldEntity> entities) {
 		final boolean[] newEntity = {false}; 
 		boolean[] currentEntity = {false};
-		System.out.println("merge Newly Observed Entities ");
-		entities.forEach(e -> {
-			//System.out.println("if " +  e.id);
-			// if the list of entities is empty or the entity is not exist in the list add it to the list
+		System.out.println("Merge newly observed entities in the high-level graph");
+		entities.forEach(e -> {			
+			// if the list of entities is empty(the first observation) 
+			//or the entity does not exist in the graph add it to the graph
 			if(highLevelGragh.entities.isEmpty() || (highLevelGragh.getIndexById(e.id) == -1)){					
 				if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
 					System.out.println("new entitiy add " +  e.id);		
@@ -67,59 +68,58 @@ public class BeliefStateExtended extends BeliefState {
 			/* By default the entity blocking state is false means, if we see a door we
 			  need to change the state to true */
 			// TODO: if it is necessary to have a list of non-blocked entities, complete this part
-//			if ( e.type.equals(LabEntity.DOOR)) { 
-//				/* unless it is a door, the obstacle is always blocking: */
-//				  highLevelGragh.addObstacleInBlockingState((LabEntity) e); 
-//		    }else {
-//			      highLevelGragh.addObstacle((LabEntity) e); 
-//		    }	 
+			//if ( e.type.equals(LabEntity.DOOR)) { 
+				/* unless it is a door, the obstacle is always blocking: */
+			//	  highLevelGragh.addObstacleInBlockingState((LabEntity) e); 
+		    //}else {
+			//      highLevelGragh.addObstacle((LabEntity) e); 
+		   // }	 
 		});
 		
 		if(!newEntity[0]) return false;
 		
 		//add connection between two entities
-		System.out.println("add connection between two entities" + entities.size());
-		if(entities.size() > 1) {highLevelGragh.addEdgs(entities);
-		System.out.println("add connection between two entities: if there are more than one");
+		System.out.println("Add connection between two entities" + entities.size());
+		if(entities.size() > 1) {
+			System.out.println("add connection between two entities: if there are more than one");
+			highLevelGragh.addEdgs(entities);
 		}	
 		
 		/*
 		 * if in the current position of an agent, there is no nearest entities and the
 		 * agent has to explore the environment, then maybe between the current node and
-		 * the newly observe entity be a long distance. which means the connection
+		 * the newly observe entity there would be a long distance. which means the connection
 		 * between the current node and newly observed entity has broken. we add this
 		 * connection here.
 		 */	
 		
 		if(highLevelGragh.currentSelectedEntity != null) {
-			System.out.println("current selted node:::" + highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity).id);
-			System.out.println("equals" + entities.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity)));
-		}
-		//if(highLevelGragh.currentSelectedEntity != null && !(entities.contains(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity)))) {
-		if(highLevelGragh.currentSelectedEntity != null) {			
+			//System.out.println("equals" + entities.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity)));
 			entities.forEach(e->{
 				if(e.id.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity).id)) {
-					System.out.println("add connection between two entities: if there is a distance");
 					currentEntity[0] = true;
 				}
 			});
 			if(!currentEntity[0]) {
-				System.out.println("add connection between two entities: if there is a distance if");
+				System.out.println("add connection between two entities: if there is a distance between them");
 				entities.add(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity));
 				highLevelGragh.addEdgs(entities);
 			}
 		}
-		//System.out.println("size: " + highLevelGragh.entities.size() + highLevelGragh.entities.get(0).id);
-
 		
-		highLevelGragh.entities.forEach(e->System.out.println("entities: " + e.id ));
-		System.out.println("agdes: " + highLevelGragh.edges.toString());			
-		if(entities.size() >= 2) {	
-//			highLevelGragh.neighbours(highLevelGragh.getIndexById("button1"));
-			System.out.println("neighborsss?????: " + highLevelGragh.neighbours(highLevelGragh.getIndexById("button1")));
-//			var  p = highLevelGragh.heuristic(highLevelGragh.getIndexById("button1"), highLevelGragh.getIndexById("button2"));
-//			System.out.println("heuristic : " + "from : "+ highLevelGragh.getIndexById("button1")  + "to: "+ highLevelGragh.getIndexById("button2") + " " +  p);
-		}	
+		//Print all entities in the high level graph
+		highLevelGragh.entities.forEach(e->System.out.println("All entities in the high level graph: " + " id " + e.id ));
+		System.out.println("Adges in the high level graph : " + highLevelGragh.edges.toString());			
+		
+		// get neighbors information
+		/*
+		 * if(entities.size() >= 2) {
+		 * highLevelGragh.neighbours(highLevelGragh.getIndexById("button1"));
+		 * System.out.println("neighbors: " + highLevelGragh.neighbours(highLevelGragh.getIndexById("button1"))); var p = highLevelGragh.heuristic(highLevelGragh.getIndexById("button1"),
+		 * highLevelGragh.getIndexById("button2")); System.out.println("heuristic : " +
+		 * "from : "+ highLevelGragh.getIndexById("button1") + "to: "+
+		 * highLevelGragh.getIndexById("button2") + " " + p); }
+		 */
 	return true;
 	}
 	
@@ -144,11 +144,6 @@ public class BeliefStateExtended extends BeliefState {
 			if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
 				if(e.timestamp == worldmodel.timestamp) {
 					var sqdist = Vec3.distSq(worldmodel.position,e.position) ;
-					System.out.println("get view dist in update state " + getViewDistance() + " sqd: " +sqdist + e.id
-							+ "agent position " + worldmodel.position
-							+ "e position" + e.position
-							+ "un yeki " + Vec3.sub(worldmodel.position,e.position).lengthSq()
-							);
 					if(sqdist <= 4) {
 						try {
 							registerFoundGameObjects(e);
@@ -160,29 +155,6 @@ public class BeliefStateExtended extends BeliefState {
 				}
 			}
 		}
-//		for(WorldEntity e: changedEntities) {
-//			if(e.hasPreviousState())
-//			DebugUtil.log("e here " + e.id);
-//			if(e.type.equals("Switch") && e.hasPreviousState()) {
-//				
-//				DebugUtil.log(">> detecting interaction with " + e.id) ;
-//				// check doors that change state, and add connections to lastInteractedButton:
-//				for(WorldEntity ed: changedEntities) {							
-//					if(ed.type.equals("Door") && ed.hasPreviousState()) {
-//						try {
-//							DebugUtil.log(">> detecting open " + ed.id) ;
-//							prolog.registerConnection(e.id,ed.id) ;
-//						} catch (InvalidTheoryException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						}
-//					}	
-//				}					
-//			}
-//		}
-		
-		
-		
 	}
     
 	/**

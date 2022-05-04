@@ -25,7 +25,6 @@ import world.LabEntity;
 public class Prolog {
 
 	
-
 	public BeliefStateExtended belief; 
 	public Prolog(BeliefStateExtended belief)  {		
 		this.belief = belief;
@@ -147,36 +146,19 @@ public class Prolog {
 		}
 		// else this is a new button: 
 		belief.prolog().facts(isButton.on(button)) ;
-		//System.out.println("register a button :: " + button);
+		//System.out.println("register a new button :: " + button);
 		// now check in which room it can be placed:
 
 		Vec3 agentOriginalPosition = belief.worldmodel.position.copy();
 		
 		Map<String, Boolean> originalDoorBlockingState = (getDoorsBlockingState() != null) ? getDoorsBlockingState() : null;
 		fakelyMakeAlldoorsBlocking(null);
-
-		
-		//just to know :
-		
-				var allbuttons = pQueryAll("B", and(isRoom.on("R"), inRoom.on("R", "B"), isButton.on("B")));
-				var allRoom = pQueryAll("R", and(isRoom.on("R")));
-				
-				//System.out.println("allbuttons " + allbuttons + "all rooms " + allRoom);
-				
-				for (var roomx : allRoom) {
-					//System.out.println("buttons in each room: " + roomx);
-					List<String> bt0 = pQueryAll("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
-					//System.out.println("roomx:  bt0" + bt0);
-					
-				}
 				
 				
 		var rooms = pQueryAll("R", isRoom.on("R"));
 		boolean added = false;
 		for (var roomx : rooms) {
-			//System.out.println("roomx: " + roomx);
 			String bt0 = pQuery("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
-			//System.out.println("selected button " + bt0);
 			if (bt0 != null) {
 				// the button can be added if there is another button in the room that is
 				// reachable
@@ -200,7 +182,6 @@ public class Prolog {
 		if (!added) {
 			// button is in a new room, create the room too:
 			String newRoom = "room" + rooms.size();
-			System.out.println(">>>>----------------------------------->>>>>> Room size and the fact: " + newRoom + button);
 			belief.prolog().facts(isRoom.on(newRoom), inRoom.on(newRoom, button));			
 			
 			
@@ -219,18 +200,7 @@ public class Prolog {
 				}
 			}	
 		}
-
-		//just to know :
-		var allRoom1 = pQueryAll("R", and(isRoom.on("R")));
-		
-		//System.out.println("all rooms " + allRoom1);
-		for (var roomx : allRoom1) {
-			//System.out.println("doors in each room: " + roomx);
-			List<String> dt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
-			//System.out.println("roomx:  dt0" + dt0);
-			
-		}
-		
+	
 		
 		// restore the doors' state:
 		belief.worldmodel.position = agentOriginalPosition;
@@ -287,7 +257,7 @@ public class Prolog {
 		if (!added) {
 			// door is in a new room, create the room too:
 			String newRoom = "room" + rooms.size();
-			System.out.println(">>>>----------------------------------->>>>>> Room size and the fact: " + newRoom + door);
+
 			belief.prolog().facts(isRoom.on(newRoom), inRoom.on(newRoom, door));			
 			LabEntity d = belief.worldmodel().getElement(door) ;
 			var entity_location = d.getFloorPosition() ;

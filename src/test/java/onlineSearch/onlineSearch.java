@@ -131,48 +131,44 @@ public class onlineSearch {
 //		        		);
 		        
 		        var testingTask = SEQ( 
-		        		GoalLibExtended.NEWREPEAT(
+		        		WHILEDO(
 		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,treasureDoor)	
 		        				, 
 		        				 SEQ(
 			    	        		FIRSTof(
-			    	        				GoalLibExtended.neighborsObjects(testAgent),
-			    	        				GoalLibExtended.NEWREPEAT(
+			    	        				GoalLibExtended.newObservedNodes(testAgent),
+			    	        				WHILEDO(
 			    	        						(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b),
 			    	        						SEQ(
-			    	        								GoalLibExtended.findNeighbors(testAgent,beliefState)
+			    	        								GoalLibExtended.findNodes(testAgent,beliefState)
 			    	        						))
 			    	        				)    		
 			    	        		,		
-			    	        		FIRSTof(
+			    	        		//FIRSTof(
 			    	        				//if during the exploration to find a new entity, agent sees the goal, we check that it is open or not
-			    	        				GoalLibExtended.finalGoal(treasureDoor),
-			    	        				// if the goal is not achieved yet, we select an entity to navigate to it based on some specific policies
-			    	        				//if the all neighbors of the current position has seen before
-			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent,goalPosition, treasureDoor)
-			    	        				)
-			    	        		,		    	        		
+			    	        				//GoalLibExtended.finalGoal(treasureDoor),
+			    	        				// we select an entity to navigate to it based on some specific policies
+			    	        				// the goal will be selected if it is in the list of goal
+			    	        			GoalLibExtended.selectedNode(beliefState,testAgent,goalPosition, treasureDoor)
+			    	        		//		)
+			    	        		,	
+			    	        		// navigate to selected node
 			    	        		IFELSE(
 			    	        				(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicate(beliefState),
 			    	        				//SEQ(GoalLibExtended.navigateToDoor(beliefState),lift((BeliefStateExtended b) -> GoalLibExtended.clearPath(beliefState)),GoalLibExtended.entityInCloseRange(beliefState)), 
 			    	        				GoalLibExtended.navigateToDoor(beliefState),
-			    	        				GoalLibExtended.navigateToButton(beliefState))
+			    	        				GoalLibExtended.navigateToButton(beliefState)
+			    	        				)
 			    	        		,
+			    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
 			    	        		IFELSE(
-			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.findingAButton(beliefState,testAgent),FAIL())
-			    	        		//,
-			    	        		//GoalLibExtended.checkEntityStatus(testAgent)
-			    	        		,
-			    	        		GoalLibExtended.removeDynamicGoal(testAgent, null)
-			    	     //   		,
-			    	        //		GoalLibExtended.aStar(beliefState,"door3")	
-			    	        		,			    	        		
-			    	        		GoalLibExtended.finalGoal(treasureDoor)
-		        				))		        		
+			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.dynamicGoal(beliefState,testAgent),FAIL())			    	        					    	        		
+		        				)
+		        			)		        		
 		        		);
 		        
 		        
-		    //    var testingTask = SEQ(GoalLibExtended.ExplorationTo(new Vec3(4,0,19)));  
+		     
 		        // attaching the goal and test data-collector
 		        var dataCollector = new TestDataCollector();
 		        testAgent . setTestDataCollector(dataCollector).setGoal(testingTask) ;
@@ -182,8 +178,7 @@ public class onlineSearch {
 		        //goal not achieved yet
 		        assertFalse(testAgent.success());
 		
-		    	//testAgent.update();
-                //(48,0,21)  (48,0,20)  25,0, 20  21,0,20
+		    	
  	           
 		        // keep updating the agent
 		        long startTime = System.currentTimeMillis();
@@ -195,34 +190,6 @@ public class onlineSearch {
 		            cycleNumber++ ; 
 		        	testAgent.update();
 	                
-//	               testAgent.getState().pathfinder.perfect_memory_pathfinding = true;
-//	               List<Pair<Vec3,Vec3>> broken = new LinkedList<>() ;
-//	               
-//	               for(int i=0; i< testAgent.getState().pathfinder.vertices.size(); i++) {
-//	            	   for (int j=i+1; j < testAgent.getState().pathfinder.vertices.size() ; j++) {
-//	            	   Vec3 currentVertix = testAgent.getState().pathfinder.vertices.get(i);  
-//	            	   Vec3 nextVertix = testAgent.getState().pathfinder.vertices.get(j);  
-//	               	 if( (19f <= currentVertix.x && currentVertix.x <=25f)  && Math.abs(currentVertix.y) <= 0.2
-//	                 		   && (currentVertix.z >= 19f &&  currentVertix.z <= 21f)) {
-//	               		// System.out.println("vectores : " + currentVertix);
-//	               		var x  = testAgent.getState().pathfinder.findPath(currentVertix, nextVertix,0.2f);
-//	               		if(x == null) {
-//	               			//System.out.println("is there a path : " + x  + currentVertix + nextVertix);
-//	               			var y  = new Pair(currentVertix,nextVertix);
-//	               			if(!broken.contains(y))
-//	               			broken.add(y) ;
-//	               		}
-//	               	 }
-//	               }}
-//	               broken.sort((pair1,pair2) 
-//		                    -> 
-//		                    ((Float)Vec3.dist(pair1.fst,pair1.snd)).compareTo( (Float)Vec3.dist(pair2.fst,pair2.snd)))  ;
-//	               System.out.println("broken " + broken);
-//	               var s  = Vec3.dist(new Vec3(22.8f,0.03f,19.619999f),new Vec3(22.619999f,0.03f,19.8f));
-//	               System.out.println("smallest: " + s);
-//	               assertTrue(testAgent.getState().pathfinder.findPath(new Vec3(24,0,20), new Vec3(20,0,20), 0.1f) != null);			
-//	               testAgent.getState().pathfinder.perfect_memory_pathfinding = false;
-//	               
 	               
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
@@ -267,8 +234,7 @@ public class onlineSearch {
 						. getTestAgentTrace(testAgent.getId()).stream().map( e-> e.getFamilyName()).collect(Collectors.toList());
 				        ;
 				
-				 System.out.println("trace2  " + trace2) ;
-//	   		 
+				 System.out.println("trace2  " + trace2) ;	   		 
 	        }
 	        finally { environment.close(); }
 	

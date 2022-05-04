@@ -145,16 +145,16 @@ public class onlineSearchWhitDataCollection {
 //		        		);
 		        
 		        var testingTask = SEQ( 
-		        		GoalLibExtended.NEWREPEAT(
+		        		WHILEDO(
 		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,treasureDoor)	
 		        				, 
 		        				 SEQ(
 			    	        		FIRSTof(
-			    	        				GoalLibExtended.neighborsObjects(testAgent),
-			    	        				GoalLibExtended.NEWREPEAT(
+			    	        				GoalLibExtended.newObservedNodes(testAgent),
+			    	        				WHILEDO(
 			    	        						(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b),
 			    	        						SEQ(
-			    	        								GoalLibExtended.findNeighbors(testAgent,beliefState)
+			    	        								GoalLibExtended.findNodes(testAgent,beliefState)
 			    	        						))
 			    	        				)    		
 			    	        		,		
@@ -163,7 +163,7 @@ public class onlineSearchWhitDataCollection {
 			    	        				GoalLibExtended.finalGoal(treasureDoor),
 			    	        				// if the goal is not achieved yet, we select an entity to navigate to it based on some specific policies
 			    	        				//if the all neighbors of the current position has seen before
-			    	        				GoalLibExtended.ExtendedAStar(beliefState,testAgent,goalPosition, treasureDoor)
+			    	        				GoalLibExtended.selectedNode(beliefState,testAgent,goalPosition, treasureDoor)
 			    	        				)
 			    	        		,		    	        		
 			    	        		IFELSE(
@@ -173,7 +173,7 @@ public class onlineSearchWhitDataCollection {
 			    	        				GoalLibExtended.navigateToButton(beliefState))
 			    	        		,
 			    	        		IFELSE(
-			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.findingAButton(beliefState,testAgent),FAIL())
+			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.dynamicGoal(beliefState,testAgent),FAIL())
 			    	        		//,
 			    	        		//GoalLibExtended.checkEntityStatus(testAgent)
 			    	        		,
