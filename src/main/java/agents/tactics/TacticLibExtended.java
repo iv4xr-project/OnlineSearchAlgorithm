@@ -522,7 +522,7 @@ public class TacticLibExtended extends TacticLib{
 						System.out.println("indirect inactive button " + selectedNode + entities.get(selectedNode).id);
 						belief.highLevelGragh.currentSelectedEntity = selectedNode; 
 						if(!belief.highLevelGragh.visitedNodes.contains(selectedNode)) belief.highLevelGragh.visitedNodes.add(selectedNode); 		
-						//belief.buttonDoorConnection.get(currentNodeId).add(belief.highLevelGragh.entities.get(selectedNode).id);												
+						belief.buttonDoorConnection.get(currentNodeId).add(belief.highLevelGragh.entities.get(selectedNode).id);												
 									
 						return new Pair(selectedNode,belief);}
 					return new Pair(null,belief);
@@ -554,7 +554,7 @@ public class TacticLibExtended extends TacticLib{
 					// get the neighbors of the current agent position(current node)
 					var neighbors = belief.highLevelGragh.neighboursNew(agentLocation);
 					System.out.println(" select nearest inactive button: the neighbors of the current position " + neighbors + "currrentnode: " + agentLocation);						
-					
+					System.out.println("to test the connections" + belief.buttonDoorConnection.get(currentNodeId ).contains("button2"));
 					
 					for(Integer element : neighbors) {
 						var entity  = belief.highLevelGragh.entities.get(element);
@@ -580,7 +580,7 @@ public class TacticLibExtended extends TacticLib{
 					
 					if(selectedNode == null) {System.out.println("there is no inirect button in the neighbourhood to interact" ); return new Pair(null,belief);}
 					belief.highLevelGragh.currentSelectedEntity = selectedNode;					
-					//belief.buttonDoorConnection.get(currentNodeId).add(belief.highLevelGragh.entities.get(selectedNode).id);						
+					belief.buttonDoorConnection.get(currentNodeId).add(belief.highLevelGragh.entities.get(selectedNode).id);						
 					
 					System.out.println("selected button with the position: " + belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id + 
 					belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).position);
