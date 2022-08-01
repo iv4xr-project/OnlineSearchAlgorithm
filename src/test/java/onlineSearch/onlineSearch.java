@@ -189,7 +189,7 @@ public class onlineSearch {
 		            
 		            cycleNumber++ ; 
 		        	testAgent.update();
-	               // testAgent.updateGraph();
+	                testAgent.updateGraph();
 	               
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
