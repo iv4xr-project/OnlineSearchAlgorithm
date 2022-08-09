@@ -1,6 +1,7 @@
 package onlineSearch;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -32,8 +33,8 @@ public class MutationTest {
 
 	private static String[] nextLine;
 	private static CSVReader reader;
-	private static String levelName = "buttons_doors_1 - Copy.csv";
-	private static String excelFilePath = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//" + levelName;   	    
+	private static String levelName = "BM2021_diff1_R4_1_1.csv";
+	private static String excelFilePath = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//CompetitionGrander//bm2021//" + levelName;   	    
 	private static ArrayList<Object[]> doors = new ArrayList<>();
 	private static ArrayList<Object[]> buttons = new ArrayList<>();;
 	private static ArrayList<Object[]> connections = new ArrayList<>();;
@@ -47,27 +48,29 @@ public class MutationTest {
         while ((nextLine = reader.readNext()) != null) {	
         	lineNumber++;
 	         String[] arr = nextLine;
+	       //  System.out.println(Arrays.toString(arr) );
+	         
 				 for(int j =0; j<arr.length ;j++) {
-					 if(arr[0].contains("w")) {
+					 if(!arr[0].contains("button")) {
 						if(arr[j].contains("door") ) {	
 							
 							Object[] temp = new Object[3];
-							System.out.println(Arrays.toString(arr) + "row");
-							System.out.println(arr[j].toString() + "@@@@@@@@");
 							
-							System.out.println("************");
 							temp[0] = lineNumber;
 							temp[1] = j;
-							temp[2] = arr[j].split("\\^")[1]; 	
+							String entityName = arr[j].split("\\^")[1]; 							
 							
-							doors.add(temp);			
-							System.out.println("************" + temp[0] );
-							//Save the changed cell
-							//saveMutatedFile(nextLine,arr[j].toString());
-							//saved the doors and thier position in a list and apply it on eby one
+							if(!entityName.substring(entityName.lastIndexOf("r") + 2).isBlank() )							
+								entityName = entityName.split(":")[0]; 
+								
+							temp[2] = entityName;
+							
+							doors.add(temp);										
 						}	
+						
 						if(arr[j].contains("button") ) {	
 							Object[] temp = new Object[3];
+							
 							temp[0] = lineNumber;
 							temp[1] = j;
 							temp[2] = arr[j].split("\\^")[1];				
@@ -95,45 +98,69 @@ public class MutationTest {
 	
 	
 	public static void saveMutatedFile(Object[] newData, String replaceWith) throws IOException {
-		String newFileLocation = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//MutatedFiles";
+		String newFileLocation = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//MutatedFiles//A-test";
 		CSVWriter writer = new CSVWriter(new FileWriter(newFileLocation+"//" + newData[2] +"_"+ levelName ), ',');
 		CSVReader readerTmp= new CSVReader(new FileReader(excelFilePath)); 		
 		List<String[]> csvBody = readerTmp.readAll();		
 		readerTmp.close();
 		
 		csvBody.get((int) newData[0]-1)[(int) newData[1]] = replaceWith;
-		writer.writeAll(csvBody);
-		writer.flush();
-		writer.close();
-				
+//		writer.writeAll(csvBody);
+//		writer.flush();
+//		writer.close();
+		
+		BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation+"//" + newData[2] +"_"+ levelName ), ',');
+		StringBuilder sb = new StringBuilder();
+		for (String[] element : csvBody) {
+			for (String a : element) {
+				sb.append(a);
+				sb.append(","); 
+			}
+			sb.append("\n"); 
+		}	
+		br.write(sb.toString());
+		br.close();		
 	}
 	
 	public static void saveMutatedConnections(Object[] newData, String replaceWith) throws IOException {
-		String newFileLocation = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//MutatedFiles";
-			
+		String newFileLocation = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//MutatedFiles//A-test" ;
+		System.out.println(buttons.size() + "*--buttons.size()--**");
 		for(int i=0; i< buttons.size(); i++) {				
-				if(!buttons.get(i)[2].equals(newData[2])) {					
+			System.out.println((newData[2] )+ "*--buttons.get(i)[2]--**");
+				if(!buttons.get(i)[2].equals(newData[2])) {	
+					
 					String fileName = newData[2]+"_"+newData[3]+"_"+i;
 					CSVWriter writer = new CSVWriter(new FileWriter(newFileLocation+"//" + fileName +"_"+ levelName ), ',');					 		
 					CSVReader readerTmp= new CSVReader(new FileReader(excelFilePath));
 					List<String[]> csvBody = readerTmp.readAll();		
 					readerTmp.close();					
 					csvBody.get((int) newData[0]-1)[(int) newData[1]] = (String) buttons.get(i)[2];
-					writer.writeAll(csvBody);
-					writer.flush();
-					writer.close();
+					
+					BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation+"//" + fileName +"_"+ levelName ), ',');
+					StringBuilder sb = new StringBuilder();
+					for (String[] element : csvBody) {
+						for (String a : element) {
+							
+							sb.append(a);
+							sb.append(","); 
+						}
+						sb.append("\n"); 
+					}	
+					br.write(sb.toString());
+					br.close();	
+					
+//					writer.writeAll(csvBody);
+//					writer.flush();
+//					writer.close();
 				}
-			}
-		
-		
-				
+			}			
 	}
 	public static void main(String[] args) throws IOException {
 	    
 	    
 	    Boolean replaceDoor = true;
-	    Boolean replaceButton = false;
-	    Boolean replaceConnectoin = false;
+	    Boolean replaceButton = true;
+	    Boolean replaceConnectoin = true;
 	    readFromExcelFile(excelFilePath);
 	    
 	    if(replaceDoor) {	
@@ -148,7 +175,7 @@ public class MutationTest {
 			 }
 	    }
 	    if(replaceConnectoin){
-	    	for(int i=0; i<connections.size(); i++ ) {		    		
+	    	for(int i=0; i<connections.size(); i++ ) {	    		
 	    		saveMutatedConnections(connections.get(i), " ");
 			 }
 	    }

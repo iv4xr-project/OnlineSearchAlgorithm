@@ -8,11 +8,10 @@ import agents.tactics.TacticLib;
 import alice.tuprolog.InvalidTheoryException;
 import environments.LabRecruitsConfig;
 import environments.LabRecruitsEnvironment;
-import eu.iv4xr.framework.mainConcepts.ObservationEvent.TimeStampedObservationEvent;
-import eu.iv4xr.framework.mainConcepts.ObservationEvent.VerdictEvent;
 import eu.iv4xr.framework.mainConcepts.TestDataCollector;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.mainConcepts.WorldModel;
+import eu.iv4xr.framework.mainConcepts.ObservationEvent.TimeStampedObservationEvent;
 import eu.iv4xr.framework.spatial.Vec3;
 import helperclasses.datastructures.linq.QArrayList;
 import logger.JsonLoggerInstrument;
@@ -51,14 +50,14 @@ import static nl.uu.cs.aplib.agents.PrologReasoner.not;
 import world.BeliefStateExtended;
 import agents.tactics.GoalLibExtended;
 
-public class onlineSearchWhitDataCollection {
+public class onlineSearchMultiRun {
 
 	 private static LabRecruitsTestServer labRecruitsTestServer;
 	    @BeforeAll
 	    static public void start() {
 	    	// TestSettings.USE_SERVER_FOR_TEST = false ;
 	    	// Uncomment this to make the game's graphic visible:
-	    	TestSettings.USE_GRAPHICS = true ;
+	    	//TestSettings.USE_GRAPHICS = true ;
 	    	String labRecruitesExeRootDir = System.getProperty("user.dir") ;
 	    	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
 	    }
@@ -77,16 +76,6 @@ public class onlineSearchWhitDataCollection {
 	    void instrument(Environment env) {
 	    	env.registerInstrumenter(new JsonLoggerInstrument()).turnOnDebugInstrumentation();
 	    }
-
-		/* Calculate euclidean distance */
-	    
-	    public double euclideanDistance(Vec3 from, Vec3 to) {
-	    	var  x = Math.abs(from.x - to.x);
-	    	var  y = Math.abs(from.y - to.y);
-	    	var  z = Math.abs(from.z - to.z);
-	    	return Math.sqrt(x+y+z);
-	    } 
-	    
 	    //***datacollectore
 	    Pair<String,Number>[] instrumenter(BeliefStateExtended st) {
 	    	Pair<String,Number>[] out = new Pair[3] ;
@@ -95,22 +84,29 @@ public class onlineSearchWhitDataCollection {
 	    	out[2] = new Pair<String,Number>("posz",st.worldmodel.position.z) ;	    	
 	    	return out ;
 	    }
+		/* Calculate euclidean distance */
 	    
+	    public double euclideanDistance(Vec3 from, Vec3 to) {
+	    	var  x = Math.abs(from.x - to.x);
+	    	var  y = Math.abs(from.y - to.y);
+	    	var  z = Math.abs(from.z - to.z);
+	    	return Math.sqrt(x+y+z);
+	    } 
 	    /**
 	     * A test to verify that the east closet is reachable.
 	     */
 	    @Test
-	    public void closetReachableTest() throws InterruptedException {
+	    public List<Object> closetReachableTest(String levelName, String fileName, String doorName) throws InterruptedException {
 	    	//String levelName = "";
-	    	String levelName = "CompetitionGrander//bm2021";
-	    	String fileName = "BM2021_diff1_R3_1_1_H";
+	   // 	String levelName = "CompetitionGrander//bm2021";
+	   // 	String fileName = "BM2021_diff1_R4_1_1_M";
 
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
-	    	String treasureDoor = "door3";
-	    	Vec3 goalPosition =  null; //new Vec3(67,0,77); 
+	    	String treasureDoor = doorName;
+	    	Vec3 goalPosition =  null; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
 	        int cycleNumber = 0 ;
@@ -129,21 +125,8 @@ public class onlineSearchWhitDataCollection {
 	        		    . attachState(beliefState)
 	        		    . attachEnvironment(environment);    
 
-		       
-		       var agentPosiion = environment.observe("agent1").position;
-		       
-		       
-			   /* calculate the euclidean distance from agent position to the treasure door, the treasure door
-				 * distance is estimated */
-		       // euclideanDistance(agentPosiion, goalPosition);
-		       // System.out.println("euclidean dis " + euclideanDistance(agentPosiion, goalPosition));		        
-		        beliefState.highLevelGragh.goalPosition = goalPosition;	     
-		        
-//		        var testingTask = SEQ(
-//		        		//GoalLibExtended.entityStateRefreshed(treasureDoor)
-//		        		GoalLibExtended.entityInCloseRange("button25")
-//		        		);
-		        
+		       		       
+		       	        
 		        var testingTask = SEQ( 
 		        		WHILEDO(
 		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,treasureDoor)	
@@ -158,65 +141,55 @@ public class onlineSearchWhitDataCollection {
 			    	        						))
 			    	        				)    		
 			    	        		,		
-			    	        		FIRSTof(
+			    	        		//FIRSTof(
 			    	        				//if during the exploration to find a new entity, agent sees the goal, we check that it is open or not
-			    	        				GoalLibExtended.finalGoal(treasureDoor),
-			    	        				// if the goal is not achieved yet, we select an entity to navigate to it based on some specific policies
-			    	        				//if the all neighbors of the current position has seen before
-			    	        				GoalLibExtended.selectedNode(beliefState,testAgent,goalPosition, treasureDoor)
-			    	        				)
-			    	        		,		    	        		
+			    	        				//GoalLibExtended.finalGoal(treasureDoor),
+			    	        				// we select an entity to navigate to it based on some specific policies
+			    	        				// the goal will be selected if it is in the list of goal
+			    	        			GoalLibExtended.selectedNode(beliefState,testAgent,goalPosition, treasureDoor)
+			    	        		//		)
+			    	        		,	
+			    	        		// navigate to selected node
 			    	        		IFELSE(
 			    	        				(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicate(beliefState),
 			    	        				//SEQ(GoalLibExtended.navigateToDoor(beliefState),lift((BeliefStateExtended b) -> GoalLibExtended.clearPath(beliefState)),GoalLibExtended.entityInCloseRange(beliefState)), 
 			    	        				GoalLibExtended.navigateToDoor(beliefState),
-			    	        				GoalLibExtended.navigateToButton(beliefState))
+			    	        				GoalLibExtended.navigateToButton(beliefState)
+			    	        				)
 			    	        		,
+			    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
 			    	        		IFELSE(
-			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.dynamicGoal(beliefState,testAgent),FAIL())
-			    	        		//,
-			    	        		//GoalLibExtended.checkEntityStatus(testAgent)
-			    	        		,
-			    	        		GoalLibExtended.removeDynamicGoal(testAgent, null)
-			    	     //   		,
-			    	        //		GoalLibExtended.aStar(beliefState,"door3")	
-			    	        		,			    	        		
-			    	        		GoalLibExtended.finalGoal(treasureDoor)
-		        				))		        		
+			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.dynamicGoal(beliefState,testAgent),FAIL())			    	        					    	        		
+		        				)
+		        			)		        		
 		        		);
 		        
-		        
-		    //    var testingTask = SEQ(GoalLibExtended.ExplorationTo(new Vec3(4,0,19)));  
 		        // attaching the goal and test data-collector
 		        var dataCollector = new TestDataCollector();
 		        testAgent . setTestDataCollector(dataCollector).setGoal(testingTask) ;
-	     
 		        testAgent.withScalarInstrumenter(b -> instrumenter((BeliefStateExtended) beliefState));		       
 		        testAgent.registerEvent(new TimeStampedObservationEvent());
 		        
 		        
 		        environment.startSimulation();
-		        
-		       
 		         // this will press the "Play" button in the game for you
 		        //goal not achieved yet
 		        assertFalse(testAgent.success());
 		
-		    	//testAgent.update();
-                //(48,0,21)  (48,0,20)  25,0, 20  21,0,20
+		    	//start tracking
+		        testAgent.registerEvent(new TimeStampedObservationEvent("startTest"));
  	           
 		        // keep updating the agent
 		        long startTime = System.currentTimeMillis();
-		        testAgent.registerEvent(new TimeStampedObservationEvent("startTest"));
 		        while (testingTask.getStatus().inProgress()) {
 
-		        	if(cycleNumber == 1) Thread.sleep(1500);
 		        	System.out.println("*** " + cycleNumber + ", " + testAgent.getState().id + " @" + testAgent.getState().worldmodel.position) ;
 		            Thread.sleep(100);
 		            
 		            cycleNumber++ ; 
-		        	testAgent.update();	               	               
-		        	
+		        	testAgent.update();
+	                testAgent.updateGraph();
+	               
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {
 						if(e.type.equals("Switch") && e.hasPreviousState()) {
@@ -241,25 +214,44 @@ public class onlineSearchWhitDataCollection {
 					if(beliefState.worldmodel().health <= 0) {
 						DebugUtil.log(">>>> the agent died. Aaaw.");
 					//	throw new AgentDieException() ;
-					}	 
-		        	if (cycleNumber>60000) {
+					}
+	        	
+		        	if (cycleNumber>2000) {
 		        		break ;
 		        	}
 		        }
+		        //end tracking
 		        testAgent.registerEvent(new TimeStampedObservationEvent("endTest"));
+		        
 		        long endTime = System.currentTimeMillis();
 		        totalTime = endTime - startTime;
+		        testingTask.printGoalStructureStatus();
+		        		       
+	           System.out.println("******run time******");
+		       System.out.println(totalTime/1000);
+		       System.out.println("******cycle number******");
+		       System.out.println(cycleNumber);	
+		       
+		       // check if the goal is solved
+		       if(testAgent.success()) {
+		    	   System.out.println("Goal successfully acheived");
+		    	   finalResult = "success";
+		       }else {
+		    	  System.out.println("Goal failed, " + testAgent.getTestDataCollector().getNumberOfFailVerdictsSeen()+ " number of doors has not opened");
+		    	  finalResult = "failed";
+		       }
+			       
 		        testAgent.printStatus();
-		        
-		        
-		        System.out.println("******run time******");
-			    System.out.println(totalTime/1000);
-			    System.out.println("******cycle number******");
-			    System.out.println(cycleNumber);
-			        
-		        
-		    
-		       ///*************************** data collector
+		        var agentneTimeStamss = testAgent.getState().knownEntities();
+		   		 prolog.report();
+		   		var trace2 = testAgent
+						. getTestDataCollector()
+						. getTestAgentTrace(testAgent.getId()).stream().map( e-> e.getFamilyName()).collect(Collectors.toList());
+				        ;
+				
+				 System.out.println("trace2  " + trace2) ;	
+
+				 ///*************************** data collector
 		        long sumMiliSec = 0;
 		        long sumMinutes = 0;
 		        
@@ -268,9 +260,7 @@ public class onlineSearchWhitDataCollection {
 						. getTestDataCollector()
 						. getTestAgentTrace(testAgent.getId()).stream().filter(e-> e.getFamilyName() == "startExploreRecorder" || e.getFamilyName() == "endExploreRecorder" ).collect(Collectors.toList());
 				        ;
-		       // System.out.println("trace2222 " + traceExplore + traceExplore.size()) ;
-		        	         
-		         //[start,end,start,end....]  
+				        
 		        for(int i=0; i<traceExplore.size() ; i++) {
 		        	
 		        	if(traceExplore.get(i) != null &&  i % 2 == 0 && i < traceExplore.size()-1) {
@@ -284,8 +274,8 @@ public class onlineSearchWhitDataCollection {
 		        	}        	
 		        }
 		        System.out.println("sum miliii " +  sumMiliSec + " , "+sumMiliSec/1000) ;
-		        System.out.println("sum min  " + sumMinutes) ;
-		        
+		        System.out.println("sum min  " + sumMinutes) ; 
+		     
 		        // trace the name of the tried doors
 		        List<String> traceTriedDoors = testAgent
 						. getTestDataCollector()
@@ -305,29 +295,30 @@ public class onlineSearchWhitDataCollection {
 					        . stream()
 					        . map(event -> event.values) . collect(Collectors.toList());
 				 
-				// System.out.println("tracePosition  " + tracePosition) ;
-				  
-				 
 				 // save the recorded data
 				 // save the position 
 				 try {
 					testAgent.getTestDataCollector()
-					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"with-prolog" +File.separator+fileName+ "positionTraceViewDis.csv");							
+					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"MutatedFiles"+File.separator+fileName+ "result"+File.separator+fileName+ "positionTraceViewDis.csv");							
 					testAgent.getTestDataCollector()
-					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"wiht-prolog"+File.separator+fileName+ "EventTraceViewDis.csv");
+					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"MutatedFiles"+File.separator+fileName+ "result"+File.separator+fileName+ "EventTraceViewDis.csv");
 				 } catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			
-				 
-		        var agentneTimeStamss = testAgent.getState().knownEntities();
+				 		       
 		   		// print the prolog data
-		        prolog.report();  
-//	   		 
+		        prolog.report(); 
 	        }
+	        
 	        finally { environment.close(); }
-	
+	        List<Object> myList = new ArrayList<Object>();
+	        myList.add(cycleNumber);
+	        myList.add(totalTime/1000);
+	        myList.add(finalResult);
+	        return myList;
 	
 }
+
 }

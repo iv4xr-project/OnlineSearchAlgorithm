@@ -47,7 +47,7 @@ import static nl.uu.cs.aplib.agents.PrologReasoner.not;
 import world.BeliefStateExtended;
 import agents.tactics.GoalLibExtended;
 
-public class onlineSearch {
+public class onlineSearchMultiTasks {
 
 	 private static LabRecruitsTestServer labRecruitsTestServer;
 	    @BeforeAll
@@ -69,7 +69,7 @@ public class onlineSearch {
 	 
 	    @AfterAll
 	    static void close() { if(labRecruitsTestServer!=null) labRecruitsTestServer.close(); }
-	    
+	     
 	    void instrument(Environment env) {
 	    	env.registerInstrumenter(new JsonLoggerInstrument()).turnOnDebugInstrumentation();
 	    }
@@ -96,6 +96,10 @@ public class onlineSearch {
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
 	    	String treasureDoor = "door5";
+	    	ArrayList<String> targetedDoors = new ArrayList<>();
+	    	targetedDoors.add(treasureDoor);
+	    	targetedDoors.add("door6");
+	    	
 	    	Vec3 goalPosition =  null; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
@@ -130,46 +134,57 @@ public class onlineSearch {
 //		        		GoalLibExtended.entityInCloseRange("button25")
 //		        		);
 		        
-		        var testingTask = SEQ( 
-		        		WHILEDO(
-		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,treasureDoor)	
-		        				, 
-		        				 SEQ(
-			    	        		FIRSTof(
-			    	        				GoalLibExtended.newObservedNodes(testAgent),
-			    	        				WHILEDO(
-			    	        						(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b),
-			    	        						SEQ(
-			    	        								GoalLibExtended.findNodes(testAgent,beliefState)
-			    	        						))
-			    	        				)    		
-			    	        		,		
-			    	        		//FIRSTof(
-			    	        				//if during the exploration to find a new entity, agent sees the goal, we check that it is open or not
-			    	        				//GoalLibExtended.finalGoal(treasureDoor),
-			    	        				// we select an entity to navigate to it based on some specific policies
-			    	        				// the goal will be selected if it is in the list of goal
-			    	        			GoalLibExtended.selectedNode(beliefState,testAgent,goalPosition, treasureDoor)
-			    	        		//		)
-			    	        		,	
-			    	        		// navigate to selected node
-			    	        		IFELSE(
-			    	        				(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicate(beliefState),
-			    	        				//SEQ(GoalLibExtended.navigateToDoor(beliefState),lift((BeliefStateExtended b) -> GoalLibExtended.clearPath(beliefState)),GoalLibExtended.entityInCloseRange(beliefState)), 
-			    	        				GoalLibExtended.navigateToDoor(beliefState),
-			    	        				GoalLibExtended.navigateToButton(beliefState)
-			    	        				)
-			    	        		,
-			    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
-			    	        		IFELSE(
-			    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.dynamicGoal(beliefState,testAgent),FAIL())			    	        					    	        		
-		        				)
-		        			)		        		
-		        		);
+		        ArrayList<GoalStructure> testingTasks = new ArrayList<>();
+		        
+		        
+		        for(int i=0; i<= targetedDoors.size()-1; i++) {
+		        	String  name = targetedDoors.get(i);
+		        	testingTasks.add(	        			
+		        			WHILEDO(
+			        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,name)	
+			        				, 
+			        				 SEQ(
+				    	        		FIRSTof(
+				    	        				GoalLibExtended.newObservedNodes(testAgent),
+				    	        				WHILEDO(
+				    	        						(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b),
+				    	        						SEQ(
+				    	        								GoalLibExtended.findNodes(testAgent,beliefState)
+				    	        						))
+				    	        				)    		
+				    	        		,		
+				    	        		//FIRSTof(
+				    	        				//if during the exploration to find a new entity, agent sees the goal, we check that it is open or not
+				    	        				//GoalLibExtended.finalGoal(treasureDoor),
+				    	        				// we select an entity to navigate to it based on some specific policies
+				    	        				// the goal will be selected if it is in the list of goal
+				    	        			GoalLibExtended.selectedNode(beliefState,testAgent,goalPosition, treasureDoor)
+				    	        		//		)
+				    	        		,	
+				    	        		// navigate to selected node
+				    	        		IFELSE(
+				    	        				(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicate(beliefState),
+				    	        				//SEQ(GoalLibExtended.navigateToDoor(beliefState),lift((BeliefStateExtended b) -> GoalLibExtended.clearPath(beliefState)),GoalLibExtended.entityInCloseRange(beliefState)), 
+				    	        				GoalLibExtended.navigateToDoor(beliefState),
+				    	        				GoalLibExtended.navigateToButton(beliefState)
+				    	        				)
+				    	        		,
+				    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
+				    	        		IFELSE(
+				    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState),GoalLibExtended.dynamicGoal(beliefState,testAgent),FAIL())			    	        					    	        		
+			        				)
+			        			)		        				        				        			
+		        			);
+		        }
+		        		     
+
+		        // this part can improve!!!
+		        var testingTask = SEQ( testingTasks.get(0),testingTasks.get(1));
+		        
 		        
 		        // attaching the goal and test data-collector
 		        var dataCollector = new TestDataCollector();
-		        testAgent . setTestDataCollector(dataCollector).setGoal(testingTask) ;
+		        testAgent.setTestDataCollector(dataCollector).setGoal(testingTask) ;
 
 		        environment.startSimulation();
 		         // this will press the "Play" button in the game for you

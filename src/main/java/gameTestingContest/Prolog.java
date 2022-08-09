@@ -812,9 +812,11 @@ public class Prolog {
 			if(!pathBetweenRooms1.isEmpty()) { finalPath= pathBetweenRooms1;  break;}
 		}
 		
-		System.out.println("final path between to room" + finalPath);
+		System.out.println("final path between to room" );
+		System.out.println("final path between to room 1" + finalPath +( finalPath != null ));
+		//System.out.println("final path between to room 2" + finalPath.isEmpty());
 		
-		if(!finalPath.isEmpty()) {			
+		if(finalPath != null && !finalPath.isEmpty()  ) {			
 			for(int i =0; i<finalPath.size(); i++) {
 				var getPath  = finalPath.get(i);
 				List<String> resultList = Arrays.asList(getPath.split(","));
