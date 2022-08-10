@@ -299,9 +299,9 @@ public class onlineSearchMultiRun {
 				 // save the position 
 				 try {
 					testAgent.getTestDataCollector()
-					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"MutatedFiles"+File.separator+fileName+ "result"+File.separator+fileName+ "positionTraceViewDis.csv");							
+					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"MutatedFiles"+File.separator +"result"+File.separator+ "BM2021_diff3_R4_2_2_M"+File.separator+fileName+ "positionTraceViewDis.csv");							
 					testAgent.getTestDataCollector()
-					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"MutatedFiles"+File.separator+fileName+ "result"+File.separator+fileName+ "EventTraceViewDis.csv");
+					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"MutatedFiles"+File.separator+ "result"+File.separator+ "BM2021_diff3_R4_2_2_M"+File.separator+fileName+ "EventTraceViewDis.csv");
 				 } catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

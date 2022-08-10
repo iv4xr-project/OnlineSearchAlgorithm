@@ -19,6 +19,7 @@ import org.apache.poi.xssf.usermodel.*;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+import game.Platform;
 
 
 public class MutationTest {
@@ -33,8 +34,9 @@ public class MutationTest {
 
 	private static String[] nextLine;
 	private static CSVReader reader;
-	private static String levelName = "BM2021_diff1_R4_1_1.csv";
-	private static String excelFilePath = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//CompetitionGrander//bm2021//" + levelName;   	    
+	private static String CSV = ".csv";
+	private static String levelName = "BM2021_diff3_R4_2_2_M";
+	private static String excelFilePath =  Platform.LEVEL_PATH + File.separator + "CompetitionGrander"+ File.separator +"bm2021"+ File.separator +  levelName+CSV;   	    
 	private static ArrayList<Object[]> doors = new ArrayList<>();
 	private static ArrayList<Object[]> buttons = new ArrayList<>();;
 	private static ArrayList<Object[]> connections = new ArrayList<>();;
@@ -98,18 +100,15 @@ public class MutationTest {
 	
 	
 	public static void saveMutatedFile(Object[] newData, String replaceWith) throws IOException {
-		String newFileLocation = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//MutatedFiles//A-test";
-		CSVWriter writer = new CSVWriter(new FileWriter(newFileLocation+"//" + newData[2] +"_"+ levelName ), ',');
+		String newFileLocation = Platform.LEVEL_PATH + File.separator +"MutatedFiles"+ File.separator +levelName;		
 		CSVReader readerTmp= new CSVReader(new FileReader(excelFilePath)); 		
 		List<String[]> csvBody = readerTmp.readAll();		
 		readerTmp.close();
 		
 		csvBody.get((int) newData[0]-1)[(int) newData[1]] = replaceWith;
-//		writer.writeAll(csvBody);
-//		writer.flush();
-//		writer.close();
+
 		
-		BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation+"//" + newData[2] +"_"+ levelName ), ',');
+		BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation+ File.separator +  levelName +"_" + newData[2]+CSV ), ',');
 		StringBuilder sb = new StringBuilder();
 		for (String[] element : csvBody) {
 			for (String a : element) {
@@ -123,20 +122,19 @@ public class MutationTest {
 	}
 	
 	public static void saveMutatedConnections(Object[] newData, String replaceWith) throws IOException {
-		String newFileLocation = "C://Users//Shirz002//OneDrive - Universiteit Utrecht//Samira//Ph.D//OnlineSearch//src//test//resources//Levels//MutatedFiles//A-test" ;
-		System.out.println(buttons.size() + "*--buttons.size()--**");
+		String newFileLocation = Platform.LEVEL_PATH + File.separator +"MutatedFiles"+ File.separator +levelName;
+
 		for(int i=0; i< buttons.size(); i++) {				
 			System.out.println((newData[2] )+ "*--buttons.get(i)[2]--**");
 				if(!buttons.get(i)[2].equals(newData[2])) {	
 					
-					String fileName = newData[2]+"_"+newData[3]+"_"+i;
-					CSVWriter writer = new CSVWriter(new FileWriter(newFileLocation+"//" + fileName +"_"+ levelName ), ',');					 		
+					String fileName = newData[2]+"_"+newData[3]+"_"+i;					
 					CSVReader readerTmp= new CSVReader(new FileReader(excelFilePath));
 					List<String[]> csvBody = readerTmp.readAll();		
 					readerTmp.close();					
 					csvBody.get((int) newData[0]-1)[(int) newData[1]] = (String) buttons.get(i)[2];
 					
-					BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation+"//" + fileName +"_"+ levelName ), ',');
+					BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation+ File.separator +   levelName +"_" + fileName+CSV), ',');
 					StringBuilder sb = new StringBuilder();
 					for (String[] element : csvBody) {
 						for (String a : element) {
@@ -147,11 +145,7 @@ public class MutationTest {
 						sb.append("\n"); 
 					}	
 					br.write(sb.toString());
-					br.close();	
-					
-//					writer.writeAll(csvBody);
-//					writer.flush();
-//					writer.close();
+					br.close();					
 				}
 			}			
 	}

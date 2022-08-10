@@ -13,21 +13,32 @@ import game.Platform;
 
 public class RunTest {
 
+	
+	/*
+	 * To call all levels in a folder, the directory should be given and also to save the traces in the 
+	 * onlineSearch algorithm you need to set the directory where to save the data. 
+	 * The name of the target door should be given for each levels 
+	 * */
 	public static void main(String[] args) throws InterruptedException, IOException{
 		
-		String levelName = "MutatedFiles"+File.separator + "selectedLevels"+File.separator + "test";
-		File directory = new File(Platform.LEVEL_PATH +File.separator + levelName );
+		String doorName = "door6";		
+		String levelName = "BM2021_diff3_R4_2_2_M";
+		String levelDirectory = "MutatedFiles"+File.separator + levelName +File.separator+ "selectedLevels";
+		
+		
+		File directory = new File(Platform.LEVEL_PATH +File.separator + levelDirectory );
 		File fileCount[] = directory.listFiles();
 		
-		String folderPath = Platform.LEVEL_PATH + File.separator +"MutatedFiles"+ File.separator + "selectedLevels";
+		System.out.print("tets" + directory);
+		
+		String folderPath = Platform.LEVEL_PATH + File.separator +"MutatedFiles"+ File.separator + "result";
 		File theDir = new File(folderPath);
 		if(!theDir.exists())
 			theDir.mkdirs();
-		String resultFile = folderPath+ File.separator +"testResult.csv";  
+		String resultFile = folderPath+ File.separator + levelName + File.separator + levelName+ ".csv";  
 		BufferedWriter br = new BufferedWriter(new FileWriter(resultFile));
 		StringBuilder sb = new StringBuilder();
-		
-		String doorName = "door6";
+				
 		
 		//read file's name
     	for(int s = 0; s < fileCount.length; s++) {
@@ -50,7 +61,7 @@ public class RunTest {
 	    		/*Level test smarter agent*/
 	    		onlineSearchMultiRun objLevelTestSmarter = new onlineSearchMultiRun();
 	    		onlineSearchMultiRun.start();
-				myList = objLevelTestSmarter.closetReachableTest(levelName, fileName, doorName );
+				myList = objLevelTestSmarter.closetReachableTest(levelDirectory, fileName, doorName );
 				onlineSearchMultiRun.close();
 //				
 				for (Object element : myList) {
