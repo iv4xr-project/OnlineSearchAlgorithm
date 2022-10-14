@@ -8,7 +8,7 @@ public class CobaX {
 
 	@Test
 	public void test() {
-		TacticLib.dummy();
+		//TacticLib.dummy();
 		System.out.println("Prooof") ;
 	}
 }

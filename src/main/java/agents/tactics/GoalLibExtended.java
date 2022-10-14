@@ -44,6 +44,10 @@ public class GoalLibExtended extends GoalLib{
 	     				);  	
 	 	return goal.lift();
 	   } 
+	   
+	   static GoalStructure IFELSE2(GoalStructure G1, GoalStructure G2, GoalStructure G3) {
+		   return FIRSTof(SEQ(G1,G2),G3) ;
+	   }
 	 
 	 
 		/* explore the environment when there is no entity in the agent visibility range, until it sees a new entity*/

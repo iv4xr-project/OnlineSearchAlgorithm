@@ -8,6 +8,7 @@ import agents.tactics.TacticLib;
 import alice.tuprolog.InvalidTheoryException;
 import environments.LabRecruitsConfig;
 import environments.LabRecruitsEnvironment;
+import eu.iv4xr.framework.mainConcepts.ObservationEvent.ScalarTracingEvent;
 import eu.iv4xr.framework.mainConcepts.TestDataCollector;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.mainConcepts.WorldModel;
@@ -84,20 +85,23 @@ public class onlineSearch {
 	    } 
 	    /**
 	     * A test to verify that the east closet is reachable.
+	     * @throws IOException 
 	     */
 	    @Test
-	    public void closetReachableTest() throws InterruptedException {
+	    public void closetReachableTest() throws InterruptedException, IOException {
 	    	//String levelName = "CompetitionGrander//bm2021";
 	    	// String fileName = "BM2021_diff1_R4_1_1_M";
 	    	String levelName = "";
-	    	String fileName = "ddo_the_sanctuary_withdoors";
-
+	    	//String fileName = "ddo_the_sanctuary_withdoors";
+	    	String fileName = "durk_LR_map2" ;
+	    	
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
-	    	LRconfig.view_distance = 5f;
+	    	LRconfig.view_distance = 4f;
 	    	//String treasureDoor = "door5"; 
-	    	String treasureDoor = "doorEntrance";
+	    	//String treasureDoor = "doorEntrance";
+	    	String treasureDoor = "doorKey4";
 	    	Vec3 goalPosition =  null; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
@@ -191,6 +195,16 @@ public class onlineSearch {
 		        while (testingTask.getStatus().inProgress()) {
 
 		        	System.out.println("*** " + cycleNumber + ", " + testAgent.getState().id + " @" + testAgent.getState().worldmodel.position) ;
+		        	if (testAgent.getState().worldmodel.position != null) {
+		        		dataCollector.registerEvent(testAgent.getId(), 
+			        			new ScalarTracingEvent(
+			        					new Pair("posx",testAgent.getState().worldmodel.position.x),
+			        					new Pair("posy",testAgent.getState().worldmodel.position.y),
+			        					new Pair("posz",testAgent.getState().worldmodel.position.z),
+			        					new Pair("turn",cycleNumber),
+			        					new Pair("tick",1)));
+		        	}
+		        	
 		            Thread.sleep(100);
 		            
 		            cycleNumber++ ; 
@@ -262,7 +276,8 @@ public class onlineSearch {
 		        
 		        testAgent.printStatus();
 		        var agentneTimeStamss = testAgent.getState().knownEntities();
-		   		 prolog.report();  
+		   		prolog.report();  
+		   		dataCollector.saveTestAgentScalarsTraceAsCSV(testAgent.getId(),"visits.csv");
 //	   		 
 	        }
 	        finally { environment.close(); }
