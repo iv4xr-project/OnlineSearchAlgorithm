@@ -55,7 +55,7 @@ buttonLever,doorGuardian1,doorGuardian2,doorGuardian3,doorEntrance,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,w,f,f,w,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,w,w,f,w,,w,f,w,w,,w,f,w,w,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,w,w,w,w,w,f,f,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,f:d>s^door19,w,w,w,w,f:d>s^door22,w,w,w,w,f:d>s^door26,w,w,w,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,w,f,f,f:d>e^doorEntrance,f,f:a^agent1,f,f,f,f,f,f,f,f,f,f,f:d>e^doorCenter1,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f:b>n^button19,f,f,f,f,f:b>n^button22,f,f,f,f,f:b>n^button26,f,f,w,w,w
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,w,f,f,w,f,f,f,f,f,f,f,f,f,f,f,f,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f:b>n^button20,f,f,f,f,f:b>n^button21,f,f,f,f:b>n^button22,f:d>w^door22,f,w
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,w,f,f,w,f,f,f,f,f,f,f,f,f,f,f,f,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f:b>n^button20,f,f,f,f,f:b>n^button21,f,f,f,f:b>n^button22b,f:d>w^door22b,f,w
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,w,f,f,w,w,w,w,w,w,w,f,f,w,w,w,w,w,w,w,w,w,w,f,f,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,f:d>n^door20,w,w,w,w,f:d>n^door21,w,w,w,f,f,w,w,
 ,,,,,,,,,,,,w,w,,,,w,w,,,,w,w,,,,w,w,,,,,,,,,,w,f,f,w,,,,,,w,f,f,w,,,,,,,,,w,f,f,w,,,,,,,,,,,,,,,,,,w,w,f,w,,w,w,f,w,,w,f:b>n^button25,f,w,,
 ,,,,,,,,,,,w,w,f,w,,w,w,f,w,,w,w,f,w,,w,w,f,w,,,,,,,,,,w,w,,,,,,,w,f,f,w,,,,,,,,,w,f,f,w,,,,,,,,,,,,,,,,,,,w,w,,,,w,w,,w,w,f,f,w,w,

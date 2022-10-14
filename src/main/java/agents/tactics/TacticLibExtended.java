@@ -889,6 +889,7 @@ public class TacticLibExtended extends TacticLib{
 
 					if (nodeLocation == null
 					    || currentGoalLocation == null
+					    || ! memory.stateIs(e.id)
 					    || Vec3.dist(nodeLocation,currentGoalLocation) >= 0.05) {
 						// in all these cases we need to calculate the node to go
 
@@ -916,6 +917,7 @@ public class TacticLibExtended extends TacticLib{
 		    			        System.out.println(">>> a reachable nearby node found :" + c.fst + ", path: " + result.snd) ;
 		    			        memory.memorized.clear();
 		    			        memory.memorize(result.fst);
+		    			        memory.moveState(e.id) ;
 		    			    	return result ;
 		    			    }
 		    		    }
@@ -969,6 +971,7 @@ public class TacticLibExtended extends TacticLib{
 					if (closeByLocation == null
 					    || currentGoalLocation == null
 					    || Vec3.dist(closeByLocation,currentGoalLocation) >= 0.05
+					    || ! memory.stateIs(e.id) 
 					    || belief.getMemorizedPath() == null) {
 						// in all these cases we need to calculate the location to go
 
@@ -1003,6 +1006,7 @@ public class TacticLibExtended extends TacticLib{
 	    			    		System.out.println(">>> a reachable closeby position found :" + c + ", path: " + result.snd) ;
 	    			    		memory.memorized.clear();
 	    			    		memory.memorize(c);
+	    			    		memory.moveState(e.id) ;
 	    			    		return result ;
 	    			    	}
 	    			    }
@@ -1226,6 +1230,7 @@ public class TacticLibExtended extends TacticLib{
 
 					if (nodeLocation == null
 					    || currentGoalLocation == null
+					    || ! memory.stateIs(e.id)
 					    || Vec3.dist(nodeLocation,currentGoalLocation) >= 0.05) {
 						// in all these cases we need to calculate the node to go
 
@@ -1251,8 +1256,12 @@ public class TacticLibExtended extends TacticLib{
 		    			    if (result != null) {
 		    			        // found a reachable candidate!
 		    			        System.out.println(">>> a reachable nearby node found :" + c.fst + ", path: " + result.snd) ;
+		    			        //if (e.id.equals("door36")) {
+		    			        //	System.out.println(">>> target is : " + e.id) ;
+		    			        //}
 		    			        memory.memorized.clear();
 		    			        memory.memorize(result.fst);
+		    			        memory.moveState(e.id) ;
 		    			    	return result ;
 		    			    }
 		    		    }

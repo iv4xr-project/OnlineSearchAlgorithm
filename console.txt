@@ -1,0 +1,1122 @@
+
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Lifting predicate to goal.
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Update the neighbrs graph.
+*** 8502, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+seen in the same time stamp doorEntrance e timestam: 115166 curenttimestamp : 115166 id :doorEntrance
+merge Newly Observed Entities 
+mergeNewlyObservedEntities is null
+There is no new entity/neighbore
+*** 8503, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Update the neighbrs graph.
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8504, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+checkExplore: null
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal Lifting predicate to goal.
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal success.
+*** 8505, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal success.
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Check the final goal.
+*** 8506, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8507, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Check the final goal.
+Dec 23, 2021 12:31:56 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal select nearest node to the agent position.
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8508, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+apply different polices to select a node
+>>>>>>current Node: 0
+ select Nearest Node when it is not the first time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]currrentnode: 0
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 2 : door37
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 17 : door42
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 7 : door36
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 19 : door41
+visited nodes: 0 : doorEntrance
+visited nodes: 13 : door39
+visited nodes: 0 : doorEntrance
+visited nodes: 20 : door40
+visited nodes: 0 : doorEntrance
+visited nodes: 10 : door38
+visited nodes: 0 : doorEntrance
+visited nodes: 4 : door1
+visited nodes: 0 : doorEntrance
+visited nodes: 3 : door2
+visited nodes: 0 : doorEntrance
+visited nodes: 12 : door33
+visited nodes: 0 : doorEntrance
+visited nodes: 23 : door35
+visited nodes: 0 : doorEntrance
+visited nodes: 28 : door3
+visited nodes: 0 : doorEntrance
+visited nodes: 26 : door34
+visited nodes: 0 : doorEntrance
+visited nodes: 35 : door5
+visited nodes: 0 : doorEntrance
+visited nodes: 30 : door6
+visited nodes: 0 : doorEntrance
+visited nodes: 38 : door7
+visited nodes: 0 : doorEntrance
+visited nodes: 37 : door8
+visited nodes: 0 : doorEntrance
+visited nodes: 36 : door32
+visited nodes: 0 : doorEntrance
+visited nodes: 1 : button37
+visited nodes: 0 : doorEntrance
+visited nodes: 14 : button42
+visited nodes: 0 : doorEntrance
+visited nodes: 6 : button36
+visited nodes: 0 : doorEntrance
+visited nodes: 18 : button41
+visited nodes: 0 : doorEntrance
+visited nodes: 15 : button39
+visited nodes: 0 : doorEntrance
+visited nodes: 16 : button40
+visited nodes: 0 : doorEntrance
+visited nodes: 9 : buttonKeyToEastWing
+visited nodes: 0 : doorEntrance
+visited nodes: 8 : button38
+visited nodes: 0 : doorEntrance
+visited nodes: 5 : button1
+visited nodes: 0 : doorEntrance
+visited nodes: 11 : button33
+visited nodes: 0 : doorEntrance
+visited nodes: 22 : button2
+visited nodes: 0 : doorEntrance
+visited nodes: 27 : button3
+visited nodes: 0 : doorEntrance
+visited nodes: 21 : button34
+visited nodes: 0 : doorEntrance
+visited nodes: 25 : button35
+visited nodes: 0 : doorEntrance
+visited nodes: 24 : button43
+visited nodes: 0 : doorEntrance
+visited nodes: 29 : button5
+visited nodes: 0 : doorEntrance
+visited nodes: 32 : button6
+visited nodes: 0 : doorEntrance
+visited nodes: 33 : button7
+visited nodes: 0 : doorEntrance
+visited nodes: 31 : button8
+visited nodes: 0 : doorEntrance
+visited nodes: 34 : button32
+visited nodes: 0 : doorEntrance
+ neighbor of the current position: 1 : button37
+ neighbor of the current position: 2 : door37
+ neighbor of the current position: 3 : door2
+ neighbor of the current position: 4 : door1
+ neighbor of the current position: 5 : button1
+ neighbor of the current position: 6 : button36
+ neighbor of the current position: 7 : door36
+ neighbor of the current position: 8 : button38
+ neighbor of the current position: 9 : buttonKeyToEastWing
+ neighbor of the current position: 10 : door38
+ neighbor of the current position: 11 : button33
+ neighbor of the current position: 12 : door33
+ neighbor of the current position: 13 : door39
+ neighbor of the current position: 14 : button42
+ neighbor of the current position: 15 : button39
+ neighbor of the current position: 16 : button40
+ neighbor of the current position: 17 : door42
+ neighbor of the current position: 18 : button41
+ neighbor of the current position: 19 : door41
+ neighbor of the current position: 20 : door40
+ neighbor of the current position: 21 : button34
+ neighbor of the current position: 22 : button2
+ neighbor of the current position: 23 : door35
+ neighbor of the current position: 24 : button43
+ neighbor of the current position: 25 : button35
+ neighbor of the current position: 26 : door34
+ neighbor of the current position: 27 : button3
+ neighbor of the current position: 28 : door3
+ neighbor of the current position: 29 : button5
+ neighbor of the current position: 30 : door6
+ neighbor of the current position: 31 : button8
+ neighbor of the current position: 32 : button6
+ neighbor of the current position: 33 : button7
+ neighbor of the current position: 34 : button32
+ neighbor of the current position: 35 : door5
+ neighbor of the current position: 36 : door32
+ neighbor of the current position: 37 : door8
+ neighbor of the current position: 38 : door7
+selected any entity in neighborhood: null
+there is no node in the neighborhood to select
+Select one unchecked entitynull
+selected a door in neighborhood: null
+select nearest node to the agent position 
+*** 8509, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal select nearest node to the agent position.
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8510, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+predicate: doorEntrancefalse
+*** 8511, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Lifting predicate to goal.
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Update the neighbrs graph.
+*** 8512, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+seen in the same time stamp doorEntrance e timestam: 115276 curenttimestamp : 115276 id :doorEntrance
+merge Newly Observed Entities 
+mergeNewlyObservedEntities is null
+There is no new entity/neighbore
+*** 8513, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Update the neighbrs graph.
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8514, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+checkExplore: null
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal Lifting predicate to goal.
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal success.
+*** 8515, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal success.
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Check the final goal.
+*** 8516, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8517, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Check the final goal.
+*** 8518, agent1 @<44.632088,0.7511,15.179998>
+Dec 23, 2021 12:31:57 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal select nearest node to the agent position.
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+apply different polices to select a node
+>>>>>>current Node: 0
+ select Nearest Node when it is not the first time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]currrentnode: 0
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 2 : door37
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 17 : door42
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 7 : door36
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 19 : door41
+visited nodes: 0 : doorEntrance
+visited nodes: 13 : door39
+visited nodes: 0 : doorEntrance
+visited nodes: 20 : door40
+visited nodes: 0 : doorEntrance
+visited nodes: 10 : door38
+visited nodes: 0 : doorEntrance
+visited nodes: 4 : door1
+visited nodes: 0 : doorEntrance
+visited nodes: 3 : door2
+visited nodes: 0 : doorEntrance
+visited nodes: 12 : door33
+visited nodes: 0 : doorEntrance
+visited nodes: 23 : door35
+visited nodes: 0 : doorEntrance
+visited nodes: 28 : door3
+visited nodes: 0 : doorEntrance
+visited nodes: 26 : door34
+visited nodes: 0 : doorEntrance
+visited nodes: 35 : door5
+visited nodes: 0 : doorEntrance
+visited nodes: 30 : door6
+visited nodes: 0 : doorEntrance
+visited nodes: 38 : door7
+visited nodes: 0 : doorEntrance
+visited nodes: 37 : door8
+visited nodes: 0 : doorEntrance
+visited nodes: 36 : door32
+visited nodes: 0 : doorEntrance
+visited nodes: 1 : button37
+visited nodes: 0 : doorEntrance
+visited nodes: 14 : button42
+visited nodes: 0 : doorEntrance
+visited nodes: 6 : button36
+visited nodes: 0 : doorEntrance
+visited nodes: 18 : button41
+visited nodes: 0 : doorEntrance
+visited nodes: 15 : button39
+visited nodes: 0 : doorEntrance
+visited nodes: 16 : button40
+visited nodes: 0 : doorEntrance
+visited nodes: 9 : buttonKeyToEastWing
+visited nodes: 0 : doorEntrance
+visited nodes: 8 : button38
+visited nodes: 0 : doorEntrance
+visited nodes: 5 : button1
+visited nodes: 0 : doorEntrance
+visited nodes: 11 : button33
+visited nodes: 0 : doorEntrance
+visited nodes: 22 : button2
+visited nodes: 0 : doorEntrance
+visited nodes: 27 : button3
+visited nodes: 0 : doorEntrance
+visited nodes: 21 : button34
+visited nodes: 0 : doorEntrance
+visited nodes: 25 : button35
+visited nodes: 0 : doorEntrance
+visited nodes: 24 : button43
+visited nodes: 0 : doorEntrance
+visited nodes: 29 : button5
+visited nodes: 0 : doorEntrance
+visited nodes: 32 : button6
+visited nodes: 0 : doorEntrance
+visited nodes: 33 : button7
+visited nodes: 0 : doorEntrance
+visited nodes: 31 : button8
+visited nodes: 0 : doorEntrance
+visited nodes: 34 : button32
+visited nodes: 0 : doorEntrance
+ neighbor of the current position: 1 : button37
+ neighbor of the current position: 2 : door37
+ neighbor of the current position: 3 : door2
+ neighbor of the current position: 4 : door1
+ neighbor of the current position: 5 : button1
+ neighbor of the current position: 6 : button36
+ neighbor of the current position: 7 : door36
+ neighbor of the current position: 8 : button38
+ neighbor of the current position: 9 : buttonKeyToEastWing
+ neighbor of the current position: 10 : door38
+ neighbor of the current position: 11 : button33
+ neighbor of the current position: 12 : door33
+ neighbor of the current position: 13 : door39
+ neighbor of the current position: 14 : button42
+ neighbor of the current position: 15 : button39
+ neighbor of the current position: 16 : button40
+ neighbor of the current position: 17 : door42
+ neighbor of the current position: 18 : button41
+ neighbor of the current position: 19 : door41
+ neighbor of the current position: 20 : door40
+ neighbor of the current position: 21 : button34
+ neighbor of the current position: 22 : button2
+ neighbor of the current position: 23 : door35
+ neighbor of the current position: 24 : button43
+ neighbor of the current position: 25 : button35
+ neighbor of the current position: 26 : door34
+ neighbor of the current position: 27 : button3
+ neighbor of the current position: 28 : door3
+ neighbor of the current position: 29 : button5
+ neighbor of the current position: 30 : door6
+ neighbor of the current position: 31 : button8
+ neighbor of the current position: 32 : button6
+ neighbor of the current position: 33 : button7
+ neighbor of the current position: 34 : button32
+ neighbor of the current position: 35 : door5
+ neighbor of the current position: 36 : door32
+ neighbor of the current position: 37 : door8
+ neighbor of the current position: 38 : door7
+selected any entity in neighborhood: null
+there is no node in the neighborhood to select
+Select one unchecked entitynull
+selected a door in neighborhood: null
+select nearest node to the agent position 
+*** 8519, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal select nearest node to the agent position.
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8520, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+predicate: doorEntrancefalse
+*** 8521, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Lifting predicate to goal.
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Update the neighbrs graph.
+*** 8522, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+seen in the same time stamp doorEntrance e timestam: 115370 curenttimestamp : 115370 id :doorEntrance
+merge Newly Observed Entities 
+mergeNewlyObservedEntities is null
+There is no new entity/neighbore
+*** 8523, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Update the neighbrs graph.
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8524, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+checkExplore: null
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal Lifting predicate to goal.
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal success.
+*** 8525, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal success.
+Dec 23, 2021 12:31:58 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Check the final goal.
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8526, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8527, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Check the final goal.
+*** 8528, agent1 @<44.632088,0.7511,15.179998>
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal select nearest node to the agent position.
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+apply different polices to select a node
+>>>>>>current Node: 0
+ select Nearest Node when it is not the first time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]currrentnode: 0
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 2 : door37
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 17 : door42
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 7 : door36
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 19 : door41
+visited nodes: 0 : doorEntrance
+visited nodes: 13 : door39
+visited nodes: 0 : doorEntrance
+visited nodes: 20 : door40
+visited nodes: 0 : doorEntrance
+visited nodes: 10 : door38
+visited nodes: 0 : doorEntrance
+visited nodes: 4 : door1
+visited nodes: 0 : doorEntrance
+visited nodes: 3 : door2
+visited nodes: 0 : doorEntrance
+visited nodes: 12 : door33
+visited nodes: 0 : doorEntrance
+visited nodes: 23 : door35
+visited nodes: 0 : doorEntrance
+visited nodes: 28 : door3
+visited nodes: 0 : doorEntrance
+visited nodes: 26 : door34
+visited nodes: 0 : doorEntrance
+visited nodes: 35 : door5
+visited nodes: 0 : doorEntrance
+visited nodes: 30 : door6
+visited nodes: 0 : doorEntrance
+visited nodes: 38 : door7
+visited nodes: 0 : doorEntrance
+visited nodes: 37 : door8
+visited nodes: 0 : doorEntrance
+visited nodes: 36 : door32
+visited nodes: 0 : doorEntrance
+visited nodes: 1 : button37
+visited nodes: 0 : doorEntrance
+visited nodes: 14 : button42
+visited nodes: 0 : doorEntrance
+visited nodes: 6 : button36
+visited nodes: 0 : doorEntrance
+visited nodes: 18 : button41
+visited nodes: 0 : doorEntrance
+visited nodes: 15 : button39
+visited nodes: 0 : doorEntrance
+visited nodes: 16 : button40
+visited nodes: 0 : doorEntrance
+visited nodes: 9 : buttonKeyToEastWing
+visited nodes: 0 : doorEntrance
+visited nodes: 8 : button38
+visited nodes: 0 : doorEntrance
+visited nodes: 5 : button1
+visited nodes: 0 : doorEntrance
+visited nodes: 11 : button33
+visited nodes: 0 : doorEntrance
+visited nodes: 22 : button2
+visited nodes: 0 : doorEntrance
+visited nodes: 27 : button3
+visited nodes: 0 : doorEntrance
+visited nodes: 21 : button34
+visited nodes: 0 : doorEntrance
+visited nodes: 25 : button35
+visited nodes: 0 : doorEntrance
+visited nodes: 24 : button43
+visited nodes: 0 : doorEntrance
+visited nodes: 29 : button5
+visited nodes: 0 : doorEntrance
+visited nodes: 32 : button6
+visited nodes: 0 : doorEntrance
+visited nodes: 33 : button7
+visited nodes: 0 : doorEntrance
+visited nodes: 31 : button8
+visited nodes: 0 : doorEntrance
+visited nodes: 34 : button32
+visited nodes: 0 : doorEntrance
+ neighbor of the current position: 1 : button37
+ neighbor of the current position: 2 : door37
+ neighbor of the current position: 3 : door2
+ neighbor of the current position: 4 : door1
+ neighbor of the current position: 5 : button1
+ neighbor of the current position: 6 : button36
+ neighbor of the current position: 7 : door36
+ neighbor of the current position: 8 : button38
+ neighbor of the current position: 9 : buttonKeyToEastWing
+ neighbor of the current position: 10 : door38
+ neighbor of the current position: 11 : button33
+ neighbor of the current position: 12 : door33
+ neighbor of the current position: 13 : door39
+ neighbor of the current position: 14 : button42
+ neighbor of the current position: 15 : button39
+ neighbor of the current position: 16 : button40
+ neighbor of the current position: 17 : door42
+ neighbor of the current position: 18 : button41
+ neighbor of the current position: 19 : door41
+ neighbor of the current position: 20 : door40
+ neighbor of the current position: 21 : button34
+ neighbor of the current position: 22 : button2
+ neighbor of the current position: 23 : door35
+ neighbor of the current position: 24 : button43
+ neighbor of the current position: 25 : button35
+ neighbor of the current position: 26 : door34
+ neighbor of the current position: 27 : button3
+ neighbor of the current position: 28 : door3
+ neighbor of the current position: 29 : button5
+ neighbor of the current position: 30 : door6
+ neighbor of the current position: 31 : button8
+ neighbor of the current position: 32 : button6
+ neighbor of the current position: 33 : button7
+ neighbor of the current position: 34 : button32
+ neighbor of the current position: 35 : door5
+ neighbor of the current position: 36 : door32
+ neighbor of the current position: 37 : door8
+ neighbor of the current position: 38 : door7
+selected any entity in neighborhood: null
+there is no node in the neighborhood to select
+Select one unchecked entitynull
+selected a door in neighborhood: null
+select nearest node to the agent position 
+*** 8529, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal select nearest node to the agent position.
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8530, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+predicate: doorEntrancefalse
+*** 8531, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Lifting predicate to goal.
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Update the neighbrs graph.
+*** 8532, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+seen in the same time stamp doorEntrance e timestam: 115490 curenttimestamp : 115490 id :doorEntrance
+merge Newly Observed Entities 
+mergeNewlyObservedEntities is null
+There is no new entity/neighbore
+*** 8533, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Update the neighbrs graph.
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8534, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+checkExplore: null
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal Lifting predicate to goal.
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal success.
+*** 8535, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal success.
+Dec 23, 2021 12:31:59 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Check the final goal.
+*** 8536, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8537, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:00 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Check the final goal.
+*** 8538, agent1 @<44.632088,0.7511,15.179998>
+Dec 23, 2021 12:32:00 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal select nearest node to the agent position.
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+apply different polices to select a node
+>>>>>>current Node: 0
+ select Nearest Node when it is not the first time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]currrentnode: 0
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 2 : door37
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 17 : door42
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 7 : door36
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 19 : door41
+visited nodes: 0 : doorEntrance
+visited nodes: 13 : door39
+visited nodes: 0 : doorEntrance
+visited nodes: 20 : door40
+visited nodes: 0 : doorEntrance
+visited nodes: 10 : door38
+visited nodes: 0 : doorEntrance
+visited nodes: 4 : door1
+visited nodes: 0 : doorEntrance
+visited nodes: 3 : door2
+visited nodes: 0 : doorEntrance
+visited nodes: 12 : door33
+visited nodes: 0 : doorEntrance
+visited nodes: 23 : door35
+visited nodes: 0 : doorEntrance
+visited nodes: 28 : door3
+visited nodes: 0 : doorEntrance
+visited nodes: 26 : door34
+visited nodes: 0 : doorEntrance
+visited nodes: 35 : door5
+visited nodes: 0 : doorEntrance
+visited nodes: 30 : door6
+visited nodes: 0 : doorEntrance
+visited nodes: 38 : door7
+visited nodes: 0 : doorEntrance
+visited nodes: 37 : door8
+visited nodes: 0 : doorEntrance
+visited nodes: 36 : door32
+visited nodes: 0 : doorEntrance
+visited nodes: 1 : button37
+visited nodes: 0 : doorEntrance
+visited nodes: 14 : button42
+visited nodes: 0 : doorEntrance
+visited nodes: 6 : button36
+visited nodes: 0 : doorEntrance
+visited nodes: 18 : button41
+visited nodes: 0 : doorEntrance
+visited nodes: 15 : button39
+visited nodes: 0 : doorEntrance
+visited nodes: 16 : button40
+visited nodes: 0 : doorEntrance
+visited nodes: 9 : buttonKeyToEastWing
+visited nodes: 0 : doorEntrance
+visited nodes: 8 : button38
+visited nodes: 0 : doorEntrance
+visited nodes: 5 : button1
+visited nodes: 0 : doorEntrance
+visited nodes: 11 : button33
+visited nodes: 0 : doorEntrance
+visited nodes: 22 : button2
+visited nodes: 0 : doorEntrance
+visited nodes: 27 : button3
+visited nodes: 0 : doorEntrance
+visited nodes: 21 : button34
+visited nodes: 0 : doorEntrance
+visited nodes: 25 : button35
+visited nodes: 0 : doorEntrance
+visited nodes: 24 : button43
+visited nodes: 0 : doorEntrance
+visited nodes: 29 : button5
+visited nodes: 0 : doorEntrance
+visited nodes: 32 : button6
+visited nodes: 0 : doorEntrance
+visited nodes: 33 : button7
+visited nodes: 0 : doorEntrance
+visited nodes: 31 : button8
+visited nodes: 0 : doorEntrance
+visited nodes: 34 : button32
+visited nodes: 0 : doorEntrance
+ neighbor of the current position: 1 : button37
+ neighbor of the current position: 2 : door37
+ neighbor of the current position: 3 : door2
+ neighbor of the current position: 4 : door1
+ neighbor of the current position: 5 : button1
+ neighbor of the current position: 6 : button36
+ neighbor of the current position: 7 : door36
+ neighbor of the current position: 8 : button38
+ neighbor of the current position: 9 : buttonKeyToEastWing
+ neighbor of the current position: 10 : door38
+ neighbor of the current position: 11 : button33
+ neighbor of the current position: 12 : door33
+ neighbor of the current position: 13 : door39
+ neighbor of the current position: 14 : button42
+ neighbor of the current position: 15 : button39
+ neighbor of the current position: 16 : button40
+ neighbor of the current position: 17 : door42
+ neighbor of the current position: 18 : button41
+ neighbor of the current position: 19 : door41
+ neighbor of the current position: 20 : door40
+ neighbor of the current position: 21 : button34
+ neighbor of the current position: 22 : button2
+ neighbor of the current position: 23 : door35
+ neighbor of the current position: 24 : button43
+ neighbor of the current position: 25 : button35
+ neighbor of the current position: 26 : door34
+ neighbor of the current position: 27 : button3
+ neighbor of the current position: 28 : door3
+ neighbor of the current position: 29 : button5
+ neighbor of the current position: 30 : door6
+ neighbor of the current position: 31 : button8
+ neighbor of the current position: 32 : button6
+ neighbor of the current position: 33 : button7
+ neighbor of the current position: 34 : button32
+ neighbor of the current position: 35 : door5
+ neighbor of the current position: 36 : door32
+ neighbor of the current position: 37 : door8
+ neighbor of the current position: 38 : door7
+selected any entity in neighborhood: null
+there is no node in the neighborhood to select
+Select one unchecked entitynull
+selected a door in neighborhood: null
+select nearest node to the agent position 
+*** 8539, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:00 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal select nearest node to the agent position.
+Dec 23, 2021 12:32:00 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8540, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+predicate: doorEntrancefalse
+*** 8541, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:00 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Lifting predicate to goal.
+Dec 23, 2021 12:32:00 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Update the neighbrs graph.
+*** 8542, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+seen in the same time stamp doorEntrance e timestam: 115624 curenttimestamp : 115624 id :doorEntrance
+merge Newly Observed Entities 
+mergeNewlyObservedEntities is null
+There is no new entity/neighbore
+*** 8543, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+Dec 23, 2021 12:32:00 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Update the neighbrs graph.
+Dec 23, 2021 12:32:00 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8544, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+checkExplore: null
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal Lifting predicate to goal.
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal success.
+*** 8545, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal success.
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Check the final goal.
+*** 8546, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8547, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Check the final goal.
+*** 8548, agent1 @<44.632088,0.7511,15.179998>
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal select nearest node to the agent position.
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+apply different polices to select a node
+>>>>>>current Node: 0
+ select Nearest Node when it is not the first time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]currrentnode: 0
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 2 : door37
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 17 : door42
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 7 : door36
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 19 : door41
+visited nodes: 0 : doorEntrance
+visited nodes: 13 : door39
+visited nodes: 0 : doorEntrance
+visited nodes: 20 : door40
+visited nodes: 0 : doorEntrance
+visited nodes: 10 : door38
+visited nodes: 0 : doorEntrance
+visited nodes: 4 : door1
+visited nodes: 0 : doorEntrance
+visited nodes: 3 : door2
+visited nodes: 0 : doorEntrance
+visited nodes: 12 : door33
+visited nodes: 0 : doorEntrance
+visited nodes: 23 : door35
+visited nodes: 0 : doorEntrance
+visited nodes: 28 : door3
+visited nodes: 0 : doorEntrance
+visited nodes: 26 : door34
+visited nodes: 0 : doorEntrance
+visited nodes: 35 : door5
+visited nodes: 0 : doorEntrance
+visited nodes: 30 : door6
+visited nodes: 0 : doorEntrance
+visited nodes: 38 : door7
+visited nodes: 0 : doorEntrance
+visited nodes: 37 : door8
+visited nodes: 0 : doorEntrance
+visited nodes: 36 : door32
+visited nodes: 0 : doorEntrance
+visited nodes: 1 : button37
+visited nodes: 0 : doorEntrance
+visited nodes: 14 : button42
+visited nodes: 0 : doorEntrance
+visited nodes: 6 : button36
+visited nodes: 0 : doorEntrance
+visited nodes: 18 : button41
+visited nodes: 0 : doorEntrance
+visited nodes: 15 : button39
+visited nodes: 0 : doorEntrance
+visited nodes: 16 : button40
+visited nodes: 0 : doorEntrance
+visited nodes: 9 : buttonKeyToEastWing
+visited nodes: 0 : doorEntrance
+visited nodes: 8 : button38
+visited nodes: 0 : doorEntrance
+visited nodes: 5 : button1
+visited nodes: 0 : doorEntrance
+visited nodes: 11 : button33
+visited nodes: 0 : doorEntrance
+visited nodes: 22 : button2
+visited nodes: 0 : doorEntrance
+visited nodes: 27 : button3
+visited nodes: 0 : doorEntrance
+visited nodes: 21 : button34
+visited nodes: 0 : doorEntrance
+visited nodes: 25 : button35
+visited nodes: 0 : doorEntrance
+visited nodes: 24 : button43
+visited nodes: 0 : doorEntrance
+visited nodes: 29 : button5
+visited nodes: 0 : doorEntrance
+visited nodes: 32 : button6
+visited nodes: 0 : doorEntrance
+visited nodes: 33 : button7
+visited nodes: 0 : doorEntrance
+visited nodes: 31 : button8
+visited nodes: 0 : doorEntrance
+visited nodes: 34 : button32
+visited nodes: 0 : doorEntrance
+ neighbor of the current position: 1 : button37
+ neighbor of the current position: 2 : door37
+ neighbor of the current position: 3 : door2
+ neighbor of the current position: 4 : door1
+ neighbor of the current position: 5 : button1
+ neighbor of the current position: 6 : button36
+ neighbor of the current position: 7 : door36
+ neighbor of the current position: 8 : button38
+ neighbor of the current position: 9 : buttonKeyToEastWing
+ neighbor of the current position: 10 : door38
+ neighbor of the current position: 11 : button33
+ neighbor of the current position: 12 : door33
+ neighbor of the current position: 13 : door39
+ neighbor of the current position: 14 : button42
+ neighbor of the current position: 15 : button39
+ neighbor of the current position: 16 : button40
+ neighbor of the current position: 17 : door42
+ neighbor of the current position: 18 : button41
+ neighbor of the current position: 19 : door41
+ neighbor of the current position: 20 : door40
+ neighbor of the current position: 21 : button34
+ neighbor of the current position: 22 : button2
+ neighbor of the current position: 23 : door35
+ neighbor of the current position: 24 : button43
+ neighbor of the current position: 25 : button35
+ neighbor of the current position: 26 : door34
+ neighbor of the current position: 27 : button3
+ neighbor of the current position: 28 : door3
+ neighbor of the current position: 29 : button5
+ neighbor of the current position: 30 : door6
+ neighbor of the current position: 31 : button8
+ neighbor of the current position: 32 : button6
+ neighbor of the current position: 33 : button7
+ neighbor of the current position: 34 : button32
+ neighbor of the current position: 35 : door5
+ neighbor of the current position: 36 : door32
+ neighbor of the current position: 37 : door8
+ neighbor of the current position: 38 : door7
+selected any entity in neighborhood: null
+there is no node in the neighborhood to select
+Select one unchecked entitynull
+selected a door in neighborhood: null
+select nearest node to the agent position 
+*** 8549, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal select nearest node to the agent position.
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8550, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+predicate: doorEntrancefalse
+*** 8551, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Lifting predicate to goal.
+Dec 23, 2021 12:32:01 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Update the neighbrs graph.
+*** 8552, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+seen in the same time stamp doorEntrance e timestam: 115761 curenttimestamp : 115761 id :doorEntrance
+merge Newly Observed Entities 
+mergeNewlyObservedEntities is null
+There is no new entity/neighbore
+*** 8553, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Update the neighbrs graph.
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8554, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+checkExplore: null
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal Lifting predicate to goal.
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal success.
+*** 8555, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 SOLVEs the goal success.
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Check the final goal.
+*** 8556, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+*** 8557, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal Check the final goal.
+*** 8558, agent1 @<44.632088,0.7511,15.179998>
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal select nearest node to the agent position.
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+apply different polices to select a node
+>>>>>>current Node: 0
+ select Nearest Node when it is not the first time: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]currrentnode: 0
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 2 : door37
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 17 : door42
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 7 : door36
+visited nodes: 0 : doorEntrance
+visited nodes: 0 : doorEntrance
+visited nodes: 19 : door41
+visited nodes: 0 : doorEntrance
+visited nodes: 13 : door39
+visited nodes: 0 : doorEntrance
+visited nodes: 20 : door40
+visited nodes: 0 : doorEntrance
+visited nodes: 10 : door38
+visited nodes: 0 : doorEntrance
+visited nodes: 4 : door1
+visited nodes: 0 : doorEntrance
+visited nodes: 3 : door2
+visited nodes: 0 : doorEntrance
+visited nodes: 12 : door33
+visited nodes: 0 : doorEntrance
+visited nodes: 23 : door35
+visited nodes: 0 : doorEntrance
+visited nodes: 28 : door3
+visited nodes: 0 : doorEntrance
+visited nodes: 26 : door34
+visited nodes: 0 : doorEntrance
+visited nodes: 35 : door5
+visited nodes: 0 : doorEntrance
+visited nodes: 30 : door6
+visited nodes: 0 : doorEntrance
+visited nodes: 38 : door7
+visited nodes: 0 : doorEntrance
+visited nodes: 37 : door8
+visited nodes: 0 : doorEntrance
+visited nodes: 36 : door32
+visited nodes: 0 : doorEntrance
+visited nodes: 1 : button37
+visited nodes: 0 : doorEntrance
+visited nodes: 14 : button42
+visited nodes: 0 : doorEntrance
+visited nodes: 6 : button36
+visited nodes: 0 : doorEntrance
+visited nodes: 18 : button41
+visited nodes: 0 : doorEntrance
+visited nodes: 15 : button39
+visited nodes: 0 : doorEntrance
+visited nodes: 16 : button40
+visited nodes: 0 : doorEntrance
+visited nodes: 9 : buttonKeyToEastWing
+visited nodes: 0 : doorEntrance
+visited nodes: 8 : button38
+visited nodes: 0 : doorEntrance
+visited nodes: 5 : button1
+visited nodes: 0 : doorEntrance
+visited nodes: 11 : button33
+visited nodes: 0 : doorEntrance
+visited nodes: 22 : button2
+visited nodes: 0 : doorEntrance
+visited nodes: 27 : button3
+visited nodes: 0 : doorEntrance
+visited nodes: 21 : button34
+visited nodes: 0 : doorEntrance
+visited nodes: 25 : button35
+visited nodes: 0 : doorEntrance
+visited nodes: 24 : button43
+visited nodes: 0 : doorEntrance
+visited nodes: 29 : button5
+visited nodes: 0 : doorEntrance
+visited nodes: 32 : button6
+visited nodes: 0 : doorEntrance
+visited nodes: 33 : button7
+visited nodes: 0 : doorEntrance
+visited nodes: 31 : button8
+visited nodes: 0 : doorEntrance
+visited nodes: 34 : button32
+visited nodes: 0 : doorEntrance
+ neighbor of the current position: 1 : button37
+ neighbor of the current position: 2 : door37
+ neighbor of the current position: 3 : door2
+ neighbor of the current position: 4 : door1
+ neighbor of the current position: 5 : button1
+ neighbor of the current position: 6 : button36
+ neighbor of the current position: 7 : door36
+ neighbor of the current position: 8 : button38
+ neighbor of the current position: 9 : buttonKeyToEastWing
+ neighbor of the current position: 10 : door38
+ neighbor of the current position: 11 : button33
+ neighbor of the current position: 12 : door33
+ neighbor of the current position: 13 : door39
+ neighbor of the current position: 14 : button42
+ neighbor of the current position: 15 : button39
+ neighbor of the current position: 16 : button40
+ neighbor of the current position: 17 : door42
+ neighbor of the current position: 18 : button41
+ neighbor of the current position: 19 : door41
+ neighbor of the current position: 20 : door40
+ neighbor of the current position: 21 : button34
+ neighbor of the current position: 22 : button2
+ neighbor of the current position: 23 : door35
+ neighbor of the current position: 24 : button43
+ neighbor of the current position: 25 : button35
+ neighbor of the current position: 26 : door34
+ neighbor of the current position: 27 : button3
+ neighbor of the current position: 28 : door3
+ neighbor of the current position: 29 : button5
+ neighbor of the current position: 30 : door6
+ neighbor of the current position: 31 : button8
+ neighbor of the current position: 32 : button6
+ neighbor of the current position: 33 : button7
+ neighbor of the current position: 34 : button32
+ neighbor of the current position: 35 : door5
+ neighbor of the current position: 36 : door32
+ neighbor of the current position: 37 : door8
+ neighbor of the current position: 38 : door7
+selected any entity in neighborhood: null
+there is no node in the neighborhood to select
+Select one unchecked entitynull
+selected a door in neighborhood: null
+select nearest node to the agent position 
+*** 8559, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 ABORTs the goal select nearest node to the agent position.
+Dec 23, 2021 12:32:02 AM nl.uu.cs.aplib.mainConcepts.BasicAgent updateWorker
+INFO: Agent agent1 switches to goal Lifting predicate to goal.
+*** 8560, agent1 @<44.632088,0.7511,15.179998>
+>>> currentwaypoint 22 @<42.239998,0.03,15.24>, delta: 2.3930168
+>>> path [<12.32,0.03,20.539999>, <12.88,0.03,20.279999>, <13.44,0.03,19.8>, <15.36,0.03,19.8>, <17.58,0.03,19.8>, <18.42,0.03,19.8>, <19.199999,0.03,19.8>, <23.039999,0.03,19.8>, <26.88,0.03,19.8>, <27.599998,0.03,19.8>, <28.439999,0.03,19.8>, <30.72,0.03,19.8>, <34.559998,0.03,19.8>, <38.399998,0.03,19.8>, <42.239998,0.03,19.8>, <46.079998,0.03,19.8>, <47.579998,0.03,19.8>, <47.76,0.03,19.619999>, <47.76,0.03,19.199999>, <47.699997,0.03,15.36>, <47.579998,0.03,15.24>, <46.079998,0.03,15.24>, <42.239998,0.03,15.24>, <41.76,0.03,14.4>, <41.76,0.03,14.4>]
+predicate: doorEntrancefalse
+*** 8561, agent1 @<44.632088,0.7511,15.179998>
