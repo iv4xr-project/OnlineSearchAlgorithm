@@ -1,0 +1,30 @@
+# Total number of goals covered by this test: 2
+# d38m --> d38p
+# d38p --> d38m
+
+digraph g {
+"b2" -> "b0" [label = "1-explore[EXPLORE];/null/null/null"];
+"b0" -> "d38m" [label = "2-explore[EXPLORE];/null/null/null"];
+"d38m" -> "b3" [label = "3-explore[EXPLORE];/null/null/null"];
+"b3" -> "b1" [label = "4-explore[EXPLORE];/null/null/null"];
+"b1" -> "b2" [label = "5-explore[EXPLORE];/null/null/null"];
+"b2" -> "b2" [label = "6-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door16[false]:=!(door16[false]); door2[false]:=!(door2[false]); door18[false]:=!(door18[false]); door36[false]:=!(door36[false]); door21[false]:=!(door21[false]); door6[false]:=!(door6[false]); door22[false]:=!(door22[false]); door38[false]:=!(door38[false]); door7[false]:=!(door7[false]); door26[false]:=!(door26[false]); door12[false]:=!(door12[false]); /null"];
+"b2" -> "b3" [label = "7-explore[EXPLORE];/null/null/null"];
+"b3" -> "b1" [label = "8-explore[EXPLORE];/null/null/null"];
+"b1" -> "b1" [label = "9-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door18[false]:=!(door18[false]); door36[false]:=!(door36[false]); door5[false]:=!(door5[false]); door21[false]:=!(door21[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door12[false]:=!(door12[false]); /null"];
+"b1" -> "b1" [label = "10-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door18[false]:=!(door18[false]); door36[false]:=!(door36[false]); door5[false]:=!(door5[false]); door21[false]:=!(door21[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door12[false]:=!(door12[false]); /null"];
+"b1" -> "d36p" [label = "11-explore[EXPLORE];/null/null/null"];
+"d36p" -> "b2" [label = "12-explore[EXPLORE];/null/null/null"];
+"b2" -> "b1" [label = "13-explore[EXPLORE];/null/null/null"];
+"b1" -> "b0" [label = "14-explore[EXPLORE];/null/null/null"];
+"b0" -> "b0" [label = "15-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door16[false]:=!(door16[false]); door17[false]:=!(door17[false]); door2[false]:=!(door2[false]); door36[false]:=!(door36[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door12[false]:=!(door12[false]); door31[false]:=!(door31[false]); /null"];
+"b0" -> "d38m" [label = "16-explore[EXPLORE];/null/null/null"];
+"d38m" -> "b0" [label = "17-explore[EXPLORE];/null/null/null"];
+"b0" -> "d38m" [label = "18-explore[EXPLORE];/null/null/null"];
+"d38m" -> "b2" [label = "19-explore[EXPLORE];/null/null/null"];
+"b2" -> "d36p" [label = "20-explore[EXPLORE];/null/null/null"];
+"d36p" -> "b3" [label = "21-explore[EXPLORE];/null/null/null"];
+"b3" -> "d38m" [label = "22-explore[EXPLORE];/null/null/null"];
+"d38m" -> "d38p" [label = "23-explore[EXPLORE];/door38[false]/null/null"];
+"d38p" -> "d38m" [label = "24-explore[EXPLORE];/door38[false]/null/null"];
+}

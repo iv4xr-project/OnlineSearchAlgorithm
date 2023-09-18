@@ -56,7 +56,8 @@ public class TacticLibExtended extends TacticLib{
 		            	  
 		            	  var e = (LabEntity) belief.worldmodel.getElement(id) ;
 		            	  
-		            	  var p = e.getFloorPosition() ;		            	  		            	  		            	  		            	  		            	  		            		                			    			    		    			   
+		            	  var p = e.getFloorPosition() ;	
+		            	  System.out.println("get door status in guided explore:" + belief.isOpen("door3") + belief.isOpen("door34") + belief.isOpen("door0") +belief.isOpen("door1") +belief.isOpen("door17")+belief.isOpen("door30") +belief.isOpen("door2") +belief.isOpen("door10"));
 		    			    System.out.print("***row navigate to position " + p +"id "+ id +" , path "+ belief.findPathTo(p,false));
 		    			    // find path to p, but don't force re-calculation
 		    			    return belief.findPathTo(p,false) ;		    			    
@@ -184,6 +185,7 @@ public class TacticLibExtended extends TacticLib{
 						 * */
 						for(int i = 0 ; i<belief.highLevelGragh.entities.size(); i++) {
 							if(belief.highLevelGragh.entities.get(i).id.contains("door")) {doors.add(i);}
+							System.out.println(">>>>>>which entity is selected to compre the distance to the goal: " + belief.highLevelGragh.vertices.get(i) );
 							var goalDistance  = goalPosition != null ? Vec3.dist(belief.highLevelGragh.vertices.get(i), goalPosition) : null;
 							var y  = Vec3.dist(belief.highLevelGragh.vertices.get(i), agentLocation);			
 							if(distance == 0) {
@@ -201,8 +203,8 @@ public class TacticLibExtended extends TacticLib{
 								}else {
 							//	System.out.println("distances"+ belief.highLevelGragh.entities.get(i).id+ distances.get(0) +","+ distances.get(1) +","+ y +","+  goalDistance);
 							// considering agent position and nearest node to the goal position
-								if((y>distances.get(0) && goalDistance < distances.get(1)) || 
-										(y<distances.get(0) && goalDistance < distances.get(1)) ) {
+									System.out.println(">>>>>>goal distance: " + goalId + "previous dist : " + distances.get(1) + "new dist: " + goalDistance);
+									if((goalDistance < distances.get(1))  ) {		
 									distances.set(0, y); distances.set(1, goalDistance);  selectedNode = i; 
 									}	}							
 							}
@@ -239,6 +241,7 @@ public class TacticLibExtended extends TacticLib{
 								if(belief.highLevelGragh.entities.get(element).id.contains("door")) {doors.add(element);}
 								
 								var goalDistance  = goalPosition != null ? Vec3.dist(belief.highLevelGragh.vertices.get(element), goalPosition) : null;
+								System.out.println(">>>>>>which entity is selected to compre the distance to the goal: " + belief.highLevelGragh.vertices.get(element) );
 								var y  = Vec3.dist(belief.highLevelGragh.vertices.get(element), belief.highLevelGragh.vertices.get(currentNode));
 								
 								if(distance == 0) {
@@ -255,8 +258,8 @@ public class TacticLibExtended extends TacticLib{
 										if(y<distance) { distance = y; selectedNode = element; }
 									}else {
 										// considering agent position and nearest node to the goal position
-										if((y>distances.get(0) && goalDistance < distances.get(1)) || 
-												(y<distances.get(0) && goalDistance < distances.get(1)) ) {
+										System.out.println(">>>>>>goal distance: " + goalId + "previous dist : " + distances.get(1) + "new dist: " + goalDistance);
+										if(goalDistance < distances.get(1) ) {
 											distances.set(0, y); distances.set(1, goalDistance);  selectedNode = element; 
 											}
 										}
@@ -317,7 +320,7 @@ public class TacticLibExtended extends TacticLib{
 						System.out.println("Select one unchecked entity" + selectedNode); 
 					}
 					
-					belief.highLevelGragh.entities.forEach(e -> System.out.println("entites id : " + e.id ));
+					belief.highLevelGragh.entities.forEach(e -> System.out.println("entites id : " + e.id + " statuse: "+belief.isOpen(e.id)));
 					
 					
 					
@@ -408,6 +411,7 @@ public class TacticLibExtended extends TacticLib{
 					var selectedNode = belief.highLevelGragh.currentSelectedEntity;
 					if(selectedNode != null) {	
 						// the node is selected at the nearest selected tactic 
+						System.out.println("unvisitedNode function: " + selectedNode);
 							belief.highLevelGragh.visitedNodes.add(selectedNode);
 							return new Pair(selectedNode,belief);
 					}
@@ -520,7 +524,8 @@ public class TacticLibExtended extends TacticLib{
 					
 					if(selectedNode != null) {
 						System.out.println("indirect inactive button " + selectedNode + entities.get(selectedNode).id);
-						belief.highLevelGragh.currentSelectedEntity = selectedNode; 
+						belief.highLevelGragh.currentSelectedEntity = selectedNode;
+						System.out.println("indirect neighbors function: " + selectedNode);
 						if(!belief.highLevelGragh.visitedNodes.contains(selectedNode)) belief.highLevelGragh.visitedNodes.add(selectedNode); 		
 						belief.buttonDoorConnection.get(currentNodeId).add(belief.highLevelGragh.entities.get(selectedNode).id);												
 									
@@ -608,7 +613,9 @@ public class TacticLibExtended extends TacticLib{
     	var explore_ =
     			unguardedNavigateTo("Explore: traveling to an exploration target")
     			. on((BeliefState belief) -> {  
+    				System.out.println("get door status in guided explore:" + belief.isOpen("door1") );
     				System.out.println("guided explore with parametes: " + memo.stateIs("S0") + memo.stateIs("inTransit")) ;
+    				
     				if(!memo.stateIs("inTransit")) {
     					 // in this state we must decide a new exploration target:
     					 System.out.println("if ### Explore: explore" ) ;
@@ -683,15 +690,28 @@ public class TacticLibExtended extends TacticLib{
      * can open a path to B. If there are more than one doors or a door is connected to multi 
      * buttons, it selects a door based on some policies.
      *  */
-  	public static Tactic unlockAgent(BeliefState b, TestAgent agent) {			
+  	public static Tactic unlockAgent(BeliefState b, TestAgent agent, String s) {			
   		var addNewGoal =   action("use prolog to help an agent to untrapped").do1(
   				(BeliefStateExtended belief)-> {
   					var isLocked = belief.prolog.isLockedInCurrentRoom();
-  					String entityId = belief.highLevelGragh.currentBlockedEntity;
-  					System.out.println("is locked in the room: " + isLocked +" id: "+ entityId);
-  						
+  					String entityId = "";
+  					System.out.println("what is s:" + s);
+  					if(s.contains("button")) {
+  						System.out.println("in the buttons: " + belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id);
+  						entityId = belief.highLevelGragh.entities.get(belief.highLevelGragh.currentSelectedEntity).id;
+  					}else {
+  						System.out.println("in the door: " +  belief.highLevelGragh.currentBlockedEntity);
+  						entityId = belief.highLevelGragh.currentBlockedEntity;
+  					}
+  					
+  					
+  					System.out.println("is locked in the room: " + isLocked +" id: "+ entityId); 									
   					var getEnablingButtons = belief.prolog.getEnablingButtons(entityId);
   					System.out.println("get Enabling Doors:size " + getEnablingButtons.size());
+  					
+					
+  					
+  					
   					if(getEnablingButtons.size()== 0) return null;
   					float distance   = Float.valueOf(0);
   					//this should return the agent current position
@@ -736,11 +756,11 @@ public class TacticLibExtended extends TacticLib{
   						
 	  						if(distance == 0) {
 	  							distance = dist;
-	  							selectedDoor = button;
+	  							selectedButon = button;
 	  						}else {
 	  							if(distance > dist) {
 	  								distance = dist;
-	  								selectedDoor = button;
+	  								selectedButon = button;
 	  							}
 	  						}
   						}
@@ -769,6 +789,10 @@ public class TacticLibExtended extends TacticLib{
   	}	
     
     
+
+  	
+  	
+  	
 	/**
 	 * To unlock the agent we can consider the last interacted button as a cause of making this problem.
 	 * Based on the information in the high-level graph, we know the last selected button. So, we can use
@@ -1007,6 +1031,7 @@ public class TacticLibExtended extends TacticLib{
 					
 					belief.highLevelGragh.currentBlockedEntity = entity.id;
 					// the agent won't add the current position which is the blocked node to the visited node
+					System.out.println("dynamicly add a goal to find function: " + selectedNode);
 					belief.highLevelGragh.visitedNodes.add(belief.highLevelGragh.getIndexById(belief.highLevelGragh.currentBlockedEntity));
 					//register the blocked doors name in the data collector
 					agent.registerEvent(new TimeStampedObservationEvent(belief.highLevelGragh.currentBlockedEntity));
@@ -1110,7 +1135,8 @@ public class TacticLibExtended extends TacticLib{
     				 
     				if(!memo.stateIs("inTransit")) {
     					 // in this state we must decide a new exploration target:
-    					 System.out.println("Guided exlore! " ) ;
+    					System.out.println("get door status in guided explore:" + belief.isOpen("door1"));
+    					System.out.println("Guided exlore! " ) ;
                          //get the location of the closest unexplored node
         				 var position = belief.worldmodel().getFloorPosition() ;        				 
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;

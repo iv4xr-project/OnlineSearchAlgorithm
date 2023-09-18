@@ -1,0 +1,19 @@
+# Total number of goals covered by this test: 5
+# b30 --> b30
+# b30 --> d30m
+# b31 --> d25p
+# d30m --> b30
+# d30m --> b31
+
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->d30p
+d30p-{explore[EXPLORE];}->d30m
+d30m-{explore[EXPLORE];}->b31
+b31-{explore[EXPLORE];}->b30
+b30-{explore[EXPLORE];}->d30m
+d30m-{explore[EXPLORE];}->b30
+b30-{toggle[TOGGLE];}->b30
+b30-{explore[EXPLORE];}->b31
+b31-{explore[EXPLORE];}->d25p

@@ -1,0 +1,7 @@
+# Total number of goals covered by this test: 2
+# d2m --> d0p
+# d0p --> d6m
+
+b3-{explore[EXPLORE];}->d2m
+d2m-{explore[EXPLORE];}->d0p
+d0p-{explore[EXPLORE];}->d6m

@@ -96,13 +96,13 @@ public class onlineSearchMultiRun {
 	     * A test to verify that the east closet is reachable.
 	     */
 	    @Test
-	    public List<Object> closetReachableTest(String levelName, String fileName, String doorName) throws InterruptedException {
+	    public List<Object> closetReachableTest(String levelDirectory, String fileName, String doorName, String resultDirectory, String levelName) throws InterruptedException {
 	    	//String levelName = "";
 	   // 	String levelName = "CompetitionGrander//bm2021";
 	   // 	String fileName = "BM2021_diff1_R4_1_1_M";
 
 	        // Create an environment
-	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
+	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelDirectory) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
 	    	String treasureDoor = doorName;
@@ -216,7 +216,7 @@ public class onlineSearchMultiRun {
 					//	throw new AgentDieException() ;
 					}
 	        	
-		        	if (cycleNumber>2000) {
+		        	if (cycleNumber>60000) {
 		        		break ;
 		        	}
 		        }
@@ -299,9 +299,9 @@ public class onlineSearchMultiRun {
 				 // save the position 
 				 try {
 					testAgent.getTestDataCollector()
-					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"MutatedFiles"+File.separator +"result"+File.separator+ "BM2021_diff3_R4_2_2_M"+File.separator+fileName+ "positionTraceViewDis.csv");							
+					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),resultDirectory+File.separator+levelName+File.separator+fileName+ "positionTraceViewDis.csv");							
 					testAgent.getTestDataCollector()
-					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"MutatedFiles"+File.separator+ "result"+File.separator+ "BM2021_diff3_R4_2_2_M"+File.separator+fileName+ "EventTraceViewDis.csv");
+					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),resultDirectory+File.separator+levelName+File.separator+fileName+ "EventTraceViewDis.csv");
 				 } catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

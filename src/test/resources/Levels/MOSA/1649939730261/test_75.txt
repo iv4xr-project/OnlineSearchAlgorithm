@@ -1,0 +1,19 @@
+# Total number of goals covered by this test: 4
+# d4p --> d19m
+# d2m --> d4m
+# d2p --> d2m
+# d4m --> d4p
+
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d20p
+d20p-{explore[EXPLORE];}->d20m
+d20m-{explore[EXPLORE];}->d13p
+d13p-{explore[EXPLORE];}->d13m
+d13m-{explore[EXPLORE];}->d8p
+d8p-{explore[EXPLORE];}->d8m
+d8m-{explore[EXPLORE];}->b69
+b69-{explore[EXPLORE];}->d2p
+d2p-{explore[EXPLORE];}->d2m
+d2m-{explore[EXPLORE];}->d4m
+d4m-{explore[EXPLORE];}->d4p
+d4p-{explore[EXPLORE];}->d19m

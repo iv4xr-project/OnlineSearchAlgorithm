@@ -1,0 +1,15 @@
+# Total number of goals covered by this test: 1
+# d53m --> d53p
+
+gf8-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->d53p
+d53p-{explore[EXPLORE];}->gf8
+gf8-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->d53p
+d53p-{explore[EXPLORE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d53p
+d53p-{explore[EXPLORE];}->d53m
+d53m-{explore[EXPLORE];}->d53p
+d53p-{explore[EXPLORE];}->d53m
+d53m-{explore[EXPLORE];}->d53p

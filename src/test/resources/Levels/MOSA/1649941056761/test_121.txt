@@ -1,0 +1,31 @@
+# Total number of goals covered by this test: 1
+# b44 --> d6m
+
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d20p
+d20p-{explore[EXPLORE];}->d20m
+d20m-{explore[EXPLORE];}->d11p
+d11p-{explore[EXPLORE];}->d11m
+d11m-{explore[EXPLORE];}->d4p
+d4p-{explore[EXPLORE];}->d4m
+d4m-{explore[EXPLORE];}->d0p
+d0p-{explore[EXPLORE];}->d0m
+d0m-{explore[EXPLORE];}->d3m
+d3m-{explore[EXPLORE];}->d3p
+d3p-{explore[EXPLORE];}->b44
+b44-{toggle[TOGGLE];}->b44
+b44-{explore[EXPLORE];}->d3p
+d3p-{explore[EXPLORE];}->d6m
+d6m-{explore[EXPLORE];}->b43
+b43-{toggle[TOGGLE];}->b43
+b43-{explore[EXPLORE];}->d3p
+d3p-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->d3p
+d3p-{explore[EXPLORE];}->b44
+b44-{toggle[TOGGLE];}->b44
+b44-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->d32m
+d32m-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->d6m
+d6m-{explore[EXPLORE];}->b44

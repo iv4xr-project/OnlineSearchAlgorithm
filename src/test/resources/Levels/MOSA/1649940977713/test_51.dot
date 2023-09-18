@@ -1,0 +1,54 @@
+# Total number of goals covered by this test: 7
+# d26m --> d25p
+# d25p --> b20
+# b20 --> b20
+# d25p --> d26m
+# d25m --> d25p
+# d25p --> d25m
+# b20 --> d25p
+
+digraph g {
+"b0" -> "b0" [label = "1-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door3[false]:=!(door3[false]); door36[false]:=!(door36[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door8[false]:=!(door8[false]); door9[false]:=!(door9[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door13[false]:=!(door13[false]); door14[false]:=!(door14[false]); door18[false]:=!(door18[false]); door23[false]:=!(door23[false]); door26[false]:=!(door26[false]); door28[false]:=!(door28[false]); door30[false]:=!(door30[false]); /null"];
+"b0" -> "d0p" [label = "2-explore[EXPLORE];/null/null/null"];
+"d0p" -> "d0m" [label = "3-explore[EXPLORE];/door0[false]/null/null"];
+"d0m" -> "d5m" [label = "4-explore[EXPLORE];/null/null/null"];
+"d5m" -> "d5p" [label = "5-explore[EXPLORE];/door5[false]/null/null"];
+"d5p" -> "gf6" [label = "6-explore[EXPLORE];/null/null/null"];
+"gf6" -> "d7m" [label = "7-explore[EXPLORE];/null/null/null"];
+"d7m" -> "d7p" [label = "8-explore[EXPLORE];/door7[false]/null/null"];
+"d7p" -> "b28" [label = "9-explore[EXPLORE];/null/null/null"];
+"b28" -> "b28" [label = "10-toggle[TOGGLE];/null/door19[false]:=!(door19[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door15[false]:=!(door15[false]); /null"];
+"b28" -> "b28" [label = "11-toggle[TOGGLE];/null/door19[false]:=!(door19[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door15[false]:=!(door15[false]); /null"];
+"b28" -> "d7p" [label = "12-explore[EXPLORE];/null/null/null"];
+"d7p" -> "d9m" [label = "13-explore[EXPLORE];/null/null/null"];
+"d9m" -> "b28" [label = "14-explore[EXPLORE];/null/null/null"];
+"b28" -> "b28" [label = "15-toggle[TOGGLE];/null/door19[false]:=!(door19[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door15[false]:=!(door15[false]); /null"];
+"b28" -> "d7p" [label = "16-explore[EXPLORE];/null/null/null"];
+"d7p" -> "d7m" [label = "17-explore[EXPLORE];/door7[false]/null/null"];
+"d7m" -> "d5p" [label = "18-explore[EXPLORE];/null/null/null"];
+"d5p" -> "gf6" [label = "19-explore[EXPLORE];/null/null/null"];
+"gf6" -> "d6m" [label = "20-explore[EXPLORE];/null/null/null"];
+"d6m" -> "d6p" [label = "21-explore[EXPLORE];/door6[false]/null/null"];
+"d6p" -> "d10m" [label = "22-explore[EXPLORE];/null/null/null"];
+"d10m" -> "b69" [label = "23-explore[EXPLORE];/null/null/null"];
+"b69" -> "d6p" [label = "24-explore[EXPLORE];/null/null/null"];
+"d6p" -> "d10m" [label = "25-explore[EXPLORE];/null/null/null"];
+"d10m" -> "d10p" [label = "26-explore[EXPLORE];/door10[false]/null/null"];
+"d10p" -> "b62" [label = "27-explore[EXPLORE];/null/null/null"];
+"b62" -> "d16m" [label = "28-explore[EXPLORE];/null/null/null"];
+"d16m" -> "d25m" [label = "29-explore[EXPLORE];/null/null/null"];
+"d25m" -> "d16m" [label = "30-explore[EXPLORE];/null/null/null"];
+"d16m" -> "b62" [label = "31-explore[EXPLORE];/null/null/null"];
+"b62" -> "b62" [label = "32-toggle[TOGGLE];/null/door25[false]:=!(door25[false]); /null"];
+"b62" -> "d10p" [label = "33-explore[EXPLORE];/null/null/null"];
+"d10p" -> "b62" [label = "34-explore[EXPLORE];/null/null/null"];
+"b62" -> "d25m" [label = "35-explore[EXPLORE];/null/null/null"];
+"d25m" -> "d25p" [label = "36-explore[EXPLORE];/door25[false]/null/null"];
+"d25p" -> "b20" [label = "37-explore[EXPLORE];/null/null/null"];
+"b20" -> "b20" [label = "38-toggle[TOGGLE];/null/null/null"];
+"b20" -> "d25p" [label = "39-explore[EXPLORE];/null/null/null"];
+"d25p" -> "d26m" [label = "40-explore[EXPLORE];/null/null/null"];
+"d26m" -> "d25p" [label = "41-explore[EXPLORE];/null/null/null"];
+"d25p" -> "d25m" [label = "42-explore[EXPLORE];/door25[false]/null/null"];
+"d25m" -> "d16m" [label = "43-explore[EXPLORE];/null/null/null"];
+}

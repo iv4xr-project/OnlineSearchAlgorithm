@@ -1,0 +1,16 @@
+# Total number of goals covered by this test: 5
+# d6p --> b61
+# d14p --> d18m
+# d14m --> d14p
+# b61 --> d14m
+# d6m --> d6p
+
+digraph g {
+"b3" -> "b3" [label = "1-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door16[false]:=!(door16[false]); door2[false]:=!(door2[false]); door3[false]:=!(door3[false]); door4[false]:=!(door4[false]); door20[false]:=!(door20[false]); door5[false]:=!(door5[false]); door21[false]:=!(door21[false]); door6[false]:=!(door6[false]); door13[false]:=!(door13[false]); door14[false]:=!(door14[false]); /null"];
+"b3" -> "d6m" [label = "2-explore[EXPLORE];/null/null/null"];
+"d6m" -> "d6p" [label = "3-explore[EXPLORE];/door6[false]/null/null"];
+"d6p" -> "b61" [label = "4-explore[EXPLORE];/null/null/null"];
+"b61" -> "d14m" [label = "5-explore[EXPLORE];/null/null/null"];
+"d14m" -> "d14p" [label = "6-explore[EXPLORE];/door14[false]/null/null"];
+"d14p" -> "d18m" [label = "7-explore[EXPLORE];/null/null/null"];
+}

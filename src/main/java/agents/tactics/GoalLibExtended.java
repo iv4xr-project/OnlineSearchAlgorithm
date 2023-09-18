@@ -73,7 +73,10 @@ public class GoalLibExtended extends GoalLib {
 
 		var explore = belief.pathfinder().explore(belief.worldmodel().getFloorPosition(),
 				BeliefStateExtended.DIST_TO_FACE_THRESHOLD);
+		
+		
 		System.out.println("Check if there is unvisited part to explore: " + explore);
+		System.out.println(belief.worldmodel().getFloorPosition());
 		if (explore != null) {
 			System.out.println("There is unvisited nodes to explore!!! ");
 			return true;
@@ -88,28 +91,31 @@ public class GoalLibExtended extends GoalLib {
 	 * discover secondly, if there is not, the agent should try all exist buttons
 	 * for this blocked door to be sure none can open it.
 	 */
-	public static Boolean checkExploreAndButtons(BeliefStateExtended belief) {
-
+	public static Boolean checkExploreAndButtons(BeliefStateExtended belief) {	
 		var explore = belief.pathfinder().explore(belief.worldmodel().getFloorPosition(),
 				BeliefStateExtended.DIST_TO_FACE_THRESHOLD);
 		List<String> allButtons = new LinkedList<>();
 		String currentBlockedNode = belief.highLevelGragh.currentBlockedEntity;
-		if (explore != null) {
+		if (explore != null) {			
 			return true;
 		} else {
+			
 			// Collect all buttons in the high-level graph.
 			belief.highLevelGragh.entities.forEach(button -> {
-				if (button.id.contains("button"))
-					allButtons.add(button.id);
+				if (button.id.contains("button")) {				
+						allButtons.add(button.id);
+					}
 			});
+						
 			// check the list of visited button for this blocked entity. if there is still a
 			// button which is not in the
 			// visited list, return true
 			for (int i = 0; i < allButtons.size(); i++) {
-				if (!belief.buttonDoorConnection.get(currentBlockedNode).contains(allButtons.get(i)))
+				if (!belief.buttonDoorConnection.get(currentBlockedNode).contains(allButtons.get(i)))				
 					return true;
 			}
-		}
+			
+		}		
 		return false;
 	}
 
@@ -344,7 +350,8 @@ public class GoalLibExtended extends GoalLib {
 
 		System.out.println(" Find corresponding button to open the blocked entity");
 
-		return WHILEDO((BeliefStateExtended belif) -> GoalLibExtended.checkExploreAndButtons(belif), SEQ(
+		return WHILEDO(
+				(BeliefStateExtended belif) -> GoalLibExtended.checkExploreAndButtons(belif), SEQ(
 				/*
 				 * look for a button, if there is a neighbor select one, if not select indirect
 				 * neighbor.after trying all has seen button, the agent will explore the world
@@ -371,13 +378,15 @@ public class GoalLibExtended extends GoalLib {
 
 				
 				  SEQ( IFELSE2( GoalLibExtended.navigateTo(b) , SUCCESS() , SEQ(
-				  findingAButtonToUnlockedAgent(b,agent), GoalLibExtended.navigateTo(b)
-				  ,removeDynamicGoal(agent, "temporaryDoor")
-				  
+				  findingAButtonToUnlockedAgent(b,agent,"door"), GoalLibExtended.navigateTo(b)
+				  ,removeDynamicGoal(agent, "temporaryDoor")			  
 				  ) ) ,interact() )
 				 
 				,
 
+				//after interacting with the button, the agent should checks the blocked entity status. 
+				//It should go back to the entity's location, but interacting with buttons might block some
+				// doors in the way to reach the blocked door. We use prolog to unblock the path. 
 				// without checking the prolog
 				/*GoalLibExtended.explorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,
 						b.highLevelGragh.currentBlockedEntity),
@@ -385,16 +394,26 @@ public class GoalLibExtended extends GoalLib {
 
 				// if we want to use prolog to unblock the agent
 				
-				  SEQ( IFELSE2(
-				  GoalLibExtended.explorationTo(b.worldmodel.getElement(b.highLevelGragh.
-				  currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity) ,
-				  SUCCESS() ,
-				  SEQ(
-						  findingAButtonToUnlockedAgent(b,agent),
-						  GoalLibExtended.explorationTo(
-								  b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,
-								  b.highLevelGragh.currentBlockedEntity),
-						  removeDynamicGoal(agent,"temporaryDoor")) ) , checkBlockedEntityStatus(b, agent) )
+				  SEQ( 
+						  
+							  IFELSE2(
+								  GoalLibExtended.explorationTo(b.worldmodel.getElement(b.highLevelGragh.
+								  currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity) ,
+								  SUCCESS() ,
+								  WHILEDO((BeliefStateExtended belif) -> GoalLibExtended.checkEntityVisibilityPredicate(belif),
+									  SEQ(
+											  findingAButtonToUnlockedAgent(b,agent,"door"),
+											  removeDynamicGoal(agent,"temporaryDoor"),
+											  GoalLibExtended.explorationTo(
+													  b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,
+													  b.highLevelGragh.currentBlockedEntity)
+											  
+											  
+											  
+										) 
+							  ) 
+						  ),
+				checkBlockedEntityStatus(b, agent) )
 				 
 
 		));
@@ -434,15 +453,29 @@ public class GoalLibExtended extends GoalLib {
 	 * This method use prolog to unblock the agent. The agent selects a button to
 	 * open the closed door. If there is such a button.
 	 */
-	public static GoalStructure findingAButtonToUnlockedAgent(BeliefStateExtended b, TestAgent agent) {
+	public static GoalStructure findingAButtonToUnlockedAgent(BeliefStateExtended b, TestAgent agent, String s) {
 		return goal("Using the prolog to find the connected button").toSolve((BeliefStateExtended belief) -> {
 			System.out.println(">>Checkin the prolog to find a button to unlocked the agent");
 			return true;
-		}).withTactic(SEQ(TacticLibExtended.unlockAgent(b, agent),
+		}).withTactic(SEQ(TacticLibExtended.unlockAgent(b, agent, s),
 				// TacticLibExtended.unlockAgentWithTheLastInteractedButton(b, agent),
 				ABORT())).lift();
 	}
 
+
+	/**
+	 * This method use prolog to unblock the agent. The agent selects a button to
+	 * open the closed door. If there is such a button.
+	 */
+	public static GoalStructure findingAButtonToUnlockedAgentReachinButton(BeliefStateExtended b, TestAgent agent, String s) {
+		return goal("Using the prolog to find the connected button").toSolve((BeliefStateExtended belief) -> {
+			System.out.println(">>Checkin the prolog to find a button to unlocked the agent when it tries to reach a button");
+			return true;
+		}).withTactic(SEQ(TacticLibExtended.unlockAgent(b, agent,s),
+				// TacticLibExtended.unlockAgentWithTheLastInteractedButton(b, agent),
+				ABORT())).lift();
+	}
+	
 	/**
 	 * After facing with a blocked entity, the agent looks for a button to open it
 	 * At the ends, it needs to check the blocked entity status.If it is open, to
@@ -480,7 +513,7 @@ public class GoalLibExtended extends GoalLib {
 				removedGoal = goalId;
 			if (!belief.goalsmap.isEmpty()) {
 				// dynamic goal should be removed
-				System.out.println("remove a goal : " + belief.goalsmap.get(removedGoal) + removedGoal);
+				System.out.println("remove a goal : " + removedGoal + "tried door status: "+ belief.isOpen(removedGoal));
 				agent.remove(belief.goalsmap.get(removedGoal));
 				belief.goalsmap.clear();
 			}
@@ -533,6 +566,22 @@ public class GoalLibExtended extends GoalLib {
 
 	}
 
+	
+	/** Predicate to check the selected node is visible */
+	public static Boolean checkEntityVisibilityPredicate(BeliefStateExtended belief) {
+		System.out.println("Check if selected entity is visible, predicate: ");
+		String selectedNode = belief.highLevelGragh.currentBlockedEntity;
+		Vec3 position = belief.worldmodel.getElement(selectedNode).position;
+		if (Vec3.sub(belief.worldmodel().getFloorPosition(), position).lengthSq() <= 1.5
+				|| (belief.evaluateEntity(selectedNode, e -> belief.age(e) == 0)))
+			return false;
+
+		return true;
+		
+		
+	}
+	
+	
 	/**
 	 * This goal will interact with a button and check the corresponding door which
 	 * is known upfront.
@@ -621,7 +670,7 @@ public class GoalLibExtended extends GoalLib {
 		 
 
 		// if we want to use the data constructed, uncomment below line
-		
+		System.out.print("dynamic goal: first check the prolog then check known buttons!");
 		  return SEQ(IFELSE2(checkPrologToFindACorrespondinButton(agent),
 		  checkBlockedEntityStatus(b, agent), checkKnownButtonToFindButton(agent)),
 		  removeDynamicGoal(agent, null), FAIL());

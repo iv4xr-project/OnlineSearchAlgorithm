@@ -1,0 +1,31 @@
+# Total number of goals covered by this test: 2
+# d34m --> d17p
+# b117 --> d34m
+
+digraph g {
+"b0" -> "b0" [label = "1-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door17[false]:=!(door17[false]); door2[false]:=!(door2[false]); door34[false]:=!(door34[false]); door4[false]:=!(door4[false]); door20[false]:=!(door20[false]); door8[false]:=!(door8[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door13[false]:=!(door13[false]); door30[false]:=!(door30[false]); door15[false]:=!(door15[false]); /null"];
+"b0" -> "d20p" [label = "2-explore[EXPLORE];/null/null/null"];
+"d20p" -> "d20m" [label = "3-explore[EXPLORE];/door20[false]/null/null"];
+"d20m" -> "d17m" [label = "4-explore[EXPLORE];/null/null/null"];
+"d17m" -> "d17p" [label = "5-explore[EXPLORE];/door17[false]/null/null"];
+"d17p" -> "gf13" [label = "6-explore[EXPLORE];/null/null/null"];
+"gf13" -> "d34m" [label = "7-explore[EXPLORE];/null/null/null"];
+"d34m" -> "d34p" [label = "8-explore[EXPLORE];/door34[false]/null/null"];
+"d34p" -> "d38m" [label = "9-explore[EXPLORE];/null/null/null"];
+"d38m" -> "b66" [label = "10-explore[EXPLORE];/null/null/null"];
+"b66" -> "b66" [label = "11-toggle[TOGGLE];/null/null/null"];
+"b66" -> "d34p" [label = "12-explore[EXPLORE];/null/null/null"];
+"d34p" -> "d34m" [label = "13-explore[EXPLORE];/door34[false]/null/null"];
+"d34m" -> "d34p" [label = "14-explore[EXPLORE];/door34[false]/null/null"];
+"d34p" -> "b66" [label = "15-explore[EXPLORE];/null/null/null"];
+"b66" -> "d34p" [label = "16-explore[EXPLORE];/null/null/null"];
+"d34p" -> "d34m" [label = "17-explore[EXPLORE];/door34[false]/null/null"];
+"d34m" -> "b118" [label = "18-explore[EXPLORE];/null/null/null"];
+"b118" -> "b118" [label = "19-toggle[TOGGLE];/null/null/null"];
+"b118" -> "gf13" [label = "20-explore[EXPLORE];/null/null/null"];
+"gf13" -> "b117" [label = "21-explore[EXPLORE];/null/null/null"];
+"b117" -> "d34m" [label = "22-explore[EXPLORE];/null/null/null"];
+"d34m" -> "d17p" [label = "23-explore[EXPLORE];/null/null/null"];
+"d17p" -> "gf13" [label = "24-explore[EXPLORE];/null/null/null"];
+"gf13" -> "b117" [label = "25-explore[EXPLORE];/null/null/null"];
+}

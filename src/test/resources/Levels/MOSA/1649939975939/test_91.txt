@@ -1,0 +1,12 @@
+# Total number of goals covered by this test: 3
+# d23p --> d23m
+# d30m --> d23p
+# d30p --> d30m
+
+b0-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d30p
+d30p-{explore[EXPLORE];}->d30m
+d30m-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d23m

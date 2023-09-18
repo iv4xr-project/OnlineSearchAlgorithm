@@ -1,0 +1,20 @@
+# Total number of goals covered by this test: 4
+# gf19 --> gf9
+# gf9 --> gf19
+# gf9 --> d39m
+# d39m --> gf9
+
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d38p
+d38p-{explore[EXPLORE];}->d38m
+d38m-{explore[EXPLORE];}->d33p
+d33p-{explore[EXPLORE];}->d33m
+d33m-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->d25p
+d25p-{explore[EXPLORE];}->d25m
+d25m-{explore[EXPLORE];}->d24p
+d24p-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->gf19
+gf19-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->d39m

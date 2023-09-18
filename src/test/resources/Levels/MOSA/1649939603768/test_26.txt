@@ -1,0 +1,77 @@
+# Total number of goals covered by this test: 14
+# b54 --> b52
+# d19m --> b51
+# b54 --> d19m
+# d17m --> d12p
+# d17p --> d17m
+# b52 --> b53
+# b51 --> d17m
+# b53 --> b51
+# b48 --> d17p
+# d28p --> d28m
+# d17m --> b54
+# b122 --> b123
+# d28m --> b48
+# d12p --> b54
+
+b6-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->b2
+b2-{explore[EXPLORE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->b2
+b2-{explore[EXPLORE];}->b5
+b5-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->d35p
+d35p-{explore[EXPLORE];}->b2
+b2-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->b2
+b2-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->d35p
+d35p-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->d35p
+d35p-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->b5
+b5-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->b6
+b6-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->b6
+b6-{explore[EXPLORE];}->d35p
+d35p-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->d35p
+d35p-{explore[EXPLORE];}->d35m
+d35m-{explore[EXPLORE];}->d29p
+d29p-{explore[EXPLORE];}->b10
+b10-{explore[EXPLORE];}->d29p
+d29p-{explore[EXPLORE];}->d29m
+d29m-{explore[EXPLORE];}->b122
+b122-{explore[EXPLORE];}->b123
+b123-{explore[EXPLORE];}->d29m
+d29m-{explore[EXPLORE];}->d14p
+d14p-{explore[EXPLORE];}->b123
+b123-{explore[EXPLORE];}->d38m
+d38m-{explore[EXPLORE];}->d38p
+d38p-{explore[EXPLORE];}->b20
+b20-{explore[EXPLORE];}->d28p
+d28p-{explore[EXPLORE];}->d28m
+d28m-{explore[EXPLORE];}->b48
+b48-{explore[EXPLORE];}->d17p
+d17p-{explore[EXPLORE];}->d17m
+d17m-{explore[EXPLORE];}->b54
+b54-{explore[EXPLORE];}->b52
+b52-{explore[EXPLORE];}->b53
+b53-{explore[EXPLORE];}->b51
+b51-{explore[EXPLORE];}->d17m
+d17m-{explore[EXPLORE];}->b54
+b54-{explore[EXPLORE];}->d19m
+d19m-{explore[EXPLORE];}->b51
+b51-{explore[EXPLORE];}->d17m
+d17m-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->b54

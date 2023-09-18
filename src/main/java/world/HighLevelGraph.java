@@ -119,6 +119,28 @@ public class HighLevelGraph implements Navigatable {
         }  	
     }
 
+	
+	/**
+	 * Get the list of entities with the connected cedges by ids
+	 * @return 
+	 * */
+	
+	public ArrayList<ArrayList<String>> getEntityConnections() {
+		ArrayList<ArrayList<String>> model = new ArrayList<>();
+		for(int i=0;i<entities.size(); i++) {
+			ArrayList<String> temt = new ArrayList<>();
+			temt.add(entities.get(i).id);
+			edges.get(getIndexById(entities.get(i).id)).forEach(e->{
+				temt.add(entities.get(e).id);
+			});			
+			
+			
+			model.add(temt);
+		}
+		return model;
+	}
+	
+	
 	public Iterable<Integer> neighboursNew(int id) {
 		ArrayList<Integer> neighbors = new ArrayList<Integer>();
 		

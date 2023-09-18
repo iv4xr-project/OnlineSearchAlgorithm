@@ -1,0 +1,6 @@
+# Total number of goals covered by this test: 2
+# d53p --> b1
+# gf8 --> d53p
+
+gf8-{explore[EXPLORE];}->d53p
+d53p-{explore[EXPLORE];}->b1

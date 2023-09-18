@@ -1,0 +1,14 @@
+# Total number of goals covered by this test: 2
+# b1 --> gf13
+# b2 --> b1
+
+digraph g {
+"b6" -> "d35p" [label = "1-explore[EXPLORE];/null/null/null"];
+"d35p" -> "b2" [label = "2-explore[EXPLORE];/null/null/null"];
+"b2" -> "b1" [label = "3-explore[EXPLORE];/null/null/null"];
+"b1" -> "d35p" [label = "4-explore[EXPLORE];/null/null/null"];
+"d35p" -> "b1" [label = "5-explore[EXPLORE];/null/null/null"];
+"b1" -> "gf13" [label = "6-explore[EXPLORE];/null/null/null"];
+"gf13" -> "b0" [label = "7-explore[EXPLORE];/null/null/null"];
+"b0" -> "d35p" [label = "8-explore[EXPLORE];/null/null/null"];
+}

@@ -1,0 +1,65 @@
+# Total number of goals covered by this test: 14
+# d0m --> b102
+# b103 --> gf13
+# b102 --> d0m
+# d0m --> d1m
+# gf13 --> b102
+# gf9 --> d2m
+# b101 --> b101
+# b102 --> gf13
+# d1m --> d0m
+# d2m --> gf9
+# b101 --> d1m
+# d0m --> gf9
+# gf9 --> b102
+# d0p --> d0m
+
+digraph g {
+"b1" -> "b1" [label = "1-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door3[false]:=!(door3[false]); door19[false]:=!(door19[false]); door35[false]:=!(door35[false]); door4[false]:=!(door4[false]); door36[false]:=!(door36[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door8[false]:=!(door8[false]); door14[false]:=!(door14[false]); /null"];
+"b1" -> "d36p" [label = "2-explore[EXPLORE];/null/null/null"];
+"d36p" -> "d36m" [label = "3-explore[EXPLORE];/door36[false]/null/null"];
+"d36m" -> "d5p" [label = "4-explore[EXPLORE];/null/null/null"];
+"d5p" -> "d5m" [label = "5-explore[EXPLORE];/door5[false]/null/null"];
+"d5m" -> "d1p" [label = "6-explore[EXPLORE];/null/null/null"];
+"d1p" -> "d1m" [label = "7-explore[EXPLORE];/door1[false]/null/null"];
+"d1m" -> "b101" [label = "8-explore[EXPLORE];/null/null/null"];
+"b101" -> "b101" [label = "9-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door2[false]:=!(door2[false]); door19[false]:=!(door19[false]); door8[false]:=!(door8[false]); /null"];
+"b101" -> "gf9" [label = "10-explore[EXPLORE];/null/null/null"];
+"gf9" -> "b103" [label = "11-explore[EXPLORE];/null/null/null"];
+"b103" -> "b102" [label = "12-explore[EXPLORE];/null/null/null"];
+"b102" -> "b102" [label = "13-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door2[false]:=!(door2[false]); door19[false]:=!(door19[false]); door20[false]:=!(door20[false]); door22[false]:=!(door22[false]); door8[false]:=!(door8[false]); door26[false]:=!(door26[false]); /null"];
+"b102" -> "b103" [label = "14-explore[EXPLORE];/null/null/null"];
+"b103" -> "d0m" [label = "15-explore[EXPLORE];/null/null/null"];
+"d0m" -> "b101" [label = "16-explore[EXPLORE];/null/null/null"];
+"b101" -> "d0m" [label = "17-explore[EXPLORE];/null/null/null"];
+"d0m" -> "b103" [label = "18-explore[EXPLORE];/null/null/null"];
+"b103" -> "d2m" [label = "19-explore[EXPLORE];/null/null/null"];
+"d2m" -> "b103" [label = "20-explore[EXPLORE];/null/null/null"];
+"b103" -> "b101" [label = "21-explore[EXPLORE];/null/null/null"];
+"b101" -> "gf13" [label = "22-explore[EXPLORE];/null/null/null"];
+"gf13" -> "d0m" [label = "23-explore[EXPLORE];/null/null/null"];
+"d0m" -> "d0p" [label = "24-explore[EXPLORE];/door0[false]/null/null"];
+"d0p" -> "d0m" [label = "25-explore[EXPLORE];/door0[false]/null/null"];
+"d0m" -> "b102" [label = "26-explore[EXPLORE];/null/null/null"];
+"b102" -> "d0m" [label = "27-explore[EXPLORE];/null/null/null"];
+"d0m" -> "gf9" [label = "28-explore[EXPLORE];/null/null/null"];
+"gf9" -> "b102" [label = "29-explore[EXPLORE];/null/null/null"];
+"b102" -> "gf13" [label = "30-explore[EXPLORE];/null/null/null"];
+"gf13" -> "b102" [label = "31-explore[EXPLORE];/null/null/null"];
+"b102" -> "d0m" [label = "32-explore[EXPLORE];/null/null/null"];
+"d0m" -> "b101" [label = "33-explore[EXPLORE];/null/null/null"];
+"b101" -> "d1m" [label = "34-explore[EXPLORE];/null/null/null"];
+"d1m" -> "d0m" [label = "35-explore[EXPLORE];/null/null/null"];
+"d0m" -> "d1m" [label = "36-explore[EXPLORE];/null/null/null"];
+"d1m" -> "b101" [label = "37-explore[EXPLORE];/null/null/null"];
+"b101" -> "d1m" [label = "38-explore[EXPLORE];/null/null/null"];
+"d1m" -> "gf9" [label = "39-explore[EXPLORE];/null/null/null"];
+"gf9" -> "d2m" [label = "40-explore[EXPLORE];/null/null/null"];
+"d2m" -> "gf9" [label = "41-explore[EXPLORE];/null/null/null"];
+"gf9" -> "b102" [label = "42-explore[EXPLORE];/null/null/null"];
+"b102" -> "d0m" [label = "43-explore[EXPLORE];/null/null/null"];
+"d0m" -> "d1m" [label = "44-explore[EXPLORE];/null/null/null"];
+"d1m" -> "gf9" [label = "45-explore[EXPLORE];/null/null/null"];
+"gf9" -> "b103" [label = "46-explore[EXPLORE];/null/null/null"];
+"b103" -> "gf13" [label = "47-explore[EXPLORE];/null/null/null"];
+}

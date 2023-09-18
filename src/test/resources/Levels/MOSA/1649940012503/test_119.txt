@@ -1,0 +1,5 @@
+# Total number of goals covered by this test: 1
+# d6p --> d15m
+
+gf12-{explore[EXPLORE];}->d6p
+d6p-{explore[EXPLORE];}->d15m

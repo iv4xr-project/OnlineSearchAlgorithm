@@ -1,0 +1,21 @@
+# Total number of goals covered by this test: 2
+# gf16 --> b3
+# b4 --> b3
+
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d18p
+d18p-{explore[EXPLORE];}->d18m
+d18m-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->d18m
+d18m-{explore[EXPLORE];}->d7p
+d7p-{explore[EXPLORE];}->d18m
+d18m-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->d18m
+d18m-{explore[EXPLORE];}->d7p
+d7p-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b3
+b3-{toggle[TOGGLE];}->b3
+b3-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->b3

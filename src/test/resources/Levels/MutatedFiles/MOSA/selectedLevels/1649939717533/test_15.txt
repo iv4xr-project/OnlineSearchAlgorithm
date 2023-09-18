@@ -1,0 +1,4 @@
+# Total number of goals covered by this test: 1
+# gf11 --> d25m
+
+gf11-{explore[EXPLORE];}->d25m

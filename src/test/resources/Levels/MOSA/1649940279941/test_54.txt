@@ -1,0 +1,15 @@
+# Total number of goals covered by this test: 2
+# b64 --> b63
+# b64 --> b64
+
+b2-{toggle[TOGGLE];}->b2
+b2-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->d36p
+d36p-{explore[EXPLORE];}->d36m
+d36m-{explore[EXPLORE];}->b64
+b64-{toggle[TOGGLE];}->b64
+b64-{explore[EXPLORE];}->b63
+b63-{explore[EXPLORE];}->d35p
+d35p-{explore[EXPLORE];}->b63
+b63-{explore[EXPLORE];}->b64
+b64-{explore[EXPLORE];}->b63

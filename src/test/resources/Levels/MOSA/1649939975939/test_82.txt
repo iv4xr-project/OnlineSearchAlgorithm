@@ -1,0 +1,5 @@
+# Total number of goals covered by this test: 1
+# d39m --> d30p
+
+b0-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->d30p

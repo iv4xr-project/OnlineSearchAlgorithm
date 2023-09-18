@@ -1,0 +1,41 @@
+# Total number of goals covered by this test: 1
+# d26p --> b128
+
+digraph g {
+"b2" -> "d32m" [label = "1-explore[EXPLORE];/null/null/null"];
+"d32m" -> "b2" [label = "2-explore[EXPLORE];/null/null/null"];
+"b2" -> "d12p" [label = "3-explore[EXPLORE];/null/null/null"];
+"d12p" -> "b1" [label = "4-explore[EXPLORE];/null/null/null"];
+"b1" -> "b2" [label = "5-explore[EXPLORE];/null/null/null"];
+"b2" -> "b1" [label = "6-explore[EXPLORE];/null/null/null"];
+"b1" -> "d12p" [label = "7-explore[EXPLORE];/null/null/null"];
+"d12p" -> "b1" [label = "8-explore[EXPLORE];/null/null/null"];
+"b1" -> "d32m" [label = "9-explore[EXPLORE];/null/null/null"];
+"d32m" -> "d12p" [label = "10-explore[EXPLORE];/null/null/null"];
+"d12p" -> "b2" [label = "11-explore[EXPLORE];/null/null/null"];
+"b2" -> "b1" [label = "12-explore[EXPLORE];/null/null/null"];
+"b1" -> "d32m" [label = "13-explore[EXPLORE];/null/null/null"];
+"d32m" -> "b1" [label = "14-explore[EXPLORE];/null/null/null"];
+"b1" -> "d32m" [label = "15-explore[EXPLORE];/null/null/null"];
+"d32m" -> "d12p" [label = "16-explore[EXPLORE];/null/null/null"];
+"d12p" -> "d32m" [label = "17-explore[EXPLORE];/null/null/null"];
+"d32m" -> "b1" [label = "18-explore[EXPLORE];/null/null/null"];
+"b1" -> "b2" [label = "19-explore[EXPLORE];/null/null/null"];
+"b2" -> "b1" [label = "20-explore[EXPLORE];/null/null/null"];
+"b1" -> "b1" [label = "21-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door32[false]:=!(door32[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door35[false]:=!(door35[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door17[false]:=!(door17[false]); door19[false]:=!(door19[false]); door25[false]:=!(door25[false]); door26[false]:=!(door26[false]); door30[false]:=!(door30[false]); /null"];
+"b1" -> "d32m" [label = "22-explore[EXPLORE];/null/null/null"];
+"d32m" -> "b2" [label = "23-explore[EXPLORE];/null/null/null"];
+"b2" -> "d12p" [label = "24-explore[EXPLORE];/null/null/null"];
+"d12p" -> "d12m" [label = "25-explore[EXPLORE];/door12[false]/null/null"];
+"d12m" -> "d17m" [label = "26-explore[EXPLORE];/null/null/null"];
+"d17m" -> "d17p" [label = "27-explore[EXPLORE];/door17[false]/null/null"];
+"d17p" -> "d31m" [label = "28-explore[EXPLORE];/null/null/null"];
+"d31m" -> "d19m" [label = "29-explore[EXPLORE];/null/null/null"];
+"d19m" -> "d17p" [label = "30-explore[EXPLORE];/null/null/null"];
+"d17p" -> "d31m" [label = "31-explore[EXPLORE];/null/null/null"];
+"d31m" -> "d19m" [label = "32-explore[EXPLORE];/null/null/null"];
+"d19m" -> "d19p" [label = "33-explore[EXPLORE];/door19[false]/null/null"];
+"d19p" -> "d26m" [label = "34-explore[EXPLORE];/null/null/null"];
+"d26m" -> "d26p" [label = "35-explore[EXPLORE];/door26[false]/null/null"];
+"d26p" -> "b128" [label = "36-explore[EXPLORE];/null/null/null"];
+}

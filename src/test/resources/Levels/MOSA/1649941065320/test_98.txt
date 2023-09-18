@@ -1,0 +1,76 @@
+# Total number of goals covered by this test: 21
+# b118 --> b119
+# b120 --> d1p
+# b114 --> gf16
+# b119 --> gf16
+# d19p --> d19m
+# b117 --> d10m
+# d10m --> b118
+# gf16 --> b115
+# b115 --> gf16
+# d10m --> b115
+# d1p --> b115
+# d19m --> d10p
+# b119 --> b120
+# b119 --> d10m
+# d10m --> b119
+# gf16 --> b117
+# b114 --> b117
+# d10p --> d10m
+# b115 --> b114
+# b114 --> b119
+# b119 --> b119
+
+gf7-{explore[EXPLORE];}->b2
+b2-{toggle[TOGGLE];}->b2
+b2-{explore[EXPLORE];}->gf7
+gf7-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->d36p
+d36p-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->b2
+b2-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->d38m
+d38m-{explore[EXPLORE];}->d36p
+d36p-{explore[EXPLORE];}->d38m
+d38m-{explore[EXPLORE];}->d36p
+d36p-{explore[EXPLORE];}->d36m
+d36m-{explore[EXPLORE];}->b34
+b34-{explore[EXPLORE];}->b33
+b33-{explore[EXPLORE];}->b29
+b29-{explore[EXPLORE];}->b32
+b32-{explore[EXPLORE];}->b30
+b30-{explore[EXPLORE];}->b29
+b29-{explore[EXPLORE];}->d28p
+d28p-{explore[EXPLORE];}->b33
+b33-{explore[EXPLORE];}->b29
+b29-{explore[EXPLORE];}->b34
+b34-{explore[EXPLORE];}->b31
+b31-{explore[EXPLORE];}->b29
+b29-{explore[EXPLORE];}->d28p
+d28p-{explore[EXPLORE];}->d28m
+d28m-{explore[EXPLORE];}->d19p
+d19p-{explore[EXPLORE];}->d19m
+d19m-{explore[EXPLORE];}->d10p
+d10p-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->b119
+b119-{toggle[TOGGLE];}->b119
+b119-{explore[EXPLORE];}->b120
+b120-{explore[EXPLORE];}->d1p
+d1p-{explore[EXPLORE];}->b115
+b115-{explore[EXPLORE];}->b114
+b114-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b115
+b115-{explore[EXPLORE];}->b114
+b114-{explore[EXPLORE];}->b119
+b119-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->b118
+b118-{explore[EXPLORE];}->b119
+b119-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b115
+b115-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b117
+b117-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->b115
+b115-{explore[EXPLORE];}->b114
+b114-{explore[EXPLORE];}->b117

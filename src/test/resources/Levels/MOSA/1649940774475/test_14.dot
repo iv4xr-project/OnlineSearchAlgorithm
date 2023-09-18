@@ -1,0 +1,28 @@
+# Total number of goals covered by this test: 4
+# d18p --> b12
+# b13 --> b12
+# d22m --> d18p
+# b12 --> b13
+
+digraph g {
+"b2" -> "b2" [label = "1-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door32[false]:=!(door32[false]); door18[false]:=!(door18[false]); door3[false]:=!(door3[false]); door35[false]:=!(door35[false]); door4[false]:=!(door4[false]); door20[false]:=!(door20[false]); door38[false]:=!(door38[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door15[false]:=!(door15[false]); /null"];
+"b2" -> "d32p" [label = "2-explore[EXPLORE];/null/null/null"];
+"d32p" -> "d32m" [label = "3-explore[EXPLORE];/door32[false]/null/null"];
+"d32m" -> "gf0" [label = "4-explore[EXPLORE];/null/null/null"];
+"gf0" -> "b92" [label = "5-explore[EXPLORE];/null/null/null"];
+"b92" -> "d20p" [label = "6-explore[EXPLORE];/null/null/null"];
+"d20p" -> "d20m" [label = "7-explore[EXPLORE];/door20[false]/null/null"];
+"d20m" -> "d18m" [label = "8-explore[EXPLORE];/null/null/null"];
+"d18m" -> "d20m" [label = "9-explore[EXPLORE];/null/null/null"];
+"d20m" -> "b87" [label = "10-explore[EXPLORE];/null/null/null"];
+"b87" -> "b87" [label = "11-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door34[false]:=!(door34[false]); door3[false]:=!(door3[false]); door4[false]:=!(door4[false]); door6[false]:=!(door6[false]); door9[false]:=!(door9[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door14[false]:=!(door14[false]); door16[false]:=!(door16[false]); door17[false]:=!(door17[false]); door21[false]:=!(door21[false]); /null"];
+"b87" -> "d9p" [label = "12-explore[EXPLORE];/null/null/null"];
+"d9p" -> "d18m" [label = "13-explore[EXPLORE];/null/null/null"];
+"d18m" -> "d18p" [label = "14-explore[EXPLORE];/door18[false]/null/null"];
+"d18p" -> "b12" [label = "15-explore[EXPLORE];/null/null/null"];
+"b12" -> "b13" [label = "16-explore[EXPLORE];/null/null/null"];
+"b13" -> "b12" [label = "17-explore[EXPLORE];/null/null/null"];
+"b12" -> "b12" [label = "18-toggle[TOGGLE];/null/null/null"];
+"b12" -> "d22m" [label = "19-explore[EXPLORE];/null/null/null"];
+"d22m" -> "d18p" [label = "20-explore[EXPLORE];/null/null/null"];
+}

@@ -1,0 +1,4 @@
+# Total number of goals covered by this test: 1
+# gf14 --> d15p
+
+gf14-{explore[EXPLORE];}->d15p

@@ -21,8 +21,8 @@ public class RunTest {
 	 * */
 	public static void main(String[] args) throws InterruptedException, IOException{
 		
-		String doorName = "door6";		
-		String levelName = "BM2021_diff3_R4_2_2_M";
+		String doorName = "doorKey";		
+		String levelName = "FBK-1649939717533-LabRecruits_level";
 		String levelDirectory = "MutatedFiles"+File.separator + levelName +File.separator+ "selectedLevels";
 		
 		
@@ -31,11 +31,11 @@ public class RunTest {
 		
 		System.out.print("tets" + directory);
 		
-		String folderPath = Platform.LEVEL_PATH + File.separator +"MutatedFiles"+ File.separator + "result";
-		File theDir = new File(folderPath);
+		String resultDirectory = Platform.LEVEL_PATH + File.separator +"MutatedFiles"+ File.separator + "result";
+		File theDir = new File(resultDirectory);
 		if(!theDir.exists())
 			theDir.mkdirs();
-		String resultFile = folderPath+ File.separator + levelName + File.separator + levelName+ ".csv";  
+		String resultFile = resultDirectory+ File.separator + levelName + File.separator + levelName+ ".csv";  
 		BufferedWriter br = new BufferedWriter(new FileWriter(resultFile));
 		StringBuilder sb = new StringBuilder();
 				
@@ -61,7 +61,7 @@ public class RunTest {
 	    		/*Level test smarter agent*/
 	    		onlineSearchMultiRun objLevelTestSmarter = new onlineSearchMultiRun();
 	    		onlineSearchMultiRun.start();
-				myList = objLevelTestSmarter.closetReachableTest(levelDirectory, fileName, doorName );
+				myList = objLevelTestSmarter.closetReachableTest(levelDirectory, fileName, doorName,resultDirectory,levelName );
 				onlineSearchMultiRun.close();
 //				
 				for (Object element : myList) {

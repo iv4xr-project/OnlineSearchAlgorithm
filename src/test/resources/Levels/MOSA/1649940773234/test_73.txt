@@ -1,0 +1,90 @@
+# Total number of goals covered by this test: 14
+# d37m --> d12p
+# d37m --> b72
+# b73 --> gf0
+# d12p --> d12m
+# b73 --> b73
+# gf0 --> b73
+# b72 --> d12p
+# b72 --> b72
+# d37m --> b73
+# b73 --> d12p
+# b73 --> b72
+# b72 --> b73
+# gf0 --> d37m
+# d12p --> b72
+
+b3-{explore[EXPLORE];}->b4
+b4-{toggle[TOGGLE];}->b4
+b4-{explore[EXPLORE];}->d2m
+d2m-{explore[EXPLORE];}->d6m
+d6m-{explore[EXPLORE];}->d2m
+d2m-{explore[EXPLORE];}->d0p
+d0p-{explore[EXPLORE];}->d0m
+d0m-{explore[EXPLORE];}->d1m
+d1m-{explore[EXPLORE];}->d1p
+d1p-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->d1p
+d1p-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->gf0
+gf0-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->gf0
+gf0-{explore[EXPLORE];}->b72
+b72-{toggle[TOGGLE];}->b72
+b72-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->gf0
+gf0-{explore[EXPLORE];}->b72
+b72-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->b72
+b72-{toggle[TOGGLE];}->b72
+b72-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->b72
+b72-{explore[EXPLORE];}->gf0
+gf0-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->b72
+b72-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->b72
+b72-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->b72
+b72-{toggle[TOGGLE];}->b72
+b72-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->gf0
+gf0-{explore[EXPLORE];}->b72
+b72-{toggle[TOGGLE];}->b72
+b72-{explore[EXPLORE];}->b73
+b73-{toggle[TOGGLE];}->b73
+b73-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->gf0
+gf0-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->b72
+b72-{explore[EXPLORE];}->gf0
+gf0-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->b65
+b65-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->gf6
+gf6-{explore[EXPLORE];}->b65
+b65-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->b65
+b65-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->d1p
+d1p-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->b65
+b65-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->gf6
+gf6-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->gf6
+gf6-{explore[EXPLORE];}->d12m

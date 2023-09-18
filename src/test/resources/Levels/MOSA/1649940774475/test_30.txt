@@ -1,0 +1,7 @@
+# Total number of goals covered by this test: 1
+# d32m --> d32p
+
+b2-{toggle[TOGGLE];}->b2
+b2-{explore[EXPLORE];}->d32p
+d32p-{explore[EXPLORE];}->d32m
+d32m-{explore[EXPLORE];}->d32p

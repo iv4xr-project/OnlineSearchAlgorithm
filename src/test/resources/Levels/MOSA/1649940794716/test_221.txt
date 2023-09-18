@@ -1,0 +1,76 @@
+# Total number of goals covered by this test: 7
+# b129 --> b128
+# b128 --> b129
+# d26p --> b129
+# b129 --> d26p
+# b128 --> d26p
+# b129 --> b129
+# b128 --> b128
+
+b2-{explore[EXPLORE];}->b1
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d32m
+d32m-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->b2
+b2-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->d17m
+d17m-{explore[EXPLORE];}->b25
+b25-{explore[EXPLORE];}->d17m
+d17m-{explore[EXPLORE];}->d17p
+d17p-{explore[EXPLORE];}->d31m
+d31m-{explore[EXPLORE];}->d19m
+d19m-{explore[EXPLORE];}->d17p
+d17p-{explore[EXPLORE];}->d19m
+d19m-{explore[EXPLORE];}->b44
+b44-{toggle[TOGGLE];}->b44
+b44-{explore[EXPLORE];}->d17p
+d17p-{explore[EXPLORE];}->d19m
+d19m-{explore[EXPLORE];}->d31m
+d31m-{explore[EXPLORE];}->d17p
+d17p-{explore[EXPLORE];}->d19m
+d19m-{explore[EXPLORE];}->d19p
+d19p-{explore[EXPLORE];}->b11
+b11-{explore[EXPLORE];}->d19p
+d19p-{explore[EXPLORE];}->b11
+b11-{explore[EXPLORE];}->d38m
+d38m-{explore[EXPLORE];}->d26m
+d26m-{explore[EXPLORE];}->b11
+b11-{toggle[TOGGLE];}->b11
+b11-{toggle[TOGGLE];}->b11
+b11-{explore[EXPLORE];}->d26m
+d26m-{explore[EXPLORE];}->d19p
+d19p-{explore[EXPLORE];}->d26m
+d26m-{explore[EXPLORE];}->d26p
+d26p-{explore[EXPLORE];}->b129
+b129-{explore[EXPLORE];}->b128
+b128-{explore[EXPLORE];}->d26p
+d26p-{explore[EXPLORE];}->b129
+b129-{toggle[TOGGLE];}->b129
+b129-{toggle[TOGGLE];}->b129
+b129-{explore[EXPLORE];}->d26p
+d26p-{explore[EXPLORE];}->b128
+b128-{toggle[TOGGLE];}->b128
+b128-{explore[EXPLORE];}->d26p
+d26p-{explore[EXPLORE];}->b129
+b129-{toggle[TOGGLE];}->b129
+b129-{toggle[TOGGLE];}->b129
+b129-{explore[EXPLORE];}->b128
+b128-{explore[EXPLORE];}->d26p
+d26p-{explore[EXPLORE];}->b128
+b128-{explore[EXPLORE];}->d26p
+d26p-{explore[EXPLORE];}->b128
+b128-{toggle[TOGGLE];}->b128
+b128-{explore[EXPLORE];}->d26p
+d26p-{explore[EXPLORE];}->b128
+b128-{explore[EXPLORE];}->b129
+b129-{explore[EXPLORE];}->d26p
+d26p-{explore[EXPLORE];}->d26m
+d26m-{explore[EXPLORE];}->d19p
+d19p-{explore[EXPLORE];}->d19m
+d19m-{explore[EXPLORE];}->d19p
+d19p-{explore[EXPLORE];}->d38m
+d38m-{explore[EXPLORE];}->d19p
+d19p-{explore[EXPLORE];}->d26m
+d26m-{explore[EXPLORE];}->d19p
+d19p-{explore[EXPLORE];}->b11

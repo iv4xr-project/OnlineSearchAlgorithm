@@ -1,0 +1,62 @@
+# Total number of goals covered by this test: 10
+# b54 --> d26p
+# b54 --> gf9
+# d33m --> gf9
+# d26p --> gf15
+# gf9 --> b54
+# gf9 --> d33m
+# d26m --> d26p
+# d33m --> b54
+# d26p --> d33m
+# gf15 --> gf9
+
+digraph g {
+"b0" -> "d13m" [label = "1-explore[EXPLORE];/null/null/null"];
+"d13m" -> "d18m" [label = "2-explore[EXPLORE];/null/null/null"];
+"d18m" -> "b0" [label = "3-explore[EXPLORE];/null/null/null"];
+"b0" -> "d18m" [label = "4-explore[EXPLORE];/null/null/null"];
+"d18m" -> "d0p" [label = "5-explore[EXPLORE];/null/null/null"];
+"d0p" -> "b0" [label = "6-explore[EXPLORE];/null/null/null"];
+"b0" -> "b0" [label = "7-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door3[false]:=!(door3[false]); door36[false]:=!(door36[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door8[false]:=!(door8[false]); door9[false]:=!(door9[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door13[false]:=!(door13[false]); door14[false]:=!(door14[false]); door18[false]:=!(door18[false]); door23[false]:=!(door23[false]); door26[false]:=!(door26[false]); door28[false]:=!(door28[false]); door30[false]:=!(door30[false]); /null"];
+"b0" -> "d18m" [label = "8-explore[EXPLORE];/null/null/null"];
+"d18m" -> "d0p" [label = "9-explore[EXPLORE];/null/null/null"];
+"d0p" -> "d0m" [label = "10-explore[EXPLORE];/door0[false]/null/null"];
+"d0m" -> "d5m" [label = "11-explore[EXPLORE];/null/null/null"];
+"d5m" -> "b2" [label = "12-explore[EXPLORE];/null/null/null"];
+"b2" -> "d5m" [label = "13-explore[EXPLORE];/null/null/null"];
+"d5m" -> "b2" [label = "14-explore[EXPLORE];/null/null/null"];
+"b2" -> "d5m" [label = "15-explore[EXPLORE];/null/null/null"];
+"d5m" -> "d5p" [label = "16-explore[EXPLORE];/door5[false]/null/null"];
+"d5p" -> "d6m" [label = "17-explore[EXPLORE];/null/null/null"];
+"d6m" -> "d6p" [label = "18-explore[EXPLORE];/door6[false]/null/null"];
+"d6p" -> "d10m" [label = "19-explore[EXPLORE];/null/null/null"];
+"d10m" -> "d10p" [label = "20-explore[EXPLORE];/door10[false]/null/null"];
+"d10p" -> "d25m" [label = "21-explore[EXPLORE];/null/null/null"];
+"d25m" -> "b62" [label = "22-explore[EXPLORE];/null/null/null"];
+"b62" -> "d25m" [label = "23-explore[EXPLORE];/null/null/null"];
+"d25m" -> "d16m" [label = "24-explore[EXPLORE];/null/null/null"];
+"d16m" -> "d10p" [label = "25-explore[EXPLORE];/null/null/null"];
+"d10p" -> "d16m" [label = "26-explore[EXPLORE];/null/null/null"];
+"d16m" -> "b62" [label = "27-explore[EXPLORE];/null/null/null"];
+"b62" -> "b62" [label = "28-toggle[TOGGLE];/null/door25[false]:=!(door25[false]); /null"];
+"b62" -> "b62" [label = "29-toggle[TOGGLE];/null/door25[false]:=!(door25[false]); /null"];
+"b62" -> "d16m" [label = "30-explore[EXPLORE];/null/null/null"];
+"d16m" -> "b62" [label = "31-explore[EXPLORE];/null/null/null"];
+"b62" -> "b62" [label = "32-toggle[TOGGLE];/null/door25[false]:=!(door25[false]); /null"];
+"b62" -> "d10p" [label = "33-explore[EXPLORE];/null/null/null"];
+"d10p" -> "d25m" [label = "34-explore[EXPLORE];/null/null/null"];
+"d25m" -> "d25p" [label = "35-explore[EXPLORE];/door25[false]/null/null"];
+"d25p" -> "d26m" [label = "36-explore[EXPLORE];/null/null/null"];
+"d26m" -> "d26p" [label = "37-explore[EXPLORE];/door26[false]/null/null"];
+"d26p" -> "gf15" [label = "38-explore[EXPLORE];/null/null/null"];
+"gf15" -> "gf9" [label = "39-explore[EXPLORE];/null/null/null"];
+"gf9" -> "b54" [label = "40-explore[EXPLORE];/null/null/null"];
+"b54" -> "d26p" [label = "41-explore[EXPLORE];/null/null/null"];
+"d26p" -> "d33m" [label = "42-explore[EXPLORE];/null/null/null"];
+"d33m" -> "b54" [label = "43-explore[EXPLORE];/null/null/null"];
+"b54" -> "gf9" [label = "44-explore[EXPLORE];/null/null/null"];
+"gf9" -> "d33m" [label = "45-explore[EXPLORE];/null/null/null"];
+"d33m" -> "gf9" [label = "46-explore[EXPLORE];/null/null/null"];
+"gf9" -> "b54" [label = "47-explore[EXPLORE];/null/null/null"];
+"b54" -> "d26p" [label = "48-explore[EXPLORE];/null/null/null"];
+}

@@ -1,0 +1,18 @@
+# Total number of goals covered by this test: 5
+# d5m --> b119
+# d1p --> gf18
+# gf18 --> d3m
+# b119 --> d1p
+# d5p --> d5m
+
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d36p
+d36p-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->d36p
+d36p-{explore[EXPLORE];}->d36m
+d36m-{explore[EXPLORE];}->d5p
+d5p-{explore[EXPLORE];}->d5m
+d5m-{explore[EXPLORE];}->b119
+b119-{explore[EXPLORE];}->d1p
+d1p-{explore[EXPLORE];}->gf18
+gf18-{explore[EXPLORE];}->d3m

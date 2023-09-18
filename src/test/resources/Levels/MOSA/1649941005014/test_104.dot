@@ -1,0 +1,24 @@
+# Total number of goals covered by this test: 1
+# b99 --> b99
+
+digraph g {
+"gf14" -> "b3" [label = "1-explore[EXPLORE];/null/null/null"];
+"b3" -> "b3" [label = "2-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door33[false]:=!(door33[false]); door4[false]:=!(door4[false]); door5[false]:=!(door5[false]); door7[false]:=!(door7[false]); door8[false]:=!(door8[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door14[false]:=!(door14[false]); door15[false]:=!(door15[false]); door17[false]:=!(door17[false]); door18[false]:=!(door18[false]); door19[false]:=!(door19[false]); door26[false]:=!(door26[false]); door29[false]:=!(door29[false]); /null"];
+"b3" -> "d26p" [label = "3-explore[EXPLORE];/null/null/null"];
+"d26p" -> "d26m" [label = "4-explore[EXPLORE];/door26[false]/null/null"];
+"d26m" -> "d17p" [label = "5-explore[EXPLORE];/null/null/null"];
+"d17p" -> "d17m" [label = "6-explore[EXPLORE];/door17[false]/null/null"];
+"d17m" -> "d12m" [label = "7-explore[EXPLORE];/null/null/null"];
+"d12m" -> "b53" [label = "8-explore[EXPLORE];/null/null/null"];
+"b53" -> "b53" [label = "9-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door19[false]:=!(door19[false]); door4[false]:=!(door4[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door24[false]:=!(door24[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door28[false]:=!(door28[false]); door14[false]:=!(door14[false]); /null"];
+"b53" -> "d7p" [label = "10-explore[EXPLORE];/null/null/null"];
+"d7p" -> "d12m" [label = "11-explore[EXPLORE];/null/null/null"];
+"d12m" -> "d12p" [label = "12-explore[EXPLORE];/door12[false]/null/null"];
+"d12p" -> "b98" [label = "13-explore[EXPLORE];/null/null/null"];
+"b98" -> "b98" [label = "14-toggle[TOGGLE];/null/null/null"];
+"b98" -> "d12p" [label = "15-explore[EXPLORE];/null/null/null"];
+"d12p" -> "b98" [label = "16-explore[EXPLORE];/null/null/null"];
+"b98" -> "b99" [label = "17-explore[EXPLORE];/null/null/null"];
+"b99" -> "b99" [label = "18-toggle[TOGGLE];/null/null/null"];
+"b99" -> "b99" [label = "19-toggle[TOGGLE];/null/null/null"];
+}

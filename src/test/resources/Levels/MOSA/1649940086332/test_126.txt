@@ -1,0 +1,11 @@
+# Total number of goals covered by this test: 1
+# b107 --> b107
+
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d11p
+d11p-{explore[EXPLORE];}->d11m
+d11m-{explore[EXPLORE];}->b107
+b107-{toggle[TOGGLE];}->b107
+b107-{explore[EXPLORE];}->d11m
+d11m-{explore[EXPLORE];}->b107
+b107-{toggle[TOGGLE];}->b107

@@ -1,0 +1,27 @@
+# Total number of goals covered by this test: 2
+# gf1 --> d15m
+# d15m --> gf1
+
+digraph g {
+"b0" -> "d1p" [label = "1-explore[EXPLORE];/null/null/null"];
+"d1p" -> "d14m" [label = "2-explore[EXPLORE];/null/null/null"];
+"d14m" -> "gf2" [label = "3-explore[EXPLORE];/null/null/null"];
+"gf2" -> "d14m" [label = "4-explore[EXPLORE];/null/null/null"];
+"d14m" -> "b0" [label = "5-explore[EXPLORE];/null/null/null"];
+"b0" -> "d1p" [label = "6-explore[EXPLORE];/null/null/null"];
+"d1p" -> "d11m" [label = "7-explore[EXPLORE];/null/null/null"];
+"d11m" -> "gf2" [label = "8-explore[EXPLORE];/null/null/null"];
+"gf2" -> "b0" [label = "9-explore[EXPLORE];/null/null/null"];
+"b0" -> "b0" [label = "10-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door34[false]:=!(door34[false]); door3[false]:=!(door3[false]); door4[false]:=!(door4[false]); door6[false]:=!(door6[false]); door38[false]:=!(door38[false]); door7[false]:=!(door7[false]); door8[false]:=!(door8[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door13[false]:=!(door13[false]); door14[false]:=!(door14[false]); door15[false]:=!(door15[false]); door23[false]:=!(door23[false]); door27[false]:=!(door27[false]); door29[false]:=!(door29[false]); /null"];
+"b0" -> "d14m" [label = "11-explore[EXPLORE];/null/null/null"];
+"d14m" -> "d14p" [label = "12-explore[EXPLORE];/door14[false]/null/null"];
+"d14p" -> "gf1" [label = "13-explore[EXPLORE];/null/null/null"];
+"gf1" -> "d15m" [label = "14-explore[EXPLORE];/null/null/null"];
+"d15m" -> "gf1" [label = "15-explore[EXPLORE];/null/null/null"];
+"gf1" -> "b54" [label = "16-explore[EXPLORE];/null/null/null"];
+"b54" -> "d14p" [label = "17-explore[EXPLORE];/null/null/null"];
+"d14p" -> "d25m" [label = "18-explore[EXPLORE];/null/null/null"];
+"d25m" -> "b54" [label = "19-explore[EXPLORE];/null/null/null"];
+"b54" -> "b53" [label = "20-explore[EXPLORE];/null/null/null"];
+"b53" -> "b54" [label = "21-explore[EXPLORE];/null/null/null"];
+}

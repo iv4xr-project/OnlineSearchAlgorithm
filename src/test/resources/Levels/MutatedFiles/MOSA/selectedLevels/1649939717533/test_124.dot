@@ -1,0 +1,24 @@
+# Total number of goals covered by this test: 2
+# d28p --> gf14
+# gf14 --> d28p
+
+digraph g {
+"gf11" -> "b2" [label = "1-explore[EXPLORE];/null/null/null"];
+"b2" -> "b2" [label = "2-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door4[false]:=!(door4[false]); door8[false]:=!(door8[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door13[false]:=!(door13[false]); door14[false]:=!(door14[false]); door17[false]:=!(door17[false]); door20[false]:=!(door20[false]); door23[false]:=!(door23[false]); door25[false]:=!(door25[false]); /null"];
+"b2" -> "d20p" [label = "3-explore[EXPLORE];/null/null/null"];
+"d20p" -> "d20m" [label = "4-explore[EXPLORE];/door20[false]/null/null"];
+"d20m" -> "d11p" [label = "5-explore[EXPLORE];/null/null/null"];
+"d11p" -> "b107" [label = "6-explore[EXPLORE];/null/null/null"];
+"b107" -> "b108" [label = "7-explore[EXPLORE];/null/null/null"];
+"b108" -> "b108" [label = "8-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door17[false]:=!(door17[false]); door34[false]:=!(door34[false]); door4[false]:=!(door4[false]); door7[false]:=!(door7[false]); door8[false]:=!(door8[false]); door9[false]:=!(door9[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door28[false]:=!(door28[false]); /null"];
+"b108" -> "d28m" [label = "9-explore[EXPLORE];/null/null/null"];
+"d28m" -> "d28p" [label = "10-explore[EXPLORE];/door28[false]/null/null"];
+"d28p" -> "b109" [label = "11-explore[EXPLORE];/null/null/null"];
+"b109" -> "gf14" [label = "12-explore[EXPLORE];/null/null/null"];
+"gf14" -> "gf10" [label = "13-explore[EXPLORE];/null/null/null"];
+"gf10" -> "d28p" [label = "14-explore[EXPLORE];/null/null/null"];
+"d28p" -> "gf14" [label = "15-explore[EXPLORE];/null/null/null"];
+"gf14" -> "d28p" [label = "16-explore[EXPLORE];/null/null/null"];
+"d28p" -> "d28m" [label = "17-explore[EXPLORE];/door28[false]/null/null"];
+"d28m" -> "d11p" [label = "18-explore[EXPLORE];/null/null/null"];
+}

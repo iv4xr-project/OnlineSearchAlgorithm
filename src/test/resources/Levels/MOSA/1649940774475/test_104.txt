@@ -1,0 +1,24 @@
+# Total number of goals covered by this test: 7
+# b12 --> b12
+# b12 --> d22m
+# d18p --> d22m
+# d22m --> b12
+# d9p --> b87
+# d18m --> d18p
+# b87 --> d18m
+
+b2-{toggle[TOGGLE];}->b2
+b2-{explore[EXPLORE];}->d32p
+d32p-{explore[EXPLORE];}->d32m
+d32m-{explore[EXPLORE];}->d20p
+d20p-{explore[EXPLORE];}->d20m
+d20m-{explore[EXPLORE];}->d9p
+d9p-{explore[EXPLORE];}->b87
+b87-{explore[EXPLORE];}->d18m
+d18m-{explore[EXPLORE];}->d18p
+d18p-{explore[EXPLORE];}->d22m
+d22m-{explore[EXPLORE];}->b12
+b12-{toggle[TOGGLE];}->b12
+b12-{toggle[TOGGLE];}->b12
+b12-{toggle[TOGGLE];}->b12
+b12-{explore[EXPLORE];}->d22m

@@ -1,0 +1,13 @@
+# Total number of goals covered by this test: 4
+# d10m --> gf3
+# b4 --> d10m
+# d3p --> gf3
+# d10m --> b1
+
+b4-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->gf3
+gf3-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->d3p
+d3p-{explore[EXPLORE];}->gf3
+gf3-{explore[EXPLORE];}->d10m

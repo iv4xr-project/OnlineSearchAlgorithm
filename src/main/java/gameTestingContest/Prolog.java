@@ -738,6 +738,8 @@ public class Prolog {
 			System.out.println("doors in each room: " + roomx);
 			List<String> bt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
 			System.out.println("doors: " + bt0);
+			List<String> bt1 = pQueryAll("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
+			System.out.println("buttons: " + bt1);
 		}
 		
 		var alldoors = pQueryAll("D",

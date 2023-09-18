@@ -35,7 +35,7 @@ public class MutationTest {
 	private static String[] nextLine;
 	private static CSVReader reader;
 	private static String CSV = ".csv";
-	private static String levelName = "BM2021_diff3_R4_2_2_M";
+	private static String levelName = "FBK-1649939717533-LabRecruits_level";
 	private static String excelFilePath =  Platform.LEVEL_PATH + File.separator + "CompetitionGrander"+ File.separator +"bm2021"+ File.separator +  levelName+CSV;   	    
 	private static ArrayList<Object[]> doors = new ArrayList<>();
 	private static ArrayList<Object[]> buttons = new ArrayList<>();;
@@ -53,13 +53,15 @@ public class MutationTest {
 	       //  System.out.println(Arrays.toString(arr) );
 	         
 				 for(int j =0; j<arr.length ;j++) {
-					 if(!arr[0].contains("button")) {
+					 System.out.println("arra j 0" + arr[0]);
+					 if(!arr[0].contains("button")) {  // this is to skip the connection list at the beginning
 						if(arr[j].contains("door") ) {	
 							
 							Object[] temp = new Object[3];
 							
 							temp[0] = lineNumber;
 							temp[1] = j;
+							System.out.println("arra j " + arr[j]);
 							String entityName = arr[j].split("\\^")[1]; 							
 							
 							if(!entityName.substring(entityName.lastIndexOf("r") + 2).isBlank() )							

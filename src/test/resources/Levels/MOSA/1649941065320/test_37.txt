@@ -1,0 +1,4 @@
+# Total number of goals covered by this test: 1
+# gf7 --> gf18
+
+gf7-{explore[EXPLORE];}->gf18

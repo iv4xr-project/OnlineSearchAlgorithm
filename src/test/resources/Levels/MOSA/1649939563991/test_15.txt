@@ -1,0 +1,8 @@
+# Total number of goals covered by this test: 1
+# d23p --> d23m
+
+b0-{toggle[TOGGLE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d23m

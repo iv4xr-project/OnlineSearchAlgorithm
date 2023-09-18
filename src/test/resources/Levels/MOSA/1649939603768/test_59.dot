@@ -1,0 +1,29 @@
+# Total number of goals covered by this test: 9
+# b10 --> b11
+# b11 --> b10
+# b123 --> b122
+# b122 --> d14p
+# b122 --> b122
+# d29m --> b123
+# d35m --> b11
+# b10 --> d29p
+# b123 --> b123
+
+digraph g {
+"b6" -> "gf13" [label = "1-explore[EXPLORE];/null/null/null"];
+"gf13" -> "b0" [label = "2-explore[EXPLORE];/null/null/null"];
+"b0" -> "b0" [label = "3-toggle[TOGGLE];/null/door17[false]:=!(door17[false]); door35[false]:=!(door35[false]); door4[false]:=!(door4[false]); door36[false]:=!(door36[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door38[false]:=!(door38[false]); door8[false]:=!(door8[false]); door28[false]:=!(door28[false]); door29[false]:=!(door29[false]); door15[false]:=!(door15[false]); /null"];
+"b0" -> "d35p" [label = "4-explore[EXPLORE];/null/null/null"];
+"d35p" -> "d35m" [label = "5-explore[EXPLORE];/door35[false]/null/null"];
+"d35m" -> "b11" [label = "6-explore[EXPLORE];/null/null/null"];
+"b11" -> "b10" [label = "7-explore[EXPLORE];/null/null/null"];
+"b10" -> "b11" [label = "8-explore[EXPLORE];/null/null/null"];
+"b11" -> "b10" [label = "9-explore[EXPLORE];/null/null/null"];
+"b10" -> "d29p" [label = "10-explore[EXPLORE];/null/null/null"];
+"d29p" -> "d29m" [label = "11-explore[EXPLORE];/door29[false]/null/null"];
+"d29m" -> "b123" [label = "12-explore[EXPLORE];/null/null/null"];
+"b123" -> "b123" [label = "13-toggle[TOGGLE];/null/door16[false]:=!(door16[false]); door17[false]:=!(door17[false]); door2[false]:=!(door2[false]); door18[false]:=!(door18[false]); door3[false]:=!(door3[false]); door5[false]:=!(door5[false]); door38[false]:=!(door38[false]); door8[false]:=!(door8[false]); door14[false]:=!(door14[false]); /null"];
+"b123" -> "b122" [label = "14-explore[EXPLORE];/null/null/null"];
+"b122" -> "b122" [label = "15-toggle[TOGGLE];/null/door2[false]:=!(door2[false]); door20[false]:=!(door20[false]); door38[false]:=!(door38[false]); door12[false]:=!(door12[false]); door14[false]:=!(door14[false]); door31[false]:=!(door31[false]); /null"];
+"b122" -> "d14p" [label = "16-explore[EXPLORE];/null/null/null"];
+}

@@ -6,8 +6,10 @@ import static agents.TestSettings.*;
 import agents.tactics.GoalLib;
 import agents.tactics.TacticLib;
 import alice.tuprolog.InvalidTheoryException;
+import au.com.bytecode.opencsv.CSVReader;
 import environments.LabRecruitsConfig;
 import environments.LabRecruitsEnvironment;
+import eu.iv4xr.framework.mainConcepts.ObservationEvent.ScalarTracingEvent;
 import eu.iv4xr.framework.mainConcepts.ObservationEvent.TimeStampedObservationEvent;
 import eu.iv4xr.framework.mainConcepts.ObservationEvent.VerdictEvent;
 import eu.iv4xr.framework.mainConcepts.TestDataCollector;
@@ -25,8 +27,15 @@ import nl.uu.cs.aplib.utils.Pair;
 
 import static org.junit.jupiter.api.Assertions.* ;
 
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -58,7 +67,7 @@ public class onlineSearchWhitDataCollection {
 	    static public void start() {
 	    	// TestSettings.USE_SERVER_FOR_TEST = false ;
 	    	// Uncomment this to make the game's graphic visible:
-	    	TestSettings.USE_GRAPHICS = true ;
+	    	 TestSettings.USE_GRAPHICS = true ;
 	    	String labRecruitesExeRootDir = System.getProperty("user.dir") ;
 	    	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
 	    }
@@ -98,19 +107,21 @@ public class onlineSearchWhitDataCollection {
 	    
 	    /**
 	     * A test to verify that the east closet is reachable.
+	     * @throws IOException 
 	     */
 	    @Test
-	    public void closetReachableTest() throws InterruptedException {
+	    public void closetReachableTest() throws InterruptedException, IOException {
+	    	
 	    	//String levelName = "";
-	    	String levelName = "CompetitionGrander//bm2021";
-	    	String fileName = "BM2021_diff1_R3_1_1_H";
-
+	    	String levelName = "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
+	    	String fileName = "LabRecruits_level-original";
+	    	//String fileName = "moreRome-multiconnection";
 	        // Create an environment
 	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
-	    	String treasureDoor = "door3";
-	    	Vec3 goalPosition =  null; //new Vec3(67,0,77); 
+	    	String treasureDoor = "door38";
+	    	Vec3 goalPosition =  new Vec3(188f,0,44f); 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
 	        int cycleNumber = 0 ;
@@ -130,7 +141,7 @@ public class onlineSearchWhitDataCollection {
 	        		    . attachEnvironment(environment);    
 
 		       
-		       var agentPosiion = environment.observe("agent1").position;
+		    //   var agentPosiion = environment.observe("agent1").position;
 		       
 		       
 			   /* calculate the euclidean distance from agent position to the treasure door, the treasure door
@@ -209,7 +220,15 @@ public class onlineSearchWhitDataCollection {
 		        long startTime = System.currentTimeMillis();
 		        testAgent.registerEvent(new TimeStampedObservationEvent("startTest"));
 		        while (testingTask.getStatus().inProgress()) {
-
+		        	if (testAgent.getState().worldmodel.position != null) {
+		        		dataCollector.registerEvent(testAgent.getId(), 
+			        			new ScalarTracingEvent(
+			        					new Pair("posx",testAgent.getState().worldmodel.position.x),
+			        					new Pair("posy",testAgent.getState().worldmodel.position.y),
+			        					new Pair("posz",testAgent.getState().worldmodel.position.z),
+			        					new Pair("turn",cycleNumber),
+			        					new Pair("tick",1)));
+		        	}
 		        	if(cycleNumber == 1) Thread.sleep(1500);
 		        	System.out.println("*** " + cycleNumber + ", " + testAgent.getState().id + " @" + testAgent.getState().worldmodel.position) ;
 		            Thread.sleep(100);
@@ -242,10 +261,11 @@ public class onlineSearchWhitDataCollection {
 						DebugUtil.log(">>>> the agent died. Aaaw.");
 					//	throw new AgentDieException() ;
 					}	 
-		        	if (cycleNumber>60000) {
+		        	if (cycleNumber>100000) {
 		        		break ;
 		        	}
 		        }
+		        dataCollector.saveTestAgentScalarsTraceAsCSV(testAgent.getId(),"visits.csv");
 		        testAgent.registerEvent(new TimeStampedObservationEvent("endTest"));
 		        long endTime = System.currentTimeMillis();
 		        totalTime = endTime - startTime;
@@ -268,13 +288,13 @@ public class onlineSearchWhitDataCollection {
 						. getTestDataCollector()
 						. getTestAgentTrace(testAgent.getId()).stream().filter(e-> e.getFamilyName() == "startExploreRecorder" || e.getFamilyName() == "endExploreRecorder" ).collect(Collectors.toList());
 				        ;
-		       // System.out.println("trace2222 " + traceExplore + traceExplore.size()) ;
+		        //System.out.println("trace2222 " + traceExplore + traceExplore.size()) ;
 		        	         
 		         //[start,end,start,end....]  
 		        for(int i=0; i<traceExplore.size() ; i++) {
 		        	
 		        	if(traceExplore.get(i) != null &&  i % 2 == 0 && i < traceExplore.size()-1) {
-		        	//	System.out.println("trace " +  i + traceExplore.get(i)) ;
+		        		//System.out.println("trace " +  i + traceExplore.get(i)) ;
 		        	    var diff = Duration.between (traceExplore.get(i).getTimestamp() , traceExplore.get(i+1).getTimestamp()).toMillis();
 		        	    sumMiliSec = sumMiliSec + diff;
 		        	  //  System.out.println("diff milliis  " +  diff) ;
@@ -297,7 +317,9 @@ public class onlineSearchWhitDataCollection {
 				        	if(e != null  && e.contains("door"))
 				        	System.out.println("traceTriedDoors  " + e);} );
 				
-		        
+		       
+			   
+			   
 				 //trace the position of the agent
 				 List<Map<String,Number>> tracePosition = testAgent
 							. getTestDataCollector()
@@ -312,9 +334,9 @@ public class onlineSearchWhitDataCollection {
 				 // save the position 
 				 try {
 					testAgent.getTestDataCollector()
-					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"with-prolog" +File.separator+fileName+ "positionTraceViewDis.csv");							
+					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"FBK" +File.separator+fileName+ "positionTraceViewDis.csv");							
 					testAgent.getTestDataCollector()
-					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"wiht-prolog"+File.separator+fileName+ "EventTraceViewDis.csv");
+					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"FBK"+File.separator+fileName+ "EventTraceViewDis.csv");
 				 } catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -324,7 +346,67 @@ public class onlineSearchWhitDataCollection {
 		        var agentneTimeStamss = testAgent.getState().knownEntities();
 		   		// print the prolog data
 		        prolog.report();  
-//	   		 
+		        System.out.println("get all connection : " );
+				if(!beliefState.highLevelGragh.edges.isEmpty()) beliefState.highLevelGragh.getEntityConnections().forEach(e-> System.out.print(e.toString()));
+				
+				String newFileLocation = Platform.LEVEL_PATH + File.separator +"Result"+File.separator+"FBK" +File.separator+fileName+"all-info.csv" ;		
+				BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation));
+				StringBuilder sb = new StringBuilder();
+				
+				//add all connections
+					for (ArrayList<String> a : beliefState.highLevelGragh.getEntityConnections()) {					
+						for (String b : a) {
+							sb.append(b);
+							sb.append(","); 
+						}
+						sb.append("\n"); 
+						}
+	
+					// add tried doors
+					
+					for (String a : traceTriedDoors) {
+						if(a != null  && a.contains("door")) {
+							sb.append("Tried Door");
+							sb.append(a);
+							sb.append(","); 
+							sb.append("\n"); 
+						}
+					}
+					
+					
+					// add exploration
+					sb.append("exploration time");
+					sb.append(","); 
+					sb.append(sumMiliSec/1000);
+					sb.append(","); 
+					sb.append("\n");
+								
+					// add cycle Number
+					sb.append("cycleNumber");
+					sb.append(",");	
+					sb.append(cycleNumber);
+					sb.append(","); 
+					sb.append("\n");
+					
+					// add cycle Number
+					sb.append("Run time");
+					sb.append(",");	
+					sb.append(totalTime/1000);
+					sb.append(","); 
+					sb.append("\n");
+					
+					
+					// add test status
+					sb.append("test status");
+					sb.append(",");	
+					sb.append(testAgent.success());
+					sb.append(","); 
+					sb.append("\n");
+					
+					br.write(sb.toString());
+					br.close();	
+			   
+					
 	        }
 	        finally { environment.close(); }
 	

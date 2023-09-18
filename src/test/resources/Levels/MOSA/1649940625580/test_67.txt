@@ -1,0 +1,14 @@
+# Total number of goals covered by this test: 1
+# d39p --> b1
+
+b0-{explore[EXPLORE];}->gf10
+gf10-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->b2
+b2-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->d39p
+d39p-{explore[EXPLORE];}->b1

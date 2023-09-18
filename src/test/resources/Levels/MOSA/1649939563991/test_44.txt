@@ -1,0 +1,14 @@
+# Total number of goals covered by this test: 1
+# d23m --> b19
+
+b0-{explore[EXPLORE];}->d32m
+d32m-{explore[EXPLORE];}->d29m
+d29m-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d29m
+d29m-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d23m
+d23m-{explore[EXPLORE];}->b19
+b19-{explore[EXPLORE];}->d20p
+d20p-{explore[EXPLORE];}->d20m

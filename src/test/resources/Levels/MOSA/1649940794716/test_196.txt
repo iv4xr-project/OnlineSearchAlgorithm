@@ -1,0 +1,20 @@
+# Total number of goals covered by this test: 7
+# d11m --> d6p
+# d6m --> b141
+# d6p --> d6m
+# d16m --> d16p
+# b141 --> d16m
+# d16p --> d36m
+# d11p --> d11m
+
+b2-{toggle[TOGGLE];}->b2
+b2-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->d11p
+d11p-{explore[EXPLORE];}->d11m
+d11m-{explore[EXPLORE];}->d6p
+d6p-{explore[EXPLORE];}->d6m
+d6m-{explore[EXPLORE];}->b141
+b141-{explore[EXPLORE];}->d16m
+d16m-{explore[EXPLORE];}->d16p
+d16p-{explore[EXPLORE];}->d36m

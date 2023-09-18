@@ -1,0 +1,17 @@
+# Total number of goals covered by this test: 1
+# d33m --> d30p
+
+gf5-{explore[EXPLORE];}->gf10
+gf10-{explore[EXPLORE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->gf10
+gf10-{explore[EXPLORE];}->gf5
+gf5-{explore[EXPLORE];}->d35m
+d35m-{explore[EXPLORE];}->gf10
+gf10-{explore[EXPLORE];}->gf5
+gf5-{explore[EXPLORE];}->d35m
+d35m-{explore[EXPLORE];}->gf5
+gf5-{explore[EXPLORE];}->d33p
+d33p-{explore[EXPLORE];}->d33m
+d33m-{explore[EXPLORE];}->d30p
+d30p-{explore[EXPLORE];}->d36m

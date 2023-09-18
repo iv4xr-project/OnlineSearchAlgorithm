@@ -1,0 +1,23 @@
+# Total number of goals covered by this test: 1
+# b4 --> b5
+
+digraph g {
+"b3" -> "d39m" [label = "1-explore[EXPLORE];/null/null/null"];
+"d39m" -> "b3" [label = "2-explore[EXPLORE];/null/null/null"];
+"b3" -> "b3" [label = "3-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door32[false]:=!(door32[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door5[false]:=!(door5[false]); door7[false]:=!(door7[false]); door39[false]:=!(door39[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door13[false]:=!(door13[false]); door19[false]:=!(door19[false]); door20[false]:=!(door20[false]); /null"];
+"b3" -> "b3" [label = "4-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door32[false]:=!(door32[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door5[false]:=!(door5[false]); door7[false]:=!(door7[false]); door39[false]:=!(door39[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door13[false]:=!(door13[false]); door19[false]:=!(door19[false]); door20[false]:=!(door20[false]); /null"];
+"b3" -> "d13p" [label = "5-explore[EXPLORE];/null/null/null"];
+"d13p" -> "d39m" [label = "6-explore[EXPLORE];/null/null/null"];
+"d39m" -> "b3" [label = "7-explore[EXPLORE];/null/null/null"];
+"b3" -> "b3" [label = "8-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door32[false]:=!(door32[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door5[false]:=!(door5[false]); door7[false]:=!(door7[false]); door39[false]:=!(door39[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door13[false]:=!(door13[false]); door19[false]:=!(door19[false]); door20[false]:=!(door20[false]); /null"];
+"b3" -> "d39m" [label = "9-explore[EXPLORE];/null/null/null"];
+"d39m" -> "d39p" [label = "10-explore[EXPLORE];/door39[false]/null/null"];
+"d39p" -> "b4" [label = "11-explore[EXPLORE];/null/null/null"];
+"b4" -> "gf18" [label = "12-explore[EXPLORE];/null/null/null"];
+"gf18" -> "b4" [label = "13-explore[EXPLORE];/null/null/null"];
+"b4" -> "b4" [label = "14-toggle[TOGGLE];/null/null/null"];
+"b4" -> "b5" [label = "15-explore[EXPLORE];/null/null/null"];
+"b5" -> "gf18" [label = "16-explore[EXPLORE];/null/null/null"];
+"gf18" -> "b5" [label = "17-explore[EXPLORE];/null/null/null"];
+"b5" -> "b5" [label = "18-toggle[TOGGLE];/null/null/null"];
+}

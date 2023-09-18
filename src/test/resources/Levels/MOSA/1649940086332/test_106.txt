@@ -1,0 +1,13 @@
+# Total number of goals covered by this test: 1
+# gf8 --> d22p
+
+b1-{explore[EXPLORE];}->d11p
+d11p-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->d11p
+d11p-{explore[EXPLORE];}->b1
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d22m
+d22m-{explore[EXPLORE];}->d22p
+d22p-{explore[EXPLORE];}->gf8
+gf8-{explore[EXPLORE];}->d22p
+d22p-{explore[EXPLORE];}->gf8

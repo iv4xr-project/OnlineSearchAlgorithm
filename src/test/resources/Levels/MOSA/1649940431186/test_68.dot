@@ -1,0 +1,23 @@
+# Total number of goals covered by this test: 2
+# b49 --> d26m
+# d21p --> b49
+
+digraph g {
+"b0" -> "b0" [label = "1-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door3[false]:=!(door3[false]); door4[false]:=!(door4[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door38[false]:=!(door38[false]); door7[false]:=!(door7[false]); door8[false]:=!(door8[false]); door9[false]:=!(door9[false]); door11[false]:=!(door11[false]); door17[false]:=!(door17[false]); door18[false]:=!(door18[false]); door20[false]:=!(door20[false]); door21[false]:=!(door21[false]); door25[false]:=!(door25[false]); door28[false]:=!(door28[false]); /null"];
+"b0" -> "d18p" [label = "2-explore[EXPLORE];/null/null/null"];
+"d18p" -> "d18m" [label = "3-explore[EXPLORE];/door18[false]/null/null"];
+"d18m" -> "d7p" [label = "4-explore[EXPLORE];/null/null/null"];
+"d7p" -> "d7m" [label = "5-explore[EXPLORE];/door7[false]/null/null"];
+"d7m" -> "d3p" [label = "6-explore[EXPLORE];/null/null/null"];
+"d3p" -> "d3m" [label = "7-explore[EXPLORE];/door3[false]/null/null"];
+"d3m" -> "b97" [label = "8-explore[EXPLORE];/null/null/null"];
+"b97" -> "d1m" [label = "9-explore[EXPLORE];/null/null/null"];
+"d1m" -> "b98" [label = "10-explore[EXPLORE];/null/null/null"];
+"b98" -> "b98" [label = "11-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door1[false]:=!(door1[false]); door35[false]:=!(door35[false]); door4[false]:=!(door4[false]); door20[false]:=!(door20[false]); door5[false]:=!(door5[false]); door8[false]:=!(door8[false]); door24[false]:=!(door24[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); /null"];
+"b98" -> "d1m" [label = "12-explore[EXPLORE];/null/null/null"];
+"d1m" -> "d1p" [label = "13-explore[EXPLORE];/door1[false]/null/null"];
+"d1p" -> "d21m" [label = "14-explore[EXPLORE];/null/null/null"];
+"d21m" -> "d21p" [label = "15-explore[EXPLORE];/door21[false]/null/null"];
+"d21p" -> "b49" [label = "16-explore[EXPLORE];/null/null/null"];
+"b49" -> "d26m" [label = "17-explore[EXPLORE];/null/null/null"];
+}

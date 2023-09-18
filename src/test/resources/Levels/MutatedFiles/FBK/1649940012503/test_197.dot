@@ -1,0 +1,22 @@
+# Total number of goals covered by this test: 6
+# d21m --> d20m
+# d20p --> d25m
+# d3p --> d21m
+# d20m --> d20p
+# d3m --> d3p
+# d2m --> d3m
+
+digraph g {
+"gf12" -> "b1" [label = "1-explore[EXPLORE];/null/null/null"];
+"b1" -> "b1" [label = "2-toggle[TOGGLE];/null/door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door3[false]:=!(door3[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door8[false]:=!(door8[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door13[false]:=!(door13[false]); door15[false]:=!(door15[false]); door20[false]:=!(door20[false]); door21[false]:=!(door21[false]); door22[false]:=!(door22[false]); door23[false]:=!(door23[false]); door26[false]:=!(door26[false]); /null"];
+"b1" -> "d6p" [label = "3-explore[EXPLORE];/null/null/null"];
+"d6p" -> "d6m" [label = "4-explore[EXPLORE];/door6[false]/null/null"];
+"d6m" -> "d2p" [label = "5-explore[EXPLORE];/null/null/null"];
+"d2p" -> "d2m" [label = "6-explore[EXPLORE];/door2[false]/null/null"];
+"d2m" -> "d3m" [label = "7-explore[EXPLORE];/null/null/null"];
+"d3m" -> "d3p" [label = "8-explore[EXPLORE];/door3[false]/null/null"];
+"d3p" -> "d21m" [label = "9-explore[EXPLORE];/null/null/null"];
+"d21m" -> "d20m" [label = "10-explore[EXPLORE];/null/null/null"];
+"d20m" -> "d20p" [label = "11-explore[EXPLORE];/door20[false]/null/null"];
+"d20p" -> "d25m" [label = "12-explore[EXPLORE];/null/null/null"];
+}

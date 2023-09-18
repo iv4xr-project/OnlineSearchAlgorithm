@@ -1,0 +1,7 @@
+# Total number of goals covered by this test: 1
+# b5 --> d15p
+
+digraph g {
+"gf10" -> "b5" [label = "1-explore[EXPLORE];/null/null/null"];
+"b5" -> "d15p" [label = "2-explore[EXPLORE];/null/null/null"];
+}

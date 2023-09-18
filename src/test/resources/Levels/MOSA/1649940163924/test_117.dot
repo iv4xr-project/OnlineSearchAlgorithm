@@ -1,0 +1,15 @@
+# Total number of goals covered by this test: 1
+# d23m --> b0
+
+digraph g {
+"b0" -> "d7p" [label = "1-explore[EXPLORE];/null/null/null"];
+"d7p" -> "d23m" [label = "2-explore[EXPLORE];/null/null/null"];
+"d23m" -> "b1" [label = "3-explore[EXPLORE];/null/null/null"];
+"b1" -> "d23m" [label = "4-explore[EXPLORE];/null/null/null"];
+"d23m" -> "b0" [label = "5-explore[EXPLORE];/null/null/null"];
+"b0" -> "d7p" [label = "6-explore[EXPLORE];/null/null/null"];
+"d7p" -> "d29m" [label = "7-explore[EXPLORE];/null/null/null"];
+"d29m" -> "b0" [label = "8-explore[EXPLORE];/null/null/null"];
+"b0" -> "d29m" [label = "9-explore[EXPLORE];/null/null/null"];
+"d29m" -> "d23m" [label = "10-explore[EXPLORE];/null/null/null"];
+}

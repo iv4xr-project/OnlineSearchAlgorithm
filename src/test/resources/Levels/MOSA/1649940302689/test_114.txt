@@ -1,0 +1,17 @@
+# Total number of goals covered by this test: 6
+# d24p --> d24m
+# d24m --> d24p
+# b66 --> d24m
+# b66 --> b66
+# d24m --> d6p
+# d7m --> b66
+
+b8-{toggle[TOGGLE];}->b8
+b8-{explore[EXPLORE];}->d7p
+d7p-{explore[EXPLORE];}->d7m
+d7m-{explore[EXPLORE];}->b66
+b66-{toggle[TOGGLE];}->b66
+b66-{explore[EXPLORE];}->d24m
+d24m-{explore[EXPLORE];}->d24p
+d24p-{explore[EXPLORE];}->d24m
+d24m-{explore[EXPLORE];}->d6p

@@ -1,0 +1,12 @@
+# Total number of goals covered by this test: 3
+# b129 --> b129
+# b129 --> d8m
+# d0p --> b129
+
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d1m
+d1m-{explore[EXPLORE];}->d0m
+d0m-{explore[EXPLORE];}->d0p
+d0p-{explore[EXPLORE];}->b129
+b129-{toggle[TOGGLE];}->b129
+b129-{explore[EXPLORE];}->d8m

@@ -1,0 +1,18 @@
+# Total number of goals covered by this test: 6
+# d22p --> gf12
+# d12m --> d12p
+# gf12 --> d26m
+# d32m --> d22m
+# d12p --> d32m
+# d22m --> d22p
+
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d28p
+d28p-{explore[EXPLORE];}->d28m
+d28m-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->d12p
+d12p-{explore[EXPLORE];}->d32m
+d32m-{explore[EXPLORE];}->d22m
+d22m-{explore[EXPLORE];}->d22p
+d22p-{explore[EXPLORE];}->gf12
+gf12-{explore[EXPLORE];}->d26m

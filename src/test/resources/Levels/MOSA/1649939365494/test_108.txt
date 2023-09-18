@@ -1,0 +1,11 @@
+# Total number of goals covered by this test: 1
+# d35m --> b12
+
+b4-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->b4
+b4-{toggle[TOGGLE];}->b4
+b4-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->d34p
+d34p-{explore[EXPLORE];}->d34m
+d34m-{explore[EXPLORE];}->d35m
+d35m-{explore[EXPLORE];}->b12

@@ -1,0 +1,75 @@
+# Total number of goals covered by this test: 21
+# b10 --> b10
+# d37p --> b10
+# b9 --> b9
+# b146 --> b146
+# d37m --> b147
+# d37p --> d37m
+# d37p --> b11
+# b145 --> b146
+# b10 --> d37p
+# d37m --> d37p
+# b9 --> d37p
+# b145 --> d37m
+# b9 --> b10
+# b10 --> b9
+# b11 --> b9
+# b147 --> b146
+# d37m --> b145
+# d37p --> b9
+# b11 --> d37p
+# b9 --> b11
+# b11 --> b11
+
+b4-{explore[EXPLORE];}->gf3
+gf3-{explore[EXPLORE];}->d33m
+d33m-{explore[EXPLORE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->d3p
+d3p-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->d33m
+d33m-{explore[EXPLORE];}->d33p
+d33p-{explore[EXPLORE];}->b145
+b145-{explore[EXPLORE];}->b148
+b148-{toggle[TOGGLE];}->b148
+b148-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->b147
+b147-{explore[EXPLORE];}->b146
+b146-{explore[EXPLORE];}->b148
+b148-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->b147
+b147-{explore[EXPLORE];}->b148
+b148-{toggle[TOGGLE];}->b148
+b148-{explore[EXPLORE];}->b145
+b145-{explore[EXPLORE];}->b148
+b148-{explore[EXPLORE];}->d33p
+d33p-{explore[EXPLORE];}->b145
+b145-{explore[EXPLORE];}->b148
+b148-{toggle[TOGGLE];}->b148
+b148-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->d37p
+d37p-{explore[EXPLORE];}->b10
+b10-{explore[EXPLORE];}->d37p
+d37p-{explore[EXPLORE];}->b11
+b11-{explore[EXPLORE];}->b9
+b9-{toggle[TOGGLE];}->b9
+b9-{toggle[TOGGLE];}->b9
+b9-{explore[EXPLORE];}->b10
+b10-{toggle[TOGGLE];}->b10
+b10-{explore[EXPLORE];}->b9
+b9-{explore[EXPLORE];}->b11
+b11-{toggle[TOGGLE];}->b11
+b11-{toggle[TOGGLE];}->b11
+b11-{toggle[TOGGLE];}->b11
+b11-{explore[EXPLORE];}->d37p
+d37p-{explore[EXPLORE];}->b9
+b9-{toggle[TOGGLE];}->b9
+b9-{explore[EXPLORE];}->d37p
+d37p-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->b145
+b145-{explore[EXPLORE];}->b146
+b146-{toggle[TOGGLE];}->b146
+b146-{explore[EXPLORE];}->b145
+b145-{explore[EXPLORE];}->d37m
+d37m-{explore[EXPLORE];}->d37p

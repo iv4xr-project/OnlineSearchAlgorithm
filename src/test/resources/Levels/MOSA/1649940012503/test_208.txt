@@ -1,0 +1,17 @@
+# Total number of goals covered by this test: 2
+# b58 --> b58
+# b58 --> d15p
+
+gf12-{explore[EXPLORE];}->b1
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->d6p
+d6p-{explore[EXPLORE];}->gf12
+gf12-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->b57
+b57-{explore[EXPLORE];}->b58
+b58-{toggle[TOGGLE];}->b58
+b58-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->b58

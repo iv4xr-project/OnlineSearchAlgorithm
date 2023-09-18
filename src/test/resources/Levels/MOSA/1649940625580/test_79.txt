@@ -1,0 +1,177 @@
+# Total number of goals covered by this test: 17
+# b147 --> gf17
+# d15p --> gf17
+# b149 --> d15p
+# gf11 --> b149
+# gf17 --> b147
+# gf17 --> d15p
+# b148 --> d15p
+# b149 --> gf17
+# d15p --> b149
+# d15p --> b147
+# d15p --> b148
+# gf17 --> gf11
+# b147 --> b148
+# d15p --> d15m
+# b148 --> b147
+# d15m --> d15p
+# gf17 --> b148
+
+b0-{explore[EXPLORE];}->d39p
+d39p-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->b1
+b1-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->b2
+b2-{explore[EXPLORE];}->b0
+b0-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->b2
+b2-{toggle[TOGGLE];}->b2
+b2-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->gf10
+gf10-{explore[EXPLORE];}->d39p
+d39p-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b45
+b45-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->b45
+b45-{toggle[TOGGLE];}->b45
+b45-{toggle[TOGGLE];}->b45
+b45-{explore[EXPLORE];}->b42
+b42-{toggle[TOGGLE];}->b42
+b42-{toggle[TOGGLE];}->b42
+b42-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->b42
+b42-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b45
+b45-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->b45
+b45-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b45
+b45-{toggle[TOGGLE];}->b45
+b45-{explore[EXPLORE];}->b42
+b42-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b45
+b45-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b42
+b42-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b42
+b42-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b45
+b45-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->d39p
+d39p-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->gf10
+gf10-{explore[EXPLORE];}->d39p
+d39p-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->d39p
+d39p-{explore[EXPLORE];}->b4
+b4-{explore[EXPLORE];}->gf10
+gf10-{explore[EXPLORE];}->gf9
+gf9-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->d39p
+d39p-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->b42
+b42-{toggle[TOGGLE];}->b42
+b42-{explore[EXPLORE];}->b45
+b45-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d23m
+d23m-{explore[EXPLORE];}->b108
+b108-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->b148
+b148-{explore[EXPLORE];}->b147
+b147-{explore[EXPLORE];}->gf17
+gf17-{explore[EXPLORE];}->b147
+b147-{explore[EXPLORE];}->b148
+b148-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->gf17
+gf17-{explore[EXPLORE];}->b148
+b148-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->b111
+b111-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->b111
+b111-{explore[EXPLORE];}->d23m
+d23m-{explore[EXPLORE];}->b108
+b108-{explore[EXPLORE];}->b111
+b111-{explore[EXPLORE];}->b109
+b109-{explore[EXPLORE];}->b108
+b108-{explore[EXPLORE];}->b109
+b109-{toggle[TOGGLE];}->b109
+b109-{toggle[TOGGLE];}->b109
+b109-{explore[EXPLORE];}->d23m
+d23m-{explore[EXPLORE];}->b110
+b110-{explore[EXPLORE];}->b109
+b109-{toggle[TOGGLE];}->b109
+b109-{explore[EXPLORE];}->d13p
+d13p-{explore[EXPLORE];}->b108
+b108-{explore[EXPLORE];}->b110
+b110-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->b109
+b109-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->d13p
+d13p-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->b147
+b147-{explore[EXPLORE];}->gf17
+gf17-{explore[EXPLORE];}->gf11
+gf11-{explore[EXPLORE];}->b149
+b149-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->gf17
+gf17-{explore[EXPLORE];}->b148
+b148-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->b149
+b149-{explore[EXPLORE];}->gf17
+gf17-{explore[EXPLORE];}->d15p
+d15p-{explore[EXPLORE];}->d15m
+d15m-{explore[EXPLORE];}->b110
+b110-{explore[EXPLORE];}->d23m
+d23m-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b42
+b42-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b44
+b44-{explore[EXPLORE];}->b45
+b45-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->d39m
+d39m-{explore[EXPLORE];}->b45
+b45-{explore[EXPLORE];}->b43
+b43-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->d23p
+d23p-{explore[EXPLORE];}->b42
+b42-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->d23p

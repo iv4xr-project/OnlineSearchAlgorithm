@@ -1,0 +1,8 @@
+# Total number of goals covered by this test: 1
+# d53p --> gf8
+
+digraph g {
+"gf8" -> "b0" [label = "1-explore[EXPLORE];/null/null/null"];
+"b0" -> "d53p" [label = "2-explore[EXPLORE];/null/null/null"];
+"d53p" -> "gf8" [label = "3-explore[EXPLORE];/null/null/null"];
+}

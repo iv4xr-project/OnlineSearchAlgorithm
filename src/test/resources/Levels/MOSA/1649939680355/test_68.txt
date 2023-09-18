@@ -1,0 +1,17 @@
+# Total number of goals covered by this test: 4
+# b35 --> b35
+# b35 --> b34
+# b34 --> d34p
+# d34p --> d34m
+
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d34m
+d34m-{explore[EXPLORE];}->d34p
+d34p-{explore[EXPLORE];}->gf0
+gf0-{explore[EXPLORE];}->b35
+b35-{explore[EXPLORE];}->b34
+b34-{explore[EXPLORE];}->b35
+b35-{toggle[TOGGLE];}->b35
+b35-{explore[EXPLORE];}->b34
+b34-{explore[EXPLORE];}->d34p
+d34p-{explore[EXPLORE];}->d34m

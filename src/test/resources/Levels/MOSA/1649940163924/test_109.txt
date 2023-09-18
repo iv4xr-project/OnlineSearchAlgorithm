@@ -1,0 +1,55 @@
+# Total number of goals covered by this test: 8
+# b75 --> d36m
+# b74 --> d12m
+# b76 --> b75
+# b76 --> b76
+# d12m --> b76
+# gf13 --> b73
+# d36m --> b74
+# b76 --> gf13
+
+b0-{explore[EXPLORE];}->b1
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d7p
+d7p-{explore[EXPLORE];}->d7m
+d7m-{explore[EXPLORE];}->b50
+b50-{explore[EXPLORE];}->b49
+b49-{explore[EXPLORE];}->d5p
+d5p-{explore[EXPLORE];}->d7m
+d7m-{explore[EXPLORE];}->b48
+b48-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->d10p
+d10p-{explore[EXPLORE];}->b74
+b74-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->d36m
+d36m-{explore[EXPLORE];}->b76
+b76-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->d36m
+d36m-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->d10p
+d10p-{explore[EXPLORE];}->b75
+b75-{explore[EXPLORE];}->d36m
+d36m-{explore[EXPLORE];}->b74
+b74-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->b76
+b76-{explore[EXPLORE];}->b74
+b74-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->d36m
+d36m-{explore[EXPLORE];}->b76
+b76-{toggle[TOGGLE];}->b76
+b76-{toggle[TOGGLE];}->b76
+b76-{toggle[TOGGLE];}->b76
+b76-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->d12m
+d12m-{explore[EXPLORE];}->b76
+b76-{toggle[TOGGLE];}->b76
+b76-{explore[EXPLORE];}->b75
+b75-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->d10p
+d10p-{explore[EXPLORE];}->b75
+b75-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->d10p
+d10p-{explore[EXPLORE];}->b75
+b75-{explore[EXPLORE];}->b73
+b73-{explore[EXPLORE];}->d12m

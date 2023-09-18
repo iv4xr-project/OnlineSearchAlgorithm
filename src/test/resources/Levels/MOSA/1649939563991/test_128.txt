@@ -1,0 +1,14 @@
+# Total number of goals covered by this test: 1
+# b62 --> d32p
+
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d32m
+d32m-{explore[EXPLORE];}->d32p
+d32p-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b61
+b61-{explore[EXPLORE];}->b62
+b62-{explore[EXPLORE];}->gf16
+gf16-{explore[EXPLORE];}->b62
+b62-{explore[EXPLORE];}->b61
+b61-{explore[EXPLORE];}->b62
+b62-{explore[EXPLORE];}->d32p

@@ -1,0 +1,32 @@
+# Total number of goals covered by this test: 7
+# d35p --> b144
+# d35p --> d35m
+# b144 --> d35p
+# b144 --> b144
+# b145 --> b145
+# b144 --> b145
+# b145 --> b144
+
+digraph g {
+"b2" -> "b1" [label = "1-explore[EXPLORE];/null/null/null"];
+"b1" -> "b1" [label = "2-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door32[false]:=!(door32[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door35[false]:=!(door35[false]); door5[false]:=!(door5[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door17[false]:=!(door17[false]); door19[false]:=!(door19[false]); door25[false]:=!(door25[false]); door26[false]:=!(door26[false]); door30[false]:=!(door30[false]); /null"];
+"b1" -> "d32m" [label = "3-explore[EXPLORE];/null/null/null"];
+"d32m" -> "b2" [label = "4-explore[EXPLORE];/null/null/null"];
+"b2" -> "b1" [label = "5-explore[EXPLORE];/null/null/null"];
+"b1" -> "b2" [label = "6-explore[EXPLORE];/null/null/null"];
+"b2" -> "d32m" [label = "7-explore[EXPLORE];/null/null/null"];
+"d32m" -> "d32p" [label = "8-explore[EXPLORE];/door32[false]/null/null"];
+"d32p" -> "b91" [label = "9-explore[EXPLORE];/null/null/null"];
+"b91" -> "d35m" [label = "10-explore[EXPLORE];/null/null/null"];
+"d35m" -> "d35p" [label = "11-explore[EXPLORE];/door35[false]/null/null"];
+"d35p" -> "d35m" [label = "12-explore[EXPLORE];/door35[false]/null/null"];
+"d35m" -> "d35p" [label = "13-explore[EXPLORE];/door35[false]/null/null"];
+"d35p" -> "b144" [label = "14-explore[EXPLORE];/null/null/null"];
+"b144" -> "b145" [label = "15-explore[EXPLORE];/null/null/null"];
+"b145" -> "b144" [label = "16-explore[EXPLORE];/null/null/null"];
+"b144" -> "d35p" [label = "17-explore[EXPLORE];/null/null/null"];
+"d35p" -> "b144" [label = "18-explore[EXPLORE];/null/null/null"];
+"b144" -> "b144" [label = "19-toggle[TOGGLE];/null/null/null"];
+"b144" -> "b145" [label = "20-explore[EXPLORE];/null/null/null"];
+"b145" -> "b145" [label = "21-toggle[TOGGLE];/null/null/null"];
+}

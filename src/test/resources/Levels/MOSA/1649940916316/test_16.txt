@@ -1,0 +1,22 @@
+# Total number of goals covered by this test: 5
+# d24m --> b126
+# d29m --> d24m
+# d10p --> d29m
+# d10p --> b128
+# b126 --> d10p
+
+b4-{explore[EXPLORE];}->b1
+b1-{toggle[TOGGLE];}->b1
+b1-{explore[EXPLORE];}->d3p
+d3p-{explore[EXPLORE];}->d10m
+d10m-{explore[EXPLORE];}->d10p
+d10p-{explore[EXPLORE];}->b128
+b128-{explore[EXPLORE];}->d24m
+d24m-{explore[EXPLORE];}->b126
+b126-{explore[EXPLORE];}->d10p
+d10p-{explore[EXPLORE];}->d29m
+d29m-{explore[EXPLORE];}->d24m
+d24m-{explore[EXPLORE];}->b127
+b127-{explore[EXPLORE];}->d29m
+d29m-{explore[EXPLORE];}->b128
+b128-{explore[EXPLORE];}->d24m

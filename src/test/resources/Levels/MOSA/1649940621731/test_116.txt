@@ -1,0 +1,15 @@
+# Total number of goals covered by this test: 5
+# d5p --> b63
+# d20m --> d35m
+# b63 --> d20m
+# b63 --> d35m
+# d35m --> b63
+
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->d5m
+d5m-{explore[EXPLORE];}->d5p
+d5p-{explore[EXPLORE];}->b63
+b63-{explore[EXPLORE];}->d35m
+d35m-{explore[EXPLORE];}->b63
+b63-{explore[EXPLORE];}->d20m
+d20m-{explore[EXPLORE];}->d35m

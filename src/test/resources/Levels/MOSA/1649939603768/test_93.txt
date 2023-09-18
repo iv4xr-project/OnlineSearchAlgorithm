@@ -1,0 +1,13 @@
+# Total number of goals covered by this test: 3
+# b5 --> b3
+# b0 --> gf13
+# b3 --> b5
+
+b6-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->b0
+b0-{toggle[TOGGLE];}->b0
+b0-{explore[EXPLORE];}->gf13
+gf13-{explore[EXPLORE];}->b5
+b5-{explore[EXPLORE];}->b3
+b3-{explore[EXPLORE];}->b5
+b5-{explore[EXPLORE];}->d35p

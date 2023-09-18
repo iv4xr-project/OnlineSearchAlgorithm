@@ -1,0 +1,9 @@
+# Total number of goals covered by this test: 1
+# d2p --> d2m
+
+b3-{toggle[TOGGLE];}->b3
+b3-{explore[EXPLORE];}->d6m
+d6m-{explore[EXPLORE];}->d2m
+d2m-{explore[EXPLORE];}->d2p
+d2p-{explore[EXPLORE];}->d2m
+d2m-{explore[EXPLORE];}->d6m
