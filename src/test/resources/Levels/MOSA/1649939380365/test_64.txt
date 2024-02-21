@@ -1,8 +1,0 @@
-# Total number of goals covered by this test: 2
-# gf19 --> b2
-# b3 --> b2
-
-b2-{explore[EXPLORE];}->gf19
-gf19-{explore[EXPLORE];}->b2
-b2-{explore[EXPLORE];}->b3
-b3-{explore[EXPLORE];}->b2

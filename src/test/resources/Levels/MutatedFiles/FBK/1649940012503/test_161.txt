@@ -1,5 +1,0 @@
-# Total number of goals covered by this test: 1
-# d6p --> gf12
-
-gf12-{explore[EXPLORE];}->d6p
-d6p-{explore[EXPLORE];}->gf12

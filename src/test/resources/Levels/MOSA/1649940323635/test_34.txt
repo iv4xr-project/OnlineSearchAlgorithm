@@ -1,7 +1,0 @@
-# Total number of goals covered by this test: 1
-# b5 --> b0
-
-b1-{toggle[TOGGLE];}->b1
-b1-{explore[EXPLORE];}->b5
-b5-{toggle[TOGGLE];}->b5
-b5-{explore[EXPLORE];}->b0

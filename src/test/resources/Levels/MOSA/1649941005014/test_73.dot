@@ -1,6 +1,0 @@
-# Total number of goals covered by this test: 1
-# gf14 --> d26p
-
-digraph g {
-"gf14" -> "d26p" [label = "1-explore[EXPLORE];/null/null/null"];
-}

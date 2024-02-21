@@ -1,9 +1,0 @@
-# Total number of goals covered by this test: 2
-# gf13 --> b0
-# b6 --> gf13
-
-digraph g {
-"b6" -> "gf13" [label = "1-explore[EXPLORE];/null/null/null"];
-"gf13" -> "b0" [label = "2-explore[EXPLORE];/null/null/null"];
-"b0" -> "d35p" [label = "3-explore[EXPLORE];/null/null/null"];
-}

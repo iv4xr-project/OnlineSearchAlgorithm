@@ -38,6 +38,9 @@ public class HighLevelGraph implements Navigatable {
 	/** Current node which the agent is there*/
     public Integer currentSelectedEntity;
     
+    /** Current node*/
+    public String currentSelectedEntityId;
+    
     
 	/** List of Visited nodes */
     public ArrayList<Integer> visitedNodes; 

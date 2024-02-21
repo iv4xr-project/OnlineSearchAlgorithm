@@ -1,8 +1,0 @@
-# Total number of goals covered by this test: 1
-# d52m --> d52p
-
-b0-{toggle[TOGGLE];}->b0
-b0-{explore[EXPLORE];}->d52p
-d52p-{explore[EXPLORE];}->d52m
-d52m-{explore[EXPLORE];}->d52p
-d52p-{explore[EXPLORE];}->b1

@@ -1,8 +1,0 @@
-# Total number of goals covered by this test: 1
-# d17m --> d17p
-
-b0-{toggle[TOGGLE];}->b0
-b0-{explore[EXPLORE];}->d17m
-d17m-{explore[EXPLORE];}->b0
-b0-{explore[EXPLORE];}->d17m
-d17m-{explore[EXPLORE];}->d17p

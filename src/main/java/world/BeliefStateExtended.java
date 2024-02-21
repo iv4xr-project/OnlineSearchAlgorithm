@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.swing.text.html.parser.Entity;
+
 import alice.tuprolog.InvalidTheoryException;
 import environments.LabRecruitsEnvironment;
 import eu.iv4xr.framework.extensions.pathfinding.SurfaceNavGraph;
@@ -13,6 +15,7 @@ import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.spatial.Vec3;
 import gameTestingContest.DebugUtil;
 import gameTestingContest.Prolog;
+import gameTestingContest.TestingTaskStack;
 import nl.uu.cs.aplib.mainConcepts.Environment;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
 import nl.uu.cs.aplib.utils.Pair;
@@ -58,10 +61,17 @@ public class BeliefStateExtended extends BeliefState {
 			//or the entity does not exist in the graph add it to the graph
 			if(highLevelGragh.entities.isEmpty() || (highLevelGragh.getIndexById(e.id) == -1)){					
 				if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
+					
 					System.out.println("new entitiy add " +  e.id);		
 					newEntity[0] = true;
 					highLevelGragh.addEntites(e);
 					highLevelGragh.addVertices(e);
+					try {
+						registerFoundGameObjects(e);
+					} catch (InvalidTheoryException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 			        }
 							
 			}
@@ -92,23 +102,40 @@ public class BeliefStateExtended extends BeliefState {
 		 * between the current node and newly observed entity has broken. we add this
 		 * connection here.
 		 */	
+		System.out.println("lets check the entity id" + highLevelGragh.currentSelectedEntity);
 		
 		if(highLevelGragh.currentSelectedEntity != null) {
-			//System.out.println("equals" + entities.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity)));
-			entities.forEach(e->{
-				if(e.id.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity).id)) {
-					currentEntity[0] = true;
+			
+			if(highLevelGragh.currentSelectedEntity == 100) {
+				WorldEntity entityIsSeen = highLevelGragh.entities.stream().filter(e-> e.id.equals(highLevelGragh.currentSelectedEntityId)).findAny().orElse(null);
+				
+				if(entityIsSeen != null) {
+					System.out.println("entityIsSeen: " + entityIsSeen.id + highLevelGragh.getIndexById(entityIsSeen.id) );
+					highLevelGragh.currentSelectedEntity = highLevelGragh.getIndexById(entityIsSeen.id);
+					highLevelGragh.visitedNodes.set(highLevelGragh.visitedNodes.indexOf(100), highLevelGragh.getIndexById(entityIsSeen.id));
+				
 				}
-			});
-			if(!currentEntity[0]) {
-				System.out.println("add connection between two entities: if there is a distance between them");
-				entities.add(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity));
-				highLevelGragh.addEdgs(entities);
+					
+			}
+			
+			if(highLevelGragh.currentSelectedEntity != 100) {
+				//System.out.println("equals" + entities.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity)));
+				entities.forEach(e->{
+					
+					if(e.id.equals(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity).id)) {
+						currentEntity[0] = true;
+					}
+				});
+				if(!currentEntity[0]) {
+					System.out.println("add connection between two entities: if there is a distance between them");
+					entities.add(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity));
+					highLevelGragh.addEdgs(entities);
+				}
 			}
 		}
 		
 		//Print all entities in the high level graph
-		highLevelGragh.entities.forEach(e->System.out.println("All entities in the high level graph: " + " id " + e.id ));
+		highLevelGragh.entities.forEach(e->System.out.println("All entities in the high level graph: " + " id " + e.id + highLevelGragh.getIndexById(e.id) ));
 		System.out.println("Adges in the high level graph : " + highLevelGragh.edges.toString());			
 		
 		// get neighbors information
@@ -120,7 +147,13 @@ public class BeliefStateExtended extends BeliefState {
 		 * "from : "+ highLevelGragh.getIndexById("button1") + "to: "+
 		 * highLevelGragh.getIndexById("button2") + " " + p); }
 		 */
-	return true;
+	
+		
+		/*update stack*/  //TODO
+		//TestingTaskStack.addItems(entities);
+    	
+		
+		return true;
 	}
 	
 	@Override
@@ -141,16 +174,20 @@ public class BeliefStateExtended extends BeliefState {
 	public void updateState(String id) {
 		super.updateState(worldmodel.agentId);
 		for(var e : worldmodel.elements.values()) {
+		//	System.out.println("update State" + e.id);
 			if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
 				if(e.timestamp == worldmodel.timestamp) {
 					var sqdist = Vec3.distSq(worldmodel.position,e.position) ;
+			//		System.out.println("update State befor if" + e.id + sqdist);
 					if(sqdist <= 4) {
-						try {
-							registerFoundGameObjects(e);
-						} catch (InvalidTheoryException e1) {
+				//		try {
+				//			System.out.println("update State if" + e.id);
+						//	registerFoundGameObjects(e);
+							mergeNewlyObservedEntities(newlyObservedEntities());
+				//	} catch (InvalidTheoryException e1) {
 							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+				//			e1.printStackTrace();
+				//		}
 					}
 				}
 			}
@@ -164,11 +201,12 @@ public class BeliefStateExtended extends BeliefState {
 	 */
 	public void registerFoundGameObjects(WorldEntity e) throws InvalidTheoryException {
 		
-		if(e.type.equals(LabEntity.SWITCH)) {			
+		if(e.type.equals(LabEntity.SWITCH)) {
+			//System.out.println("belief state, register a button" + e.id);
 			prolog.registerButton(e.id);
 		}
 		if(e.type.equals(LabEntity.DOOR)) {
-			//System.out.println("belief state, register a door");
+		//	System.out.println("belief state, register a door");
 			prolog.registerDoor(e.id);
 		}
 	}
@@ -194,5 +232,47 @@ public class BeliefStateExtended extends BeliefState {
     	// add the destination path too:
     	path.add(q) ;
     	return new Pair(q,path) ;
+    }
+    
+    /**
+     * This method checks if there is an enabler that is not in the requested agents belief 
+     */
+    
+    public boolean checkEnablers(List<String> enablers) {
+    	List<String> allButtons = new ArrayList<>();
+    	if(!highLevelGragh.entities.isEmpty()) {
+    		highLevelGragh.entities.forEach(button -> {
+				if (button.id.contains("button")) {						
+						allButtons.add(button.id);
+					}
+			});
+    		System.out.println("number of buttons in two agents:" + allButtons.size() + enablers.size());
+    		if(allButtons.size() > enablers.size()) return true;
+    	}
+    	return false;
+    }
+    
+   /*
+     * This function compare two agents belief and checks the ask variable 
+     */
+    
+    public List<String> domiNode(List<String> enablers) {
+    	//do you have a button that I do not have?
+    	// compare the list of buttons first -> list of buttons should be sent
+    	//invoke compare to 
+    	//yes I do
+    	// return the button and how to reach it
+    	// how to reach it depends on where the agent is. 
+    	//how it is going to send this? if I have A1 position as well it might be able to find a route
+    	
+    	List<String> allButtons = new ArrayList<>();   	
+    		highLevelGragh.entities.forEach(button -> {
+				if (button.id.contains("button")) {						
+						allButtons.add(button.id);
+					}
+			});
+    		List<String> elementsOnlyInallButtons = new ArrayList<>(allButtons);
+    		elementsOnlyInallButtons.removeAll(enablers);
+    		return elementsOnlyInallButtons;
     }
 }

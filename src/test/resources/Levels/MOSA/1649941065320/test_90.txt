@@ -1,6 +1,0 @@
-# Total number of goals covered by this test: 1
-# d38m --> gf18
-
-gf7-{explore[EXPLORE];}->d38m
-d38m-{explore[EXPLORE];}->gf18
-gf18-{explore[EXPLORE];}->d36p

@@ -1,7 +1,0 @@
-# Total number of goals covered by this test: 1
-# b1 --> d37m
-
-gf7-{explore[EXPLORE];}->b2
-b2-{explore[EXPLORE];}->b1
-b1-{explore[EXPLORE];}->d37m
-d37m-{explore[EXPLORE];}->b2

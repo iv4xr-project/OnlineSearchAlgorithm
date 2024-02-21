@@ -66,14 +66,14 @@ public class Test_BigLevel {
     @Test
     public void test_explore_on_simplemaze() throws InterruptedException {
 
-    	String levelName = "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
-    	String fileName = "LabRecruits_level-original - Copy";
+    	String levelName = "CompetitionGrander\\\\bm2021";
+    	String fileName = "simple-level-second - narrow";
     	var config = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
     	config.view_distance = 12 ;
     	
     	var environment = new LabRecruitsEnvironment(config);
         
-        LabRecruitsTestAgent agent = new LabRecruitsTestAgent("agent1")
+        LabRecruitsTestAgent agent = new LabRecruitsTestAgent("agent2")
         		                     . attachState(new BeliefState())
         		                     . attachEnvironment(environment) ;
         
@@ -106,8 +106,8 @@ public class Test_BigLevel {
             }
         }
         
-        var path0 = agent.state().pathfinder().findPath(new Vec3(102,0,103), new Vec3(104,0,101), 0.2f) ;
-        var path1 = agent.state().pathfinder().findPath(new Vec3(102,0,103), new Vec3(124,0,89), 0.2f) ;
+        var path0 = agent.state().pathfinder().findPath(new Vec3(11,0,102), new Vec3(11,0,1), 0.2f) ;
+        var path1 = agent.state().pathfinder().findPath(new Vec3(10,0,29), new Vec3(10,0,28), 0.2f) ;
         var path1b = agent.state().pathfinder().findPath(new Vec3(102,0,103), new Vec3(105.5f,0,102), 0.2f) ;
         var path2 = agent.state().pathfinder().findPath(new Vec3(102,0,103), new Vec3(103,0,103), 0.2f) ;
         var path3 = agent.state().pathfinder().findPath(new Vec3(102,0,103), new Vec3(104.5f,0,104), 0.2f) ;

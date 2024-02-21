@@ -1,4 +1,0 @@
-# Total number of goals covered by this test: 1
-# gf7 --> d36p
-
-gf7-{explore[EXPLORE];}->d36p

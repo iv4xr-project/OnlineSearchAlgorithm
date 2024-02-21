@@ -1,5 +1,0 @@
-# Total number of goals covered by this test: 1
-# d0p --> d1m
-
-b1-{explore[EXPLORE];}->d0p
-d0p-{explore[EXPLORE];}->d1m

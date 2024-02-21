@@ -28,7 +28,7 @@ f:bc>e,f,f,f,w,f,w,f,f,w,w,w,w,w,w,w,w
 f,f,f,f,w,f,w,f,f,w,w,f,f,f,f,f,w
 f:bc>e,f,f,f,f,f,f,f,f,f:d>w^door4,f,f,f,f,f,f:b^button5,w
 f,f,f,f,f,f,f,f,f,w,w,f,f,f,f,f,w
-f:bc>e,f,f,f,f,f,f,f,f,w,w,w,f:c>n,f,f:npc^subject3,w,w
+f:bc>e,f,f,f:a^agent2,f,f,f,f,f,w,w,w,f:c>n,f,f:npc^subject3,w,w
 f,f,f,f,f,f,f,f,f,w,w,w,w,w,w,w,
 f:bc>e,f,f,f,f,f,f,f,f,w,w,w,w,w,w,w,w
 f,f,f,f,f,f,f,f,f,w,w,f,f,f,f,f,w

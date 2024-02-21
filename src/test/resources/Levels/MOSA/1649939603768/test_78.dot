@@ -1,8 +1,0 @@
-# Total number of goals covered by this test: 2
-# b6 --> b6
-# b6 --> b5
-
-digraph g {
-"b6" -> "b6" [label = "1-toggle[TOGGLE];/null/door35[false]:=!(door35[false]); door5[false]:=!(door5[false]); door24[false]:=!(door24[false]); door13[false]:=!(door13[false]); door29[false]:=!(door29[false]); door14[false]:=!(door14[false]); /null"];
-"b6" -> "b5" [label = "2-explore[EXPLORE];/null/null/null"];
-}

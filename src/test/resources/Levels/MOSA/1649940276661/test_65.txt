@@ -1,4 +1,0 @@
-# Total number of goals covered by this test: 1
-# b0 --> gf2
-
-b0-{explore[EXPLORE];}->gf2

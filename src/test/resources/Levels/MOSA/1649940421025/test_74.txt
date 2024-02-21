@@ -1,5 +1,0 @@
-# Total number of goals covered by this test: 1
-# gf10 --> gf5
-
-gf5-{explore[EXPLORE];}->gf10
-gf10-{explore[EXPLORE];}->gf5

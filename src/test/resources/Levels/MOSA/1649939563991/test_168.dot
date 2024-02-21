@@ -1,8 +1,0 @@
-# Total number of goals covered by this test: 1
-# d29m --> d32m
-
-digraph g {
-"b0" -> "d23p" [label = "1-explore[EXPLORE];/null/null/null"];
-"d23p" -> "d29m" [label = "2-explore[EXPLORE];/null/null/null"];
-"d29m" -> "d32m" [label = "3-explore[EXPLORE];/null/null/null"];
-}

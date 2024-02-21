@@ -1,9 +1,0 @@
-# Total number of goals covered by this test: 1
-# d32p --> d35m
-
-digraph g {
-"b2" -> "b2" [label = "1-toggle[TOGGLE];/null/door0[false]:=!(door0[false]); door32[false]:=!(door32[false]); door1[false]:=!(door1[false]); door2[false]:=!(door2[false]); door4[false]:=!(door4[false]); door6[false]:=!(door6[false]); door7[false]:=!(door7[false]); door8[false]:=!(door8[false]); door10[false]:=!(door10[false]); door11[false]:=!(door11[false]); door12[false]:=!(door12[false]); door14[false]:=!(door14[false]); door16[false]:=!(door16[false]); door17[false]:=!(door17[false]); door18[false]:=!(door18[false]); /null"];
-"b2" -> "d32m" [label = "2-explore[EXPLORE];/null/null/null"];
-"d32m" -> "d32p" [label = "3-explore[EXPLORE];/door32[false]/null/null"];
-"d32p" -> "d35m" [label = "4-explore[EXPLORE];/null/null/null"];
-}

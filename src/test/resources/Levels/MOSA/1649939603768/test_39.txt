@@ -1,6 +1,0 @@
-# Total number of goals covered by this test: 2
-# b0 --> d35p
-# b6 --> b0
-
-b6-{explore[EXPLORE];}->b0
-b0-{explore[EXPLORE];}->d35p

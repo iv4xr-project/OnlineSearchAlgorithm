@@ -1,8 +1,0 @@
-# Total number of goals covered by this test: 1
-# b103 --> d11p
-
-b1-{toggle[TOGGLE];}->b1
-b1-{explore[EXPLORE];}->d20p
-d20p-{explore[EXPLORE];}->d20m
-d20m-{explore[EXPLORE];}->b103
-b103-{explore[EXPLORE];}->d11p

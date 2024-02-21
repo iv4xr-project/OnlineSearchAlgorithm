@@ -1,6 +1,0 @@
-# Total number of goals covered by this test: 1
-# d23p --> d29m
-
-b0-{explore[EXPLORE];}->d23p
-d23p-{explore[EXPLORE];}->d29m
-d29m-{explore[EXPLORE];}->d23p

@@ -1,4 +1,0 @@
-# Total number of goals covered by this test: 1
-# b3 --> b3
-
-b3-{toggle[TOGGLE];}->b3

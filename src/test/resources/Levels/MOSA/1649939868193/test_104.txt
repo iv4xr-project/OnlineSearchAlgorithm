@@ -1,4 +1,0 @@
-# Total number of goals covered by this test: 1
-# gf8 --> b0
-
-gf8-{explore[EXPLORE];}->b0
