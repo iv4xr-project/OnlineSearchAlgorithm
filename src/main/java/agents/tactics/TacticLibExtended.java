@@ -250,6 +250,10 @@ public class TacticLibExtended extends TacticLib{
                 			System.out.println("does it update the tasks!" + e.id + "updated agent" + belief.worldmodel.agentId);// this is temporary 
                 			
 	                    	goals.tasksList.add(new TestingTaskStack(e.id, false,e.position, null, belief.worldmodel.agentId));	
+                		}else if(e.id.contains("door")  && belief.isOpen(e.id) && !goals.itemTested2(e.id)) {
+                			//if a door is seen but it is open already by accident, it will be added to the done list
+                			System.out.print("Accidental open doors: " + e.id );
+                			goals.setdoneTasks2(new ArrayList<>(List.of(e.id,belief.worldmodel.agentId)));           
                 		}
                 	}	
                 	

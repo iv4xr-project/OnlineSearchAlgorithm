@@ -110,18 +110,18 @@ public class multiAgentSecond {
 	        long totalTime = 0;
 	        String finalResult = "null";
 	        int distance = 100; // 2500 for 50 , 10000 for experiment
-	        boolean advanceSync = false;
+	        boolean advanceSync = true;
 	        try {
 	        	if(TestSettings.USE_GRAPHICS) {
 	        		System.out.println("You can drag then game window elsewhere for beter viewing. Then hit RETURN to continue.") ;
 	        		new Scanner(System.in). nextLine() ;
 	        	}
-	            var beliefState = new BeliefStateExtended();
+	            var beliefState1 = new BeliefStateExtended();
 	            
 	          //  var prolog = new Prolog(beliefState);
 		        // create a test agent
-		        var testAgent = new LabRecruitsTestAgent("agent1") // matches the ID in the CSV file
-	        		    . attachState(beliefState)
+		        var testAgent1 = new LabRecruitsTestAgent("agent1") // matches the ID in the CSV file
+	        		    . attachState(beliefState1)
 	        		    . attachEnvironment(environment);    
 
 		        var beliefState2 = new BeliefStateExtended();
@@ -129,41 +129,34 @@ public class multiAgentSecond {
 	        		    . attachState(beliefState2)
 	        		    . attachEnvironment(environment)
 	        		    ;    
-		        var beliefState3 = new BeliefStateExtended();
-		        var testAgent3 = new LabRecruitsTestAgent("agent3") // matches the ID in the CSV file
-	        		    . attachState(beliefState3)
-	        		    . attachEnvironment(environment)
-	        		    ;    
-		        
+        
 		        
 		        TestingTaskStack testingTaskList = new TestingTaskStack();
-		     
-		        beliefState.highLevelGragh.goalPosition = goalPosition;	     
-	
+
 		        
 		        //agent with high weight priority
-		        var testingTask = SEQ( 
+		        var testingTask1 = SEQ( 
 		        		WHILEDO(
-        					(BeliefStateExtended b) -> GoalLibExtended.checkExploreAndTasks(b, testingTaskList, testAgent, "higher", 5, 10),
+        					(BeliefStateExtended b) -> GoalLibExtended.checkExploreAndTasks(b, testingTaskList, testAgent1, "higher", 5, 10),
         					SEQ(
         					IFELSE(
-			        			(BeliefStateExtended b) -> GoalLibExtended.highWeightTasks(b,testAgent, testingTaskList, 5),
+			        			(BeliefStateExtended b) -> GoalLibExtended.highWeightTasks(b,testAgent1, testingTaskList, 5),
 				        		
 				        		SEQ(
-				        				GoalLibExtended.selectedNodeByTask(beliefState,testAgent,5, testingTaskList, "higher", distance),
+				        				GoalLibExtended.selectedNodeByTask(beliefState1,testAgent1,5, testingTaskList, "higher", distance),
 				    	        		// navigate to selected node
 				        	//	IFELSE(
 				        		IF2(
-				    	        	(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicateByTask(beliefState),
-				    	        //	FIRSTof(GoalLibExtended.navigateToDoorByTask(beliefState, testingTaskList, testAgent), SUCCESS()),
-				    	        	dummy -> GoalLibExtended.navigateToDoorByTask(beliefState, testingTaskList, testAgent),
-				    	        	dummy -> GoalLibExtended.navigateToButtonByTask(beliefState, testingTaskList, testAgent)
+				    	        	(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicateByTask(beliefState1),
+				    	        //	FIRSTof(GoalLibExtended.navigateToDoorByTask(beliefState, testingTask1List, testAgent), SUCCESS()),
+				    	        	dummy -> GoalLibExtended.navigateToDoorByTask(beliefState1, testingTaskList, testAgent1),
+				    	        	dummy -> GoalLibExtended.navigateToButtonByTask(beliefState1, testingTaskList, testAgent1)
 				    	        //	GoalLibExtended.navigateToButtonByTask(beliefState, testingTaskList, testAgent)
 				        				)
 				    	        		,
 				    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
 				    	        		IFELSE(
-				    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState,testingTaskList,5, testAgent.getId(),"higher"),GoalLibExtended.dynamicGoal(beliefState,testAgent,testingTaskList,beliefState2),SUCCESS())			    	        					    	    
+				    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState1,testingTaskList,5, testAgent1.getId(),"higher"),GoalLibExtended.dynamicGoal(beliefState1,testAgent1,testingTaskList,beliefState2),SUCCESS())			    	        					    	    
 				    	        		,
 				    	        		SUCCESS()
 				        				)	
@@ -172,12 +165,12 @@ public class multiAgentSecond {
 				        		
 		        				 SEQ(
 			    	        		FIRSTof(
-			    	        				GoalLibExtended.newObservedNodes(testAgent, testingTaskList),
+			    	        				GoalLibExtended.newObservedNodes(testAgent1, testingTaskList),
 			    	        				WHILEDO(
 			    	        						(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b, testingTaskList, 10, "higher",5,distance),
 			    	        						SEQ(
 			    	        							//in the list of newly observed entities, if there is an entity from the list of tasks add it to the stack	
-			    	        							GoalLibExtended.findNodes(testAgent,beliefState,testingTaskList)
+			    	        							GoalLibExtended.findNodes(testAgent1,beliefState1,testingTaskList)
 			    	        						))
 			    	        				),		
 					    	        		GoalLibExtended.checkExplore2(beliefState2, testingTaskList, 10) // if all tasks are solved no need to explore more
@@ -267,7 +260,7 @@ public class multiAgentSecond {
 					    	        		,
 					    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
 					    	        		IFELSE(
-					    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState2,testingTaskList,6, testAgent2.getId(),"lower"),GoalLibExtended.dynamicGoal(beliefState2,testAgent2,testingTaskList,beliefState),SUCCESS())			    	        					    	    
+					    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState2,testingTaskList,6, testAgent2.getId(),"lower"),GoalLibExtended.dynamicGoal(beliefState2,testAgent2,testingTaskList,beliefState1),SUCCESS())			    	        					    	    
 					    	        		,
 					    	        		//GoalLibExtended.removeDynamicGoal(testAgent2, null),
 					    	        		SUCCESS()
@@ -300,75 +293,57 @@ public class multiAgentSecond {
 		        
 		        //=============================third agent=============================
 		      //agent random
-//		        var testingTask3 = SEQ( 
-//		        		WHILEDO(
-//	        					(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b),
-//				        		
-//	        				SEQ(
-//	        					IFELSE(
-//				        			(BeliefStateExtended b) -> GoalLibExtended.randomTasks(b,testAgent3, testingTaskList, 0),
-//					        		
-//					        		SEQ(
-//					        				GoalLibExtended.selectedNodeByTask(beliefState3,testAgent3,6, testingTaskList, "random"),
-//					    	        		// navigate to selected node
-//					    	        		IFELSE(
-//					    	        				(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicateByTask(beliefState3),
-//					    	        				//SEQ(GoalLibExtended.navigateToDoor(beliefState),lift((BeliefStateExtended b) -> GoalLibExtended.clearPath(beliefState)),GoalLibExtended.entityInCloseRange(beliefState)), 
-//					    	        				FIRSTof(GoalLibExtended.navigateToDoorByTask(beliefState3, testingTaskList,testAgent3), SUCCESS()),
-//					    	        				GoalLibExtended.navigateToButtonByTask(beliefState3, testingTaskList, testAgent3)
-//					    	        				)
-//					    	        		,
-//					    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
-//					    	        		IFELSE(
-//					    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState3,testingTaskList,6, testAgent3.getId(),"random"),GoalLibExtended.dynamicGoal(beliefState3,testAgent3,testingTaskList),SUCCESS())			    	        					    	    
-//					    	        		,
-//					    	        		//GoalLibExtended.removeDynamicGoal(testAgent2, null),
-//					    	        		SUCCESS()
-//					        				)
-//					        		,
-//			        				 SEQ(
-//				    	        		FIRSTof(
-//				    	        				GoalLibExtended.newObservedNodes(testAgent3, testingTaskList),
-//				    	        				WHILEDO(
-//				    	        						(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b),
-//				    	        						SEQ(
-//				    	        							//in the list of newly observed entities, if there is an entity from the list of tasks add it to the stack	
-//				    	        							GoalLibExtended.findNodes(testAgent3,beliefState3,testingTaskList)
-//				    	        						))
-//				    	        				)    		
-//				    	        		,		
-//				    	        		
-//		    	        				//if during the exploration to find a new entity, agent sees the goal, we check that it is open or not
-//		    	        				//GoalLibExtended.finalGoal(treasureDoor),
-//		    	        				// we select an entity to navigate to it based on some specific policies
-//		    	        				// the goal will be selected if it is in the list of goal
-//				    	        		// if you select something from the stack, status of that item should change
-//				    	        		GoalLibExtended.selectedNodeByTask(beliefState3,testAgent3,6, testingTaskList, "random")
-//				    	        		,	
-//				    	        		// navigate to selected node
-//				    	        		IFELSE(
-//				    	        				(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicateByTask(beliefState3),
-//				    	        				//SEQ(GoalLibExtended.navigateToDoor(beliefState),lift((BeliefStateExtended b) -> GoalLibExtended.clearPath(beliefState)),GoalLibExtended.entityInCloseRange(beliefState)), 
-//				    	        				FIRSTof(GoalLibExtended.navigateToDoorByTask(beliefState3, testingTaskList, testAgent3), SUCCESS()),
-//				    	        				GoalLibExtended.navigateToButtonByTask(beliefState3, testingTaskList, testAgent3)
-//				    	        				)
-//				    	        		,
-//				    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
-//				    	        		IFELSE(
-//				    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState3,testingTaskList,6,testAgent3.getId(),"random"),GoalLibExtended.dynamicGoal(beliefState3,testAgent3,testingTaskList),SUCCESS())
-//				    	        		
-//			        				 // , GoalLibExtended.removeDynamicGoal(testAgent2, null)
-//			        				  , FAIL()
-//			        						 )     			
-//				        		)
-//	        					
-//	        					, FAIL()
-//	        					)
-//	        					)
-//		        				
-//			        		
-//			        		);
-		        
+
+		        var testingTask3 = SEQ( 
+		        		WHILEDO(
+	        					(BeliefStateExtended b) -> GoalLibExtended.checkExploreAndTasks(b, testingTaskList, testAgent2, "random", 6, 10),
+				        		
+	        				SEQ(
+	        					IFELSE(
+				        			(BeliefStateExtended b) -> GoalLibExtended.lowWeightTasks(b,testAgent2, testingTaskList, 6),
+					        		
+					        		SEQ(
+					        				GoalLibExtended.selectedNodeByTask(beliefState2,testAgent2,6, testingTaskList, "random", distance),
+					    	        		// navigate to selected node
+//					        				IFELSE(
+							        		IF2(
+							    	        	(BeliefStateExtended b) -> GoalLibExtended.entityTypePredicateByTask(beliefState2),
+							    	        //	FIRSTof(GoalLibExtended.navigateToDoorByTask(beliefState2, testingTaskList, testAgent2), SUCCESS()),
+							    	        	dummy -> GoalLibExtended.navigateToDoorByTask(beliefState2, testingTaskList, testAgent2) ,
+							    	        	dummy -> GoalLibExtended.navigateToButtonByTask(beliefState2, testingTaskList, testAgent2)
+							    	        //	GoalLibExtended.navigateToButtonByTask(beliefState2, testingTaskList, testAgent2)
+							        				)
+					    	        		,
+					    	        		//check if the selected node is a blocker. if it is, firstly check the prolog and then add a new goal if it is not solved.
+					    	        		IFELSE(
+					    	        				(BeliefStateExtended b) -> GoalLibExtended.checkEntityStatePredicate(beliefState2,testingTaskList,6, testAgent2.getId(),"lower"),GoalLibExtended.dynamicGoal(beliefState2,testAgent2,testingTaskList,beliefState1),SUCCESS())			    	        					    	    
+					    	        		,
+					    	        		//GoalLibExtended.removeDynamicGoal(testAgent2, null),
+					    	        		SUCCESS()
+					        				)
+					        		,
+			        				 SEQ(
+				    	        		FIRSTof(
+				    	        				GoalLibExtended.newObservedNodes(testAgent2, testingTaskList),
+				    	        				WHILEDO(
+				    	        						(BeliefStateExtended b) -> GoalLibExtended.checkExplore(b, testingTaskList, 10, "random" ,6, distance),
+				    	        						SEQ(
+				    	        							//in the list of newly observed entities, if there is an entity from the list of tasks add it to the stack	
+				    	        							GoalLibExtended.findNodes(testAgent2,beliefState2,testingTaskList)
+				    	        						))
+				    	        				)    		
+				    	        		,		
+				    	        		GoalLibExtended.checkExplore2(beliefState2, testingTaskList, 10)   	        						
+			        						 )     			
+				        		)
+	        					
+	        					, FAIL()
+	        					))
+//		        		, 
+//		        		GoalLibExtended.moveAgent(testAgent)
+		        		
+			        		
+			        		);
 		        //==========================end of second testing task ===================
 		        
 		        
@@ -377,7 +352,7 @@ public class multiAgentSecond {
 		        
 		        // attaching the goal and test data-collector
 		        var dataCollector = new TestDataCollector();
-		        testAgent . setTestDataCollector(dataCollector).setGoal(testingTask) ;
+		        testAgent1 . setTestDataCollector(dataCollector).setGoal(testingTask1) ;
 		        testAgent2 . setTestDataCollector(new TestDataCollector()).setGoal(testingTask2) ;
 		   //     testAgent3 . setTestDataCollector(new TestDataCollector()).setGoal(testingTask3) ;
 		        
@@ -392,29 +367,44 @@ public class multiAgentSecond {
 				StringBuilder sb = new StringBuilder();
 				List<int[]> timeWeight = new ArrayList<>();
 				
-				
+				System.out.println("numbre of vertices: " + beliefState1.pathfinder().vertices.size() );
 				
 		        // keep updating the agent
 		        long startTime = System.currentTimeMillis();
 		     //   while (testingTask.getStatus().inProgress() || testingTask2.getStatus().inProgress() || testingTask3.getStatus().inProgress()) {
 		      //  while (testingTask.getStatus().inProgress()) {
-		       // Runnable agent2R_ = () -> testAgent.update();
-		        
+		        Runnable agent1R_ = () -> doUpdateAgent(testAgent1, beliefState1, testingTaskList);
+		        Runnable agent2R_ = () -> doUpdateAgent(testAgent2, beliefState2, testingTaskList);
 		        try{
 		    	 
 		    	 var numberOItems = testingTaskList.getdoneTasks2().size();
 				 DebugUtil.log(">> number of done tasks" + numberOItems  + numberOItems);
 					
 		    	// while (testingTask2.getStatus().inProgress() || numberOItems == 10) {
-		        while (testingTask.getStatus().inProgress() ||  testingTask2.getStatus().inProgress() || numberOItems == 10) {
+		        while (testingTask1.getStatus().inProgress() ||  testingTask2.getStatus().inProgress() || numberOItems == 10) {
 		        	//System.out.println("*** " + cycleNumber + ", " + testAgent.getState().id + " @" + testAgent.getState().worldmodel.position) ;				
-				 Thread.sleep(100);
-			//	 Thread thread1 = new Thread(agent2R_);
-			//	 thread1.start();
-		            cycleNumber++ ; 
+		        	cycleNumber++ ; 
+		        	Thread.sleep(100);
+		        	
+//		        	Thread thread1 = new Thread(agent1R_);
+//		        	Thread thread2 = new Thread(agent2R_);
+//		        	thread1.start();
+//		        	thread2.start();
+//		        	thread1.join();
+//		        	thread2.join();
+		            
+  
+		            
 		            System.out.println("=======================Agent2=======================  ") ;
+		            
+		            long startTimeAgent2 = System.currentTimeMillis();
 		            testAgent2.update();	  	
 		            testAgent2.updateGraph();
+		            long testAgent2Time = System.currentTimeMillis();
+		        	long testAgent2TotalTime = testAgent2Time - startTimeAgent2;
+		        	System.out.println(" >>>>>>>>>>>>>>>>>testAgent2    TotalTime: " + testAgent2TotalTime);
+		            
+		            
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent2.getState().changedEntities) {
 						if(e.type.equals("Switch") && e.hasPreviousState()) {
@@ -463,11 +453,17 @@ public class multiAgentSecond {
 		           
 		           
 		           // thread1.join();
-		            testAgent.update();
-		        	testAgent.updateGraph();
+		            
+		           
+		            long startTimeAgent1 = System.currentTimeMillis();
+		            testAgent1.update();
+		        	testAgent1.updateGraph();
+		        	long testAgent1Time = System.currentTimeMillis();
+		        	long testAgent1TotalTime = testAgent1Time - startTimeAgent1;
+		        	System.out.println(" >>>>>>>>>>>>>>>>testAgent1   TotalTime: " + testAgent1TotalTime);
 		        	
 		        	// check if a button is just interacted:
-					for(WorldEntity e: testAgent.getState().changedEntities) {
+					for(WorldEntity e: testAgent1.getState().changedEntities) {
 						if(e.type.equals("Switch") && e.hasPreviousState()) {
 							DebugUtil.log(">> detecting interaction with " + e.id) ;
 							lastInteractedButton = e ;					
@@ -475,19 +471,19 @@ public class multiAgentSecond {
 					}
 				//	 check doors that change state, and add connections to lastInteractedButton:
 					if(lastInteractedButton != null) {
-						for(WorldEntity e: testAgent.getState().changedEntities) {							
+						for(WorldEntity e: testAgent1.getState().changedEntities) {							
 							if(e.type.equals("Door") && e.hasPreviousState()) {
 								try {
-									beliefState.prolog.registerConnection(lastInteractedButton.id,e.id) ;
+									beliefState1.prolog.registerConnection(lastInteractedButton.id,e.id) ;
 									//add it to the Done list and remove from the toDo tasks list	
-									if(beliefState.isOpen(e.id)) {
-										DebugUtil.log(">> removing from tasks agent id and the item " + testAgent.getId() + " : " +  e.id) ;
+									if(beliefState1.isOpen(e.id)) {
+										DebugUtil.log(">> removing from tasks agent id and the item " + testAgent1.getId() + " : " +  e.id) ;
 										var itemExist = testingTaskList.getdoneTasks2().stream().filter(g-> e.id.equals(g)).collect(Collectors.toList());
 										DebugUtil.log(">> removing from tasks" + itemExist  + itemExist.size() );
 										if(itemExist.size() == 0) {
 											TestingTaskStack x = (TestingTaskStack) testingTaskList.tasksList.stream().filter(s-> e.id.equals(s.getitemId())).findAny().orElse(null);
 											if(x != null && x.gettestedBy().size() < 2) {
-												testingTaskList.setdoneTasks2(new ArrayList<>(List.of(e.id,testAgent.getId())));
+												testingTaskList.setdoneTasks2(new ArrayList<>(List.of(e.id,testAgent1.getId())));
 												System.out.println( " status " + x.getstatus());
 											testingTaskList.tasksList.remove(x);
 											}
@@ -501,14 +497,10 @@ public class multiAgentSecond {
 						}
 					}
 		        	System.out.println("*****************End Agent1************************  ") ;
-		        	
-//		        	System.out.println("*****************Agent3************************  ") ;
-//		        	testAgent3.update();
-//		        	System.out.println("*****************End Agent3************************  ") ;
-//		        	
+		        		        	
 		        	if(advanceSync) {
-			        	Utils.mergeBelief(testAgent,testAgent2);
-			        	Utils.mergeBelief(testAgent2,testAgent);
+			        	Utils.mergeBelief(testAgent1,testAgent2);
+			        	Utils.mergeBelief(testAgent2,testAgent1);
 		        	}
 		        	System.out.println("////////////////////////////////////////// testing tasks " )  ; 
 		        	for (TestingTaskStack tasks : testingTaskList.tasksList) {
@@ -545,9 +537,8 @@ public class multiAgentSecond {
 		        	 testingTaskList.getluckedItems().forEach(e-> System.out.println("items in the lucked list"  + e));
 		        	 
 		        	
-					if(beliefState.worldmodel().health <= 0) {
-						DebugUtil.log(">>>> the agent died. Aaaw.");
-					//	throw new AgentDieException() ;
+					if(beliefState1.worldmodel().health <= 0) {
+						DebugUtil.log(">>>> the agent died. Aaaw.");;
 					}
 	        	
 		        	if (cycleNumber>20000) {
@@ -556,20 +547,20 @@ public class multiAgentSecond {
 		        }
 		        
 	        }catch (Error e) {
-	        	testingTask.printGoalStructureStatus() ;
+	        	testingTask1.printGoalStructureStatus() ;
 	        	throw e ;
 			}
 		        long endTime = System.currentTimeMillis();
 		        totalTime = endTime - startTime;
-		        testingTask.printGoalStructureStatus();
+		        testingTask1.printGoalStructureStatus();
 		        testingTask2.printGoalStructureStatus();
 		        
 		        
-		        testAgent.printStatus();
+		        testAgent1.printStatus();
 		        testAgent2.printStatus();
-		      //  testAgent3.printStatus();
+		      
 		        
-		        var agentneTimeStamss = testAgent.getState().knownEntities();
+		        var agentneTimeStamss = testAgent1.getState().knownEntities();
 		        
 		        totalTime = endTime - startTime;
 		        System.out.println("******run time******");
@@ -587,17 +578,49 @@ public class multiAgentSecond {
 				}
 			    
 			    br.write(sb.toString());
-				br.close();	
-//		   		 prolog.report();
-//		   		var trace2 = testAgent
-//						. getTestDataCollector()
-//						. getTestAgentTrace(testAgent.getId()).stream().map( e-> e.getFamilyName()).collect(Collectors.toList());
-//				        ;
-//				
-//				 System.out.println("trace2  " + trace2) ;	   		 
+				br.close();	  		 
 	        }
 	        finally { environment.close(); }
 	
 	
 }
+	    void doUpdateAgent( LabRecruitsTestAgent testAgent, BeliefStateExtended beliefState,TestingTaskStack testingTaskList) {
+        	
+	    	testAgent.update();
+	    	testAgent.updateGraph();
+	    	// check if a button is just interacted:
+			for(WorldEntity e: testAgent.getState().changedEntities) {
+				if(e.type.equals("Switch") && e.hasPreviousState()) {
+					DebugUtil.log(">> detecting interaction with " + e.id) ;
+					lastInteractedButton = e ;					
+				}
+			}
+		//	 check doors that change state, and add connections to lastInteractedButton:
+			if(lastInteractedButton != null) {
+				for(WorldEntity e: testAgent.getState().changedEntities) {							
+					if(e.type.equals("Door") && e.hasPreviousState()) {
+						try {
+							beliefState.prolog.registerConnection(lastInteractedButton.id,e.id) ;
+							//add it to the Done list and remove from the toDo tasks list	
+							if(beliefState.isOpen(e.id)) {
+								DebugUtil.log(">> removing from tasks agent id and the item " + testAgent.getId() + " : " +  e.id) ;
+								var itemExist = testingTaskList.getdoneTasks2().stream().filter(g-> e.id.equals(g)).collect(Collectors.toList());
+								DebugUtil.log(">> removing from tasks" + itemExist  + itemExist.size() );
+								if(itemExist.size() == 0) {
+									TestingTaskStack x = (TestingTaskStack) testingTaskList.tasksList.stream().filter(s-> e.id.equals(s.getitemId())).findAny().orElse(null);
+									if(x != null && x.gettestedBy().size() < 2) {
+										testingTaskList.setdoneTasks2(new ArrayList<>(List.of(e.id,testAgent.getId())));
+										System.out.println( " status " + x.getstatus());
+									testingTaskList.tasksList.remove(x);
+									}
+								}
+							}
+						} catch (InvalidTheoryException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}	
+				}
+			}
+	    }
 }

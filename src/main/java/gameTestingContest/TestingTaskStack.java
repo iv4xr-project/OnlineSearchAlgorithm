@@ -22,8 +22,8 @@ public class TestingTaskStack {
 	private List<List<String>> doneTasks2 = Collections.synchronizedList(new ArrayList<>());
 	//public List<String> goals= new ArrayList<String>(List.of("doorKey1", "doorKey2" , "doorKey3" ,"doorKey4")); //IMPORTANT DOOR TO TEST
 	//public List<String> goals= new ArrayList<String>(List.of("door12", "door8" ,"door5")); 
-	public List<String> goals= new ArrayList<String>(List.of("door2" , "door3" , "door6", "door9" ));
-	//public List<String> goals= new ArrayList<String>(List.of("" ));
+	//public List<String> goals= new ArrayList<String>(List.of("door2" , "door3" , "door6", "door9" ));
+	public List<String> goals= new ArrayList<String>(List.of("" ));
 	public List<String> goalsTem= new ArrayList<String>(List.of("door2" , "door3" , "door6", "door9"));
 	
 	

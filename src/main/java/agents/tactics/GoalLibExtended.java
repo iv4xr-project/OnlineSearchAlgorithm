@@ -93,6 +93,7 @@ public class GoalLibExtended extends GoalLib {
 				BeliefStateExtended.DIST_TO_FACE_THRESHOLD);
 		
 		
+		
 		System.out.println("Check if there is unvisited part to explore: " + explore);
 		System.out.println(belief.worldmodel().getFloorPosition());
 		//if for any reason(navigation problem), it can not navidate to the selected entity, 
@@ -219,7 +220,10 @@ public class GoalLibExtended extends GoalLib {
 			System.out.println("all tasks are seen");
 			return false;
 		}
-		if (explore != null || checkTask) {
+		//when We have hidden buttons, or random buttons ,the number of solved tasks is less than total number
+		// because some doors are accidentally open during the test, so we will go with the next if
+		if (explore != null || checkTask || numberofTasks != totalTask) {
+		//if (explore != null || checkTask) {
 			System.out.println("There is unvisited nodes to explore!!! OR some tasks in the list");
 			return true;
 		}
@@ -945,6 +949,35 @@ public class GoalLibExtended extends GoalLib {
 
 	}
 
+	
+	/**
+	 * Checking list of tasks to know if there is a task that the agent can pick
+	 */
+	public static boolean checkTasksList(BeliefState belief, TestAgent agent,TestingTaskStack testingTaskList, int threshold, String type) {	
+		System.out.println("predicate if there is high waight tasks ");
+		for (TestingTaskStack e : testingTaskList.tasksList) {
+			
+			if(type.contains("higher")) {
+				if(e.getweight() > threshold  && !e.getstatus()) {	//&& !e.gettestedBy().contains(agent.getId())
+					return true;
+				} 
+			}
+			if(type.contains("lower")) {
+				if(e.getweight() < threshold  && !e.getstatus()) {	//&& !e.gettestedBy().contains(agent.getId())
+					return true;
+				} 
+			}
+			if(type.contains("random")) {
+				System.out.println("there are some in random");
+				if(!testingTaskList.tasksList.isEmpty() && !e.getstatus()) {
+					return true;
+				} 
+			}
+			
+			
+		};
+		return false;
+	}
 	
 	/**
 	 * This predicate returns true if ....

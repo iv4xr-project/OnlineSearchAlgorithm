@@ -23,10 +23,10 @@ button10,door10,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,w,f,f,w,f,f:b^button1,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f:d>w^door6,f,f,w
 ,,w,w,w,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,w,w,w,w
 ,,,,,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,w,,,
-,,,,,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,w,,,
+,,,,,w,f,f,f,f,f,f,f,f:a^agent2,f,f,f:a^agent1,f,f,f,f,f,f,f,f,f,w,,,
 ,,,,,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,w,,,
 ,,w,w,w,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,w,,,
-,,w,f,f,f:d>e^door2,f,f,f,f,f,f:a^agent2,f,f,f,f,f:a^agent1,f,f,f,f,f,f,f,f,f,w,w,w,w
+,,w,f,f,f:d>e^door2,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,w,w,w,w
 ,,w,f,f,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,w,f,f,w
 ,,w,f,f,w,f,f:b^button2,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f:b^button7,f,f:d>w^door7,f,f,w
 ,,w,w,w,w,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,w,w,w,w
