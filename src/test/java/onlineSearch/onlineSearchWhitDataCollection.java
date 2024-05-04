@@ -62,23 +62,23 @@ import agents.tactics.GoalLibExtended;
 
 public class onlineSearchWhitDataCollection {
 
-	 private static LabRecruitsTestServer labRecruitsTestServer;
+	    private static LabRecruitsTestServer labRecruitsTestServer;
+	    
 	    @BeforeAll
 	    static public void start() {
 	    	// TestSettings.USE_SERVER_FOR_TEST = false ;
 	    	// Uncomment this to make the game's graphic visible:
-	    	 TestSettings.USE_GRAPHICS = true ;
-	    	String labRecruitesExeRootDir = System.getProperty("user.dir") ;
-	    	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
+	    	// TestSettings.USE_GRAPHICS = true ;
+	    	String projectRootDir = System.getProperty("user.dir") ;
+	    	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(projectRootDir) ;
 	    }
 
-	  //methods for prolog 
-
-	  		/**
-	  		 * To keep track which button the agent toggled last.
-	  		 */
-	  		// FRAGILE!
-	  		WorldEntity lastInteractedButton = null;
+	   //methods for prolog 
+	   /**
+	    * To keep track which button the agent toggled last.
+	  	*/
+	  	// FRAGILE!
+	    WorldEntity lastInteractedButton = null;
 	 
 	    @AfterAll
 	    static void close() { if(labRecruitsTestServer!=null) labRecruitsTestServer.close(); }
@@ -109,19 +109,35 @@ public class onlineSearchWhitDataCollection {
 	     * A test to verify that the east closet is reachable.
 	     * @throws IOException 
 	     */
-	    @Test
+	    @SuppressWarnings("deprecation")
+		@Test
 	    public void closetReachableTest() throws InterruptedException, IOException {
 	    	
+	    	System.out.println(">>> start testing...") ;
+	    	
 	    	//String levelName = "";
-	    	String levelName = "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
-	    	String fileName = "LabRecruits_level-original";
+	    	//String levelName = "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
+	    	//String fileName = "LabRecruits_level-original";
 	    	//String fileName = "moreRome-multiconnection";
+	    	String levelSubdir = "STVR" ;
+	    	//String levelName = "buttons_doors_1" ;
+	    	//String levelName = "BM2021_diff3_R7_3_3" ;
+	    	String levelName = "sanctuary_1" ;
 	        // Create an environment
-	    	var LRconfig = new LabRecruitsConfig(fileName,Platform.LEVEL_PATH +File.separator+ levelName) ;
+	    	//var LRconfig = new LabRecruitsConfig(levelName) ;
+	    	var LRconfig = new LabRecruitsConfig(levelName, Platform.LEVEL_PATH + File.separator + levelSubdir) ;
 	    	LRconfig.agent_speed = 0.1f ;
 	    	LRconfig.view_distance = 4f;
-	    	String treasureDoor = "door38";
-	    	Vec3 goalPosition =  new Vec3(188f,0,44f); 
+	    	//String treasureDoor = "door38";
+	    	//Vec3 goalPosition =  new Vec3(188f,0,44f); 
+	    	//String treasureDoor = "door3";
+	    	//String treasureDoor = "doorKey4";
+	    	String treasureDoor = "doorEntrance";
+	    	//String treasureDoor = "door6";
+	    	//Vec3 goalPosition =  new Vec3(9f,0,4f); 
+	    	//Vec3 goalPosition =  new Vec3(67f,0,76f);  // guide for Durk DoorKey4
+	    	//Vec3 goalPosition =  new Vec3(106f,0,81f);  // guide for Durk DoorKey3
+	    	Vec3 goalPosition =  null ; 
 	        var environment = new LabRecruitsEnvironment(LRconfig);
 	        if(USE_INSTRUMENT) instrument(environment) ;
 	        int cycleNumber = 0 ;
@@ -203,7 +219,7 @@ public class onlineSearchWhitDataCollection {
 		        testAgent . setTestDataCollector(dataCollector).setGoal(testingTask) ;
 	     
 		        testAgent.withScalarInstrumenter(b -> instrumenter((BeliefStateExtended) beliefState));		       
-		        testAgent.registerEvent(new TimeStampedObservationEvent());
+		        testAgent.registerEvent(new TimeStampedObservationEvent("start Test"));
 		        
 		        
 		        environment.startSimulation();
@@ -219,6 +235,11 @@ public class onlineSearchWhitDataCollection {
 		        // keep updating the agent
 		        long startTime = System.currentTimeMillis();
 		        testAgent.registerEvent(new TimeStampedObservationEvent("startTest"));
+		        
+		        //int budget = 100000 ;
+		        int budget = 30000 ;
+		        //int budget = 5000 ;
+		        
 		        while (testingTask.getStatus().inProgress()) {
 		        	if (testAgent.getState().worldmodel.position != null) {
 		        		dataCollector.registerEvent(testAgent.getId(), 
@@ -261,7 +282,7 @@ public class onlineSearchWhitDataCollection {
 						DebugUtil.log(">>>> the agent died. Aaaw.");
 					//	throw new AgentDieException() ;
 					}	 
-		        	if (cycleNumber>100000) {
+		        	if (cycleNumber>budget) {
 		        		break ;
 		        	}
 		        }
@@ -269,9 +290,9 @@ public class onlineSearchWhitDataCollection {
 		        testAgent.registerEvent(new TimeStampedObservationEvent("endTest"));
 		        long endTime = System.currentTimeMillis();
 		        totalTime = endTime - startTime;
-		        testAgent.printStatus();
+		        //testAgent.printStatus();
 		        
-		        
+		        System.out.println("****** testing task status: " +  testingTask.getStatus());
 		        System.out.println("******run time******");
 			    System.out.println(totalTime/1000);
 			    System.out.println("******cycle number******");
@@ -303,8 +324,8 @@ public class onlineSearchWhitDataCollection {
 		        	    sumMinutes = sumMinutes + diff2;
 		        	}        	
 		        }
-		        System.out.println("sum miliii " +  sumMiliSec + " , "+sumMiliSec/1000) ;
-		        System.out.println("sum min  " + sumMinutes) ;
+		        System.out.println("sum (ms) :" +  sumMiliSec + ", in sec:"+sumMiliSec/1000) ;
+		        System.out.println("sum (min):" + sumMinutes) ;
 		        
 		        // trace the name of the tried doors
 		        List<String> traceTriedDoors = testAgent
@@ -332,11 +353,12 @@ public class onlineSearchWhitDataCollection {
 				 
 				 // save the recorded data
 				 // save the position 
+				 String projectRootDir = System.getProperty("user.dir") ;
 				 try {
 					testAgent.getTestDataCollector()
-					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"FBK" +File.separator+fileName+ "positionTraceViewDis.csv");							
-					testAgent.getTestDataCollector()
-					 .saveTestAgentEventsTraceAsCSV(testAgent.getId(),Platform.LEVEL_PATH +File.separator+"Result"+File.separator+"FBK"+File.separator+fileName+ "EventTraceViewDis.csv");
+					 .saveTestAgentScalarsTraceAsCSV(testAgent.getId(),projectRootDir+File.separator+"data" +File.separator+levelName+ "_positionTraceViewDis.csv");							
+					//testAgent.getTestDataCollector()
+					// .saveTestAgentEventsTraceAsCSV(testAgent.getId(),projectRootDir +File.separator+"data"+File.separator+"FBK"+File.separator+levelName+ "EventTraceViewDis.csv");
 				 } catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -349,7 +371,7 @@ public class onlineSearchWhitDataCollection {
 		        System.out.println("get all connection : " );
 				if(!beliefState.highLevelGragh.edges.isEmpty()) beliefState.highLevelGragh.getEntityConnections().forEach(e-> System.out.print(e.toString()));
 				
-				String newFileLocation = Platform.LEVEL_PATH + File.separator +"Result"+File.separator+"FBK" +File.separator+fileName+"all-info.csv" ;		
+				String newFileLocation = projectRootDir + File.separator +"data" +File.separator+levelName+"_all-info.csv" ;		
 				BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation));
 				StringBuilder sb = new StringBuilder();
 				

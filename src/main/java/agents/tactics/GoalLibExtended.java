@@ -24,6 +24,12 @@ import world.HighLevelGraph;
 import world.LabEntity;
 
 public class GoalLibExtended extends GoalLib {
+	
+	
+	public static <State> GoalStructure IFELSE2(GoalStructure p, GoalStructure g1, GoalStructure g2) {
+	   // GoalStructure not_g = lift((State state) -> p.test(state));
+	   return FIRSTof(SEQ(p, g1), g2);
+	}
 
 	/**
 	 * This method will observe the neighbors objects(nodes) and updated the

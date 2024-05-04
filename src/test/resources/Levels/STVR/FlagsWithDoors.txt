@@ -1,0 +1,11 @@
+Flag1    ---> Door26   ... have to pass 1 door  incl the target
+Flag2    ---> Door5    ... have to pass 4 doors incl the target
+Flag3    ---> Door39   ... have to pass 5 doors incl the target
+Flag4    ---> Door33   ... have to pass 6 doors incl the target
+Flag5    ---> Door16   ... have to pass 7 doors incl the target
+Flag6    ---> Door37   ... have to pass 10 doors incl the target
+Flag7    ---> Door34
+Flag8    ---> Door3
+Flag9    ---> Door21
+Flag10   ---> Door22
+Flag11   ---> Door38
