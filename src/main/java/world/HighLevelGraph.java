@@ -87,7 +87,7 @@ public class HighLevelGraph implements Navigatable {
 	/**
 	 * Add edges between newly observed entities and existing entities
 	 */
-	public void addEdgs(List<WorldEntity> entities) {
+	public void addEdges(List<WorldEntity> entities) {
 		
     	// Connect entities to each other
         for (int i = 0; i < entities.size(); i++) {

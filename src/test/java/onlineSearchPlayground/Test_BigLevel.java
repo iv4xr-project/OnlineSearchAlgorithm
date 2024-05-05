@@ -5,7 +5,7 @@ at Utrecht University within the Software and Game project course.
 ©Copyright Utrecht University (Department of Information and Computing Sciences)
 */
 
-package onlineSearch;
+package onlineSearchPlayground;
 
 import agents.LabRecruitsTestAgent;
 import agents.TestSettings;

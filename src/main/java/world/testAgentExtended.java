@@ -6,8 +6,10 @@ import eu.iv4xr.framework.spatial.Vec3;
 
 public class testAgentExtended extends  TestAgent{
 
-	@Override
+	//@Override
 	public void updateGraph() {
+		// TODO
+		throw new UnsupportedOperationException() ;
 		/*
 		 * for(var e : worldmodel.elements.values()) { if (
 		 * e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){

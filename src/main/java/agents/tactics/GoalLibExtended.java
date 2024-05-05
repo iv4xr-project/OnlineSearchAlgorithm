@@ -268,9 +268,10 @@ public class GoalLibExtended extends GoalLib {
 			var entity = (LabEntity) belief.worldmodel.getElement(entityId);
 			if (entity == null)
 				return false;
-			System.out.println(">>>>>>>>>>> navigate to id of the selected door: " + entity.id);
-			System.out.println(">>>>>>>>>>> navigate to id of the selected door: distance "
-					+ Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq());
+			System.out.println(">>>>>>>>>>> navigate to id of the selected door: " 
+								+ entity.id
+								+ ",distance: "
+								+ Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq());
 
 			if (Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq() <= 1.5
 					&& (belief.evaluateEntity(entity.id, e -> belief.age(e) == 0)))
@@ -330,9 +331,9 @@ public class GoalLibExtended extends GoalLib {
 	// new Repeat structure
 
 	/**
-	 * This predicate returns true if the door is open
+	 * This predicate returns true if the door is closed.
 	 */
-	public static Boolean openDoorPredicate(BeliefState belief, String id) {
+	public static Boolean isDoorClosedPredicate(BeliefState belief, String id) {
 		System.out.println("predicate: " + id + belief.isOpen(id));
 		if (!belief.isOpen(id)) {
 			return true;
@@ -562,7 +563,7 @@ public class GoalLibExtended extends GoalLib {
 		var selectedNode = belief.highLevelGragh.currentSelectedEntity;
 		if (selectedNode != null) {
 			var entity = belief.highLevelGragh.entities.get(selectedNode);
-			if (entity.id.contains("door")) {
+			if (entity.type.equals(LabEntity.DOOR)) {
 				if (!belief.isOpen(entity.id)) {
 					return true;
 				}

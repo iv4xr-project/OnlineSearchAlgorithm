@@ -1,4 +1,4 @@
-package onlineSearch;
+package onlineSearchPlayground;
 
 import java.io.BufferedWriter;
 import java.io.File;

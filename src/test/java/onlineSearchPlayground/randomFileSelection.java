@@ -1,4 +1,4 @@
-package onlineSearch;
+package onlineSearchPlayground;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

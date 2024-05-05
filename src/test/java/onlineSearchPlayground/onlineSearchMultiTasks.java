@@ -1,4 +1,4 @@
-package onlineSearch;
+package onlineSearchPlayground;
 
 import agents.LabRecruitsTestAgent;
 import agents.TestSettings;
@@ -85,7 +85,8 @@ public class onlineSearchMultiTasks {
 	    /**
 	     * A test to verify that the east closet is reachable.
 	     */
-	    @Test
+	    @SuppressWarnings("deprecation")
+		@Test
 	    public void closetReachableTest() throws InterruptedException {
 	    	//String levelName = "";
 	    	String levelName = "CompetitionGrander//bm2021";
@@ -141,7 +142,7 @@ public class onlineSearchMultiTasks {
 		        	String  name = targetedDoors.get(i);
 		        	testingTasks.add(	        			
 		        			WHILEDO(
-			        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,name)	
+			        				(BeliefStateExtended b) -> GoalLibExtended.isDoorClosedPredicate(b,name)	
 			        				, 
 			        				 SEQ(
 				    	        		FIRSTof(
@@ -202,7 +203,8 @@ public class onlineSearchMultiTasks {
 		            
 		            cycleNumber++ ; 
 		        	testAgent.update();
-	                testAgent.updateGraph();
+		        	// not implemented:
+	                // testAgent.updateGraph();
 	               
 		        	// check if a button is just interacted:
 					for(WorldEntity e: testAgent.getState().changedEntities) {

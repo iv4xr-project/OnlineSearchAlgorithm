@@ -415,7 +415,7 @@ public class Prolog {
 	    candidates.add(Vec3.add(entity_sqcenter, new Vec3(delta,0,0))) ;
 	    candidates.add(Vec3.add(entity_sqcenter, new Vec3(-delta,0,0))) ;
 	    Pair<Vec3, List<Vec3>> path = null;
-	    path = belief.expensiveFindPathTo(entity_sqcenter,true) ;
+	    path = belief.enhancedFindPathTo(entity_sqcenter,true) ;
 	    //System.out.println("path to the center of the door" + path);
 	    int s = 0;
 	    if(path == null) {
@@ -423,7 +423,7 @@ public class Prolog {
 		    	// if c (a candidate point near the entity) is on the navigable,
 		    	// we should ignore it:
 		    	//if (getCoveringFaces(belief,c) == null) continue ;
-		    	path = belief.expensiveFindPathTo(c, true) ;
+		    	path = belief.enhancedFindPathTo(c, true) ;
 		    	s++;
 		    	//System.out.println("***candidators :" + s + c + path);
 		    	if(path != null) break;
@@ -493,7 +493,7 @@ public class Prolog {
 		LabEntity b = belief.worldmodel().getElement(button) ;
 		//var path = belief.findPathTo(b.getFloorPosition(),true) ;
 	    Pair<Vec3, List<Vec3>> path = null;
-	    path = belief.expensiveFindPathTo(b.getFloorPosition(),true) ;
+	    path = belief.enhancedFindPathTo(b.getFloorPosition(),true) ;
 	    System.out.println("path to a button from another button in the same room" + path);
 
 		

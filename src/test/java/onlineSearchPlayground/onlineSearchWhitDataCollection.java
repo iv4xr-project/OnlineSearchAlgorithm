@@ -1,4 +1,4 @@
-package onlineSearch;
+package onlineSearchPlayground;
 
 import agents.LabRecruitsTestAgent;
 import agents.TestSettings;
@@ -173,7 +173,7 @@ public class onlineSearchWhitDataCollection {
 		        
 		        var testingTask = SEQ( 
 		        		WHILEDO(
-		        				(BeliefStateExtended b) -> GoalLibExtended.openDoorPredicate(b,treasureDoor)	
+		        				(BeliefStateExtended b) -> GoalLibExtended.isDoorClosedPredicate(b,treasureDoor)	
 		        				, 
 		        				 SEQ(
 			    	        		FIRSTof(

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import agents.tactics.OnlineSearch;
 import alice.tuprolog.InvalidTheoryException;
 import environments.LabRecruitsEnvironment;
 import eu.iv4xr.framework.extensions.pathfinding.SurfaceNavGraph;
@@ -23,6 +24,7 @@ public class BeliefStateExtended extends BeliefState {
 	
 	public HighLevelGraph highLevelGragh;
 	public Prolog prolog; 
+	WorldEntity lastInteractedButton ;
 
 	public BeliefStateExtended () {
 		super() ;
@@ -82,7 +84,7 @@ public class BeliefStateExtended extends BeliefState {
 		System.out.println("Add connection between two entities" + entities.size());
 		if(entities.size() > 1) {
 			System.out.println("add connection between two entities: if there are more than one");
-			highLevelGragh.addEdgs(entities);
+			highLevelGragh.addEdges(entities);
 		}	
 		
 		/*
@@ -103,7 +105,7 @@ public class BeliefStateExtended extends BeliefState {
 			if(!currentEntity[0]) {
 				System.out.println("add connection between two entities: if there is a distance between them");
 				entities.add(highLevelGragh.entities.get(highLevelGragh.currentSelectedEntity));
-				highLevelGragh.addEdgs(entities);
+				highLevelGragh.addEdges(entities);
 			}
 		}
 		
@@ -140,48 +142,18 @@ public class BeliefStateExtended extends BeliefState {
 	@Override
 	public void updateState(String id) {
 		super.updateState(worldmodel.agentId);
-		for(var e : worldmodel.elements.values()) {
-			if ( e.type.equals(LabEntity.DOOR) || e.type.equals(LabEntity.SWITCH)){
-				if(e.timestamp == worldmodel.timestamp) {
-					var sqdist = Vec3.distSq(worldmodel.position,e.position) ;
-					if(sqdist <= 4) {
-						try {
-							registerFoundGameObjects(e);
-						} catch (InvalidTheoryException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-		}
+		// invoke the model-inferencer here:
+		this.lastInteractedButton = OnlineSearch.trackModel(this, this.lastInteractedButton) ;
 	}
     
-	/**
-	 * Register all buttons and doors currently in the agent's belief to the models
-	 * of rooms and connections that it keeps track.
-	 * @throws InvalidTheoryException 
-	 */
-	public void registerFoundGameObjects(WorldEntity e) throws InvalidTheoryException {
-		
-		if(e.type.equals(LabEntity.SWITCH)) {			
-			prolog.registerButton(e.id);
-		}
-		if(e.type.equals(LabEntity.DOOR)) {
-			//System.out.println("belief state, register a door");
-			prolog.registerDoor(e.id);
-		}
-	}
-	
-	
 	
 	/**
-	 * This finding path is the same as the original findPAthTo. The difference is that 
+	 * This finding path is the same as the original findPathTo. The difference is that 
 	 * we call enhanceFindPath in the class pathfinder. Which means all combination of 
 	 * vertices around two position is checked.
 	 * */
 	private Vec3 memorizedGoalLocation;
-    public Pair<Vec3,List<Vec3>> expensiveFindPathTo(Vec3 q, boolean forceIt) {
+    public Pair<Vec3,List<Vec3>> enhancedFindPathTo(Vec3 q, boolean forceIt) {
     	if (!forceIt && memorizedGoalLocation!=null) {
     		if (Vec3.dist(q,memorizedGoalLocation) <= DIST_TO_MEMORIZED_GOALLOCATION_SOFT_REPATH_THRESHOLD)
     			return new Pair(q,null) ;
