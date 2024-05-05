@@ -8,7 +8,7 @@ import alice.tuprolog.InvalidTheoryException;
 import eu.iv4xr.framework.mainConcepts.TestAgent;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.spatial.Vec3;
-import gameTestingContest.DebugUtil;
+import myUtils.DebugUtil;
 import nl.uu.cs.aplib.mainConcepts.*;
 import world.BeliefStateExtended;
 import world.LabEntity;

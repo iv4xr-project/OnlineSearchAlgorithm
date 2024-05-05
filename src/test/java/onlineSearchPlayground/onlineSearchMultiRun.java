@@ -15,12 +15,14 @@ import eu.iv4xr.framework.mainConcepts.ObservationEvent.TimeStampedObservationEv
 import eu.iv4xr.framework.spatial.Vec3;
 import helperclasses.datastructures.linq.QArrayList;
 import logger.JsonLoggerInstrument;
+import myUtils.DebugUtil;
 import nl.uu.cs.aplib.mainConcepts.Environment;
 import nl.uu.cs.aplib.mainConcepts.Goal;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure.GoalsCombinator;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure.PrimitiveGoal;
 import nl.uu.cs.aplib.utils.Pair;
+import reasoningSupport.Prolog;
 
 import static org.junit.jupiter.api.Assertions.* ;
 
@@ -38,8 +40,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import game.Platform;
-import gameTestingContest.DebugUtil;
-import gameTestingContest.Prolog;
 import game.LabRecruitsTestServer;
 import world.BeliefState;
 

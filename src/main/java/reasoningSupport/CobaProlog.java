@@ -1,4 +1,4 @@
-package gameTestingContest;
+package reasoningSupport;
 
 import static nl.uu.cs.aplib.agents.PrologReasoner.* ;
 

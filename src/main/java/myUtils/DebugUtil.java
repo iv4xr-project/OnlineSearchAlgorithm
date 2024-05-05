@@ -1,4 +1,4 @@
-package gameTestingContest;
+package myUtils;
 
 import java.util.Scanner;
 

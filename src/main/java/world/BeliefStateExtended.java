@@ -12,11 +12,11 @@ import environments.LabRecruitsEnvironment;
 import eu.iv4xr.framework.extensions.pathfinding.SurfaceNavGraph;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.spatial.Vec3;
-import gameTestingContest.DebugUtil;
-import gameTestingContest.Prolog;
+import myUtils.DebugUtil;
 import nl.uu.cs.aplib.mainConcepts.Environment;
 import nl.uu.cs.aplib.mainConcepts.GoalStructure;
 import nl.uu.cs.aplib.utils.Pair;
+import reasoningSupport.Prolog;
 import world.HighLevelGraph;
 
 

@@ -19,6 +19,7 @@ import eu.iv4xr.framework.mainConcepts.WorldModel;
 import eu.iv4xr.framework.spatial.Vec3;
 import nl.uu.cs.aplib.mainConcepts.ProgressStatus;
 import nl.uu.cs.aplib.utils.Pair;
+import reasoningSupport.Prolog;
 
 import static org.junit.jupiter.api.Assertions.* ;
 
@@ -45,10 +46,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import game.Platform;
-import gameTestingContest.DebugUtil;
-import gameTestingContest.Prolog;
 import leveldefUtil.LRFloorMap;
 import leveldefUtil.LRconnectionLogic;
+import myUtils.DebugUtil;
 import game.LabRecruitsTestServer;
 
 
@@ -81,6 +81,7 @@ public class STVRExperiment {
 		int numberOfButtons ;
 		int buttonsInferred ;
 		int roomsInferred ;
+		int numOfDoorAttemps ;
 		float areaCoverage ;
 		
 		@Override
@@ -88,9 +89,10 @@ public class STVRExperiment {
 			String z = "== level:" + level ;
 			z +=     "\n== alg  :" + alg ;
 			z +=     "\n== goal :" + (goalsolved ? "ACHIEVED" : "X") ;
-			z +=     "\n== runtime(sec):" + runtime ;
+			z +=     "\n== runtime(sec)  :" + runtime ;
 			z +=     "\n== exploraion-time(sec):" + explorationtime ;
-			z +=     "\n== #turns      :" + numberOfTurns ;
+			z +=     "\n== #door-attempts:" + numOfDoorAttemps ;	
+			z +=     "\n== #turns        :" + numberOfTurns ;
 			z +=     "\n== #rooms found  :" + roomsInferred  ;
 			z +=     "\n== #doors found  :" + doorsInferred + "/" + numberOfDoors ;
 			z +=     "\n== #buttons found:" + buttonsInferred + "/" + numberOfButtons ;
@@ -144,7 +146,7 @@ public class STVRExperiment {
 	 * 		of the game under test. 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes"})
-	public void executeTestingTask(String agentName,
+	public ResultSA executeTestingTask(String agentName,
 			String levelName,
 			String targetDoor,
 			Vec3 approximateTargetLocation,
@@ -242,9 +244,8 @@ public class STVRExperiment {
 			Result.doorsInferred = prolog.doors().size() ;
 			Result.roomsInferred = prolog.rooms().size() ;
 			
-
-			// saving location-visits to a csv file:
-			String visitInfoFileName = levelName + "_" + "visits.csv" ;
+			// saving location-visits to a file:
+			String visitInfoFileName = levelName + "_visits.csv" ;
 			dataCollector.saveTestAgentScalarsTraceAsCSV(
 					testAgent.getId(), 
 					Paths.get(dataDir,visitInfoFileName).toString() 
@@ -254,8 +255,7 @@ public class STVRExperiment {
 			var traceExplore = testAgent.getTestDataCollector().getTestAgentTrace(testAgent.getId()).stream().filter(
 					e -> e.getFamilyName() == "startExploreRecorder" || e.getFamilyName() == "endExploreRecorder")
 					.collect(Collectors.toList());
-		
-			// [start,end,start,end....]
+			// pattern: [start,end,start,end....]
 			long explorationTime = 0;
 			for (int i = 0; i < traceExplore.size(); i++) {
 				if (traceExplore.get(i) != null && i % 2 == 0 && i < traceExplore.size() - 1) {
@@ -269,96 +269,35 @@ public class STVRExperiment {
 			}
 			Result.explorationtime = (int) (explorationTime/1000) ;
 
-			// trace the name of the tried doors
+			// get information on attempts on doors:
 			List<String> traceTriedDoors = testAgent.getTestDataCollector().getTestAgentTrace(testAgent.getId())
-					.stream().map(e -> e.getFamilyName()).collect(Collectors.toList());
+					.stream()
+					.map(e -> e.getFamilyName())
+					.filter(e -> e.toLowerCase().contains("door")) //fragile! assuming door-names start with doors!
+					.collect(Collectors.toList());
 			;
-
-			traceTriedDoors.forEach(e -> {
-				if (e != null && e.contains("door"))
-					System.out.println("traceTriedDoors  " + e);
-			});
-
-
-			// Saving event-trace; disabled for now:
-			//try {
-				//String eventTraceFile = Paths.get(dataDir, levelName + "_eventTrace.csv").toString() ;
-				//		+ File.separator + "data" + File.separator + levelName + "_positionTraceViewDis.csv");
-				// testAgent.getTestDataCollector()
-				// .saveTestAgentEventsTraceAsCSV(testAgent.getId(),eventTraceFile);
-			//} catch (IOException e1) {
-				// TODO Auto-generated catch block
-			//	e1.printStackTrace();
-			//	}
-
-			// print the prolog data
-			System.out.println("== Inferred MODEL:") ;
-			prolog.report();
-			System.out.println("== Ground-truth connection logic: " + LRconnectionLogic.parseConnections(levelFile)) ;
-
-			System.out.println("== MODEL's high-level nav-graph edges: ");
-			if (!beliefState.highLevelGragh.edges.isEmpty())
-				beliefState.highLevelGragh.getEntityConnections().forEach(e -> System.out.print(e.toString()));
-
-			String newFileLocation = projectRootDir + File.separator + "data" + File.separator + levelName
-					+ "_all-info.csv";
-			BufferedWriter br = new BufferedWriter(new FileWriter(newFileLocation));
-			StringBuilder sb = new StringBuilder();
-
-			// add all connections
-			for (ArrayList<String> a : beliefState.highLevelGragh.getEntityConnections()) {
-				for (String b : a) {
-					sb.append(b);
-					sb.append(",");
-				}
-				sb.append("\n");
-			}
-
-			// add tried doors
-
-			for (String a : traceTriedDoors) {
-				if (a != null && a.contains("door")) {
-					sb.append("Tried Door");
-					sb.append(a);
-					sb.append(",");
-					sb.append("\n");
-				}
-			}
-
-			// add exploration
-			sb.append("exploration time");
-			sb.append(",");
-			sb.append(Result.explorationtime);
-			sb.append(",");
-			sb.append("\n");
-
-			// add cycle Number
-			sb.append("cycleNumber");
-			sb.append(",");
-			sb.append(cycleNumber);
-			sb.append(",");
-			sb.append("\n");
-
-			// add cycle Number
-			sb.append("Run time");
-			sb.append(",");
-			sb.append(totalTime / 1000);
-			sb.append(",");
-			sb.append("\n");
-
-			// add test status
-			sb.append("test status");
-			sb.append(",");
-			sb.append(testAgent.success());
-			sb.append(",");
-			sb.append("\n");
-
-			br.write(sb.toString());
-			br.close();
+			Result.numOfDoorAttemps = traceTriedDoors.size() ;
 			
-			System.out.println("\n== SUMMARY:\n" + Result);
-
-
+			// construct a summary report:
+			StringBuilder sb = new StringBuilder();			
+			sb.append("\n===============") ;
+			sb.append("\n== Inferred MODEL:") ;
+			sb.append("\n" + prolog.toString());
+			sb.append("\n== Ground-truth connection logic: " + LRconnectionLogic.parseConnections(levelFile)) ;
+			sb.append("\n== MODEL's high-level nav-graph edges: ");
+			if (! beliefState.highLevelGragh.edges.isEmpty())
+				beliefState.highLevelGragh.getEntityConnections().forEach(e -> sb.append(e.toString()));
+			sb.append("\n==	attempts on doors:" + traceTriedDoors) ;
+			sb.append("\n===============") ;
+			sb.append("\n" + Result) ;
+			System.out.println(sb.toString()) ;
+			String reportFileName = Paths.get(dataDir, levelName + "_all-info.txt").toString() ;
+			BufferedWriter writer = new BufferedWriter(new FileWriter(reportFileName));
+	        writer.write(sb.toString());
+	        writer.close();
+	        
+	        return Result ;
+			
 		} finally {
 			environment.close();
 		}

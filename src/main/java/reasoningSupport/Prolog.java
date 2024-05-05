@@ -1,4 +1,4 @@
-package gameTestingContest;
+package reasoningSupport;
 
 import static nl.uu.cs.aplib.agents.PrologReasoner.and;
 import static nl.uu.cs.aplib.agents.PrologReasoner.not;
@@ -14,6 +14,7 @@ import eu.iv4xr.framework.mainConcepts.WorldModel;
 import eu.iv4xr.framework.spatial.LineIntersectable;
 import eu.iv4xr.framework.spatial.Obstacle;
 import eu.iv4xr.framework.spatial.Vec3;
+import myUtils.DebugUtil;
 import nl.uu.cs.aplib.agents.PrologReasoner.PredicateName;
 import nl.uu.cs.aplib.agents.PrologReasoner.Rule;
 import nl.uu.cs.aplib.utils.Pair;
@@ -553,9 +554,17 @@ public class Prolog {
 	}
 	
 	public void report() {
-		System.out.println("buttons: " + buttons());
-		System.out.println("doors  : " + doors());
-		System.out.println("rooms  : " + rooms());
+		System.out.println(this.toString()) ;
+	}
+	
+	@Override
+	public String toString() {
+		
+		StringBuilder buf = new StringBuilder() ;
+		
+		buf.append("buttons: " + buttons());
+		buf.append("\ndoors  : " + doors());
+		buf.append("\nrooms  : " + rooms());
 
 		// hmm.. what's the diff with rooms()??
 		var allRooms = pQueryAll("R", and(isRoom.on("R")
@@ -564,20 +573,19 @@ public class Prolog {
 		//System.out.println("all rooms: " + allRooms);
 
 		for (var roomx : allRooms) {
-			System.out.println("  doors in " + roomx + ":");
+			buf.append("\n  doors and buttons in " + roomx + ":");
 			List<String> bt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
-			System.out.println("      " + bt0);
-
-			System.out.println("  buttons in " + roomx + ":");
+			buf.append("\n      " + bt0);
 			List<String> dt0 = pQueryAll("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
-			System.out.println("      " + dt0);
+			buf.append("\n      " + dt0);
 		}
 
 		Set<Pair<String, String>> report = getConnections();
 		for (Pair<String, String> connection : report) {
-			System.out.println("conections: " + connection.fst + " toggles " + connection.snd);
+			buf.append("\nconections: " + connection.fst + " toggles " + connection.snd);
 		}
-
+		
+		return buf.toString() ;
 	}	
 	
 	/**
