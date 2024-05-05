@@ -17,6 +17,7 @@ import eu.iv4xr.framework.mainConcepts.TestDataCollector;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
 import eu.iv4xr.framework.mainConcepts.WorldModel;
 import eu.iv4xr.framework.spatial.Vec3;
+import nl.uu.cs.aplib.mainConcepts.ProgressStatus;
 import nl.uu.cs.aplib.utils.Pair;
 
 import static org.junit.jupiter.api.Assertions.* ;
@@ -37,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterAll;
@@ -45,12 +47,14 @@ import org.junit.jupiter.api.Test;
 import game.Platform;
 import gameTestingContest.DebugUtil;
 import gameTestingContest.Prolog;
+import leveldefUtil.LRFloorMap;
+import leveldefUtil.LRconnectionLogic;
 import game.LabRecruitsTestServer;
 
 
 import world.BeliefStateExtended;
 
-public class Experiment0 {
+public class STVRExperiment {
 	
 	// ===== common parameters
 	
@@ -61,7 +65,45 @@ public class Experiment0 {
 	static String dataDir =  Paths.get(projectRootDir,"data").toString() ;
 	
 	
-
+	static class ResultSA {
+		String level ;
+		String alg ;
+		int numberOfConnections ;
+		int runtime ;
+		int explorationtime ;
+		int numberOfTurns ;
+		boolean goalsolved ;
+		int connectionsInferred ;
+		int correctConnections ;
+		int wrongConnections ;
+		int numberOfDoors ;
+		int doorsInferred ;
+		int numberOfButtons ;
+		int buttonsInferred ;
+		int roomsInferred ;
+		float areaCoverage ;
+		
+		@Override
+		public String toString() {
+			String z = "== level:" + level ;
+			z +=     "\n== alg  :" + alg ;
+			z +=     "\n== goal :" + (goalsolved ? "ACHIEVED" : "X") ;
+			z +=     "\n== runtime(sec):" + runtime ;
+			z +=     "\n== exploraion-time(sec):" + explorationtime ;
+			z +=     "\n== #turns      :" + numberOfTurns ;
+			z +=     "\n== #rooms found  :" + roomsInferred  ;
+			z +=     "\n== #doors found  :" + doorsInferred + "/" + numberOfDoors ;
+			z +=     "\n== #buttons found:" + buttonsInferred + "/" + numberOfButtons ;
+			z +=     "\n== #connections  :" + numberOfConnections ;
+			z +=     "\n==    inferred:"    + connectionsInferred ;
+			z +=     "\n==    correct :"    + correctConnections ;
+			z +=     "\n==    wrong   :"    + wrongConnections ;	
+			z +=     "\n== area-cov      :" + areaCoverage ;
+			return z ;
+		}
+	}
+	
+	
 	private static LabRecruitsTestServer labRecruitsTestServer;
 
 	@BeforeAll
@@ -83,27 +125,35 @@ public class Experiment0 {
 
 	@Test
 	public void executeTestingTask() throws InterruptedException, IOException {
-		executeTestingTask("agent0","BM2021_diff1_R3_1_1_H","door1",null,5000) ;
-		//executeTestingTask("agent0","BM2021_diff3_R7_3_3","door6",null,5000) ;
-		//executeTestingTask("agent1","sanctuary_1","doorEntrance",null,30000) ;
+		//executeTestingTask("agent0","BM2021_diff1_R3_1_1_H","door1",null,5000,true) ;
+		executeTestingTask("agent0","BM2021_diff3_R7_3_3","door6",null,5000,true) ;
+		//executeTestingTask("agent1","sanctuary_1","doorEntrance",null,30000,true) ;
 		
 		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3		
-		//executeTestingTask("agent1","durk_1","doorKey4",new Vec3(67f,0,76f),30000) ;
+		//executeTestingTask("agent1","durk_1","doorKey4",new Vec3(67f,0,76f),30000,true) ;
 		
 		// subdir: "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
 
 	}
-	
+
+	/**
+	 * Execute a tetsing task to verify that the target blocker can be opened.
+	 * 
+	 * @param budget Budget expressed in the number of update-cycles to use.
+	 * @param exploitModel  If true, the algorithm will track and exploit a model
+	 * 		of the game under test. 
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes"})
 	public void executeTestingTask(String agentName,
 			String levelName,
 			String targetDoor,
 			Vec3 approximateTargetLocation,
-			int budget // in #cycles
+			int budget,  // in #cycles,
+			boolean exploitModel
 			) throws InterruptedException, IOException {
 
 		System.out.println(">>> start testing...");
-
+		
 		var LRconfig = new LabRecruitsConfig(levelName, levelsDir);
 		LRconfig.agent_speed = 0.1f;
 		LRconfig.view_distance = 4f;
@@ -135,6 +185,11 @@ public class Experiment0 {
 				.setTestDataCollector(dataCollector)
 				.setGoal(testingTask);
 
+			var Result = new ResultSA() ;
+			Result.alg = "online-search" ;
+			if (! exploitModel) Result.alg = "online-search WITHOUT model" ;
+			Result.level = levelName ;
+			
 			long startTime = System.currentTimeMillis();
 			testAgent.registerEvent(new TimeStampedObservationEvent("startTest"));
 			
@@ -168,6 +223,25 @@ public class Experiment0 {
 
 			testAgent.registerEvent(new TimeStampedObservationEvent("endTest"));
 			long totalTime = System.currentTimeMillis() - startTime;
+			
+			// Collecting and calculating results:
+			
+			Result.goalsolved = testingTask.getStatus().success() ;
+			Result.numberOfTurns = cycleNumber ;
+			Result.runtime = (int) (totalTime/1000) ;
+			String levelFile = Paths.get(levelsDir, levelName + ".csv").toString() ;
+			Result.numberOfButtons = LRFloorMap.getButtonsInFirstFloor(levelFile).size() ;
+			Result.numberOfDoors   = LRFloorMap.getDoorsInFirstFloor(levelFile).size() ;
+						
+			var Z = LRconnectionLogic.compareConnection( LRconnectionLogic.parseConnections(levelFile), prolog.getConnections()) ;
+			Result.numberOfConnections = Z.get("#connections") ;
+			Result.connectionsInferred = Z.get("#inferred") ;
+			Result.correctConnections = Z.get("#correct") ;
+			Result.wrongConnections = Z.get("#wrong") ;
+			Result.buttonsInferred = prolog.buttons().size() ;
+			Result.doorsInferred = prolog.doors().size() ;
+			Result.roomsInferred = prolog.rooms().size() ;
+			
 
 			// saving location-visits to a csv file:
 			String visitInfoFileName = levelName + "_" + "visits.csv" ;
@@ -176,42 +250,24 @@ public class Experiment0 {
 					Paths.get(dataDir,visitInfoFileName).toString() 
 					);
 			
-			System.out.println("****** testing task status: " + testingTask.getStatus());
-			System.out.println("******run time******");
-			System.out.println(totalTime / 1000);
-			System.out.println("******cycle number******");
-			System.out.println(cycleNumber);
-
-			/// *************************** data collector
-			long sumMiliSec = 0;
-			long sumMinutes = 0;
-
-			// trace the information about exploration time
+			// calculating time spent on doing exploration:
 			var traceExplore = testAgent.getTestDataCollector().getTestAgentTrace(testAgent.getId()).stream().filter(
 					e -> e.getFamilyName() == "startExploreRecorder" || e.getFamilyName() == "endExploreRecorder")
 					.collect(Collectors.toList());
-			;
-			// System.out.println("trace2222 " + traceExplore + traceExplore.size()) ;
-
+		
 			// [start,end,start,end....]
+			long explorationTime = 0;
 			for (int i = 0; i < traceExplore.size(); i++) {
-
 				if (traceExplore.get(i) != null && i % 2 == 0 && i < traceExplore.size() - 1) {
 					// System.out.println("trace " + i + traceExplore.get(i)) ;
 					var diff = Duration
 							.between(traceExplore.get(i).getTimestamp(), traceExplore.get(i + 1).getTimestamp())
 							.toMillis();
-					sumMiliSec = sumMiliSec + diff;
+					explorationTime = explorationTime + diff;
 					// System.out.println("diff milliis " + diff) ;
-					var diff2 = Duration
-							.between(traceExplore.get(i).getTimestamp(), traceExplore.get(i + 1).getTimestamp())
-							.toMinutes();
-					// System.out.println("diff min " + diff2) ;
-					sumMinutes = sumMinutes + diff2;
 				}
 			}
-			System.out.println("sum (ms) :" + sumMiliSec + ", in sec:" + sumMiliSec / 1000);
-			System.out.println("sum (min):" + sumMinutes);
+			Result.explorationtime = (int) (explorationTime/1000) ;
 
 			// trace the name of the tried doors
 			List<String> traceTriedDoors = testAgent.getTestDataCollector().getTestAgentTrace(testAgent.getId())
@@ -223,32 +279,24 @@ public class Experiment0 {
 					System.out.println("traceTriedDoors  " + e);
 			});
 
-			// trace the position of the agent
-			List<Map<String, Number>> tracePosition = testAgent.getTestDataCollector()
-					.getTestAgentScalarsTrace(testAgent.getId()).stream().map(event -> event.values)
-					.collect(Collectors.toList());
 
-			// System.out.println("tracePosition " + tracePosition) ;
-
-			// save the recorded data
-			// save the position
-			String projectRootDir = System.getProperty("user.dir");
-			try {
-				testAgent.getTestDataCollector().saveTestAgentScalarsTraceAsCSV(testAgent.getId(), projectRootDir
-						+ File.separator + "data" + File.separator + levelName + "_positionTraceViewDis.csv");
+			// Saving event-trace; disabled for now:
+			//try {
+				//String eventTraceFile = Paths.get(dataDir, levelName + "_eventTrace.csv").toString() ;
+				//		+ File.separator + "data" + File.separator + levelName + "_positionTraceViewDis.csv");
 				// testAgent.getTestDataCollector()
-				// .saveTestAgentEventsTraceAsCSV(testAgent.getId(),projectRootDir
-				// +File.separator+"data"+File.separator+"FBK"+File.separator+levelName+
-				// "EventTraceViewDis.csv");
-			} catch (IOException e1) {
+				// .saveTestAgentEventsTraceAsCSV(testAgent.getId(),eventTraceFile);
+			//} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			//	e1.printStackTrace();
+			//	}
 
-			var agentneTimeStamss = testAgent.getState().knownEntities();
 			// print the prolog data
+			System.out.println("== Inferred MODEL:") ;
 			prolog.report();
-			System.out.println("get all connection : ");
+			System.out.println("== Ground-truth connection logic: " + LRconnectionLogic.parseConnections(levelFile)) ;
+
+			System.out.println("== MODEL's high-level nav-graph edges: ");
 			if (!beliefState.highLevelGragh.edges.isEmpty())
 				beliefState.highLevelGragh.getEntityConnections().forEach(e -> System.out.print(e.toString()));
 
@@ -280,7 +328,7 @@ public class Experiment0 {
 			// add exploration
 			sb.append("exploration time");
 			sb.append(",");
-			sb.append(sumMiliSec / 1000);
+			sb.append(Result.explorationtime);
 			sb.append(",");
 			sb.append("\n");
 
@@ -308,7 +356,7 @@ public class Experiment0 {
 			br.write(sb.toString());
 			br.close();
 			
-			System.out.println("****** testing task status: " + testingTask.getStatus());
+			System.out.println("\n== SUMMARY:\n" + Result);
 
 
 		} finally {

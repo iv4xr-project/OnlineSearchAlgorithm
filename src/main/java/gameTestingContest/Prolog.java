@@ -515,7 +515,7 @@ public class Prolog {
 		return map ;
 	}
 	
-	Set<Pair<String,String>> getConnections() {
+	public Set<Pair<String,String>> getConnections() {
 		Set<Pair<String,String>> cons = new HashSet<>() ;
 		for(WorldEntity B : belief.knownButtons()) {
 			//System.out.println("get connection: " + B.id );
@@ -528,53 +528,56 @@ public class Prolog {
 		return cons ;
 	}
 	
-	public void report() {
-		 System.out.println("buttons" + 
-				 belief.prolog().queryAll(
-	   					 	and(isButton.on("B")
-	   					 ))
-	   	 					.stream().map(Q -> Q.str_("B"))
-	   	 					.collect(Collectors.toList())) ;	
-		 
-		 System.out.println("doors" + 
-				 belief.prolog().queryAll(
-	   					 	and(isDoor.on("D")))
-	   	 					.stream().map(Q -> Q.str_("D"))
-	   	 					.collect(Collectors.toList())) ;
-
-		 
-		 System.out.println("rooms" + 
-				 belief.prolog().queryAll(
-	   					 	and(isRoom.on("R")))
-	   	 					.stream().map(Q -> Q.str_("R"))
-	   	 					.collect(Collectors.toList())) ;		 
-		 
-		 var allRooms = pQueryAll("R",
-					and(
-							isRoom.on("R")						
-									
-							)
-					   );
-			System.out.println("all rooms: " + allRooms);
-			
-			
-			for (var roomx : allRooms) {
-				System.out.println("doors in each room: " + roomx);
-				List<String> bt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
-				System.out.println("doors: " + bt0);
-				
-				System.out.println("buttons in each room: " + roomx);
-				List<String> dt0 = pQueryAll("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
-				System.out.println("buttons: " + dt0);
-			}
-			
-		 Set<Pair<String, String>> report = getConnections(); 
-		 for (Pair<String, String> connection : report) {
-	            System.out.println("conections: "+"   Button " + connection.fst + " toggles " + connection.snd);
-	        }
-		 		
-			
+	public List<String> doors() {
+		return belief.prolog().queryAll(
+				 	and(isDoor.on("D")
+				 ))
+					.stream().map(Q -> Q.str_("D"))
+					.collect(Collectors.toList()) ;
+	}
 	
+	public List<String> buttons() {
+		return belief.prolog().queryAll(
+				 	and(isButton.on("B")
+				 ))
+					.stream().map(Q -> Q.str_("B"))
+					.collect(Collectors.toList()) ;
+	}
+	
+	public List<String> rooms() {
+		return belief.prolog().queryAll(
+				 	and(isRoom.on("R")
+				 ))
+					.stream().map(Q -> Q.str_("R"))
+					.collect(Collectors.toList()) ;
+	}
+	
+	public void report() {
+		System.out.println("buttons: " + buttons());
+		System.out.println("doors  : " + doors());
+		System.out.println("rooms  : " + rooms());
+
+		// hmm.. what's the diff with rooms()??
+		var allRooms = pQueryAll("R", and(isRoom.on("R")
+
+		));
+		//System.out.println("all rooms: " + allRooms);
+
+		for (var roomx : allRooms) {
+			System.out.println("  doors in " + roomx + ":");
+			List<String> bt0 = pQueryAll("D", and(inRoom.on(roomx, "D"), isDoor.on("D")));
+			System.out.println("      " + bt0);
+
+			System.out.println("  buttons in " + roomx + ":");
+			List<String> dt0 = pQueryAll("B", and(inRoom.on(roomx, "B"), isButton.on("B")));
+			System.out.println("      " + dt0);
+		}
+
+		Set<Pair<String, String>> report = getConnections();
+		for (Pair<String, String> connection : report) {
+			System.out.println("conections: " + connection.fst + " toggles " + connection.snd);
+		}
+
 	}	
 	
 	/**
