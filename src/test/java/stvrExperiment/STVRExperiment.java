@@ -35,6 +35,7 @@ import java.io.PrintStream;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,19 @@ public class STVRExperiment {
 	static String levelsDir = Paths.get(projectRootDir, "src", "test", "resources", "levels", "STVR").toString() ;
 				
 	static String dataDir =  Paths.get(projectRootDir,"data").toString() ;
+	
+	// in ms
+	// static int delayBetweenAgentUpateCycles = 100 ; 
+	static int delayBetweenAgentUpateCycles = 50 ; 
+	
+	/**
+	 * For the purpose of calculating area coverage ({@see #coveredTiles2D}), we pretend the
+	 * agent to be a rectangle of size 2 x assumedExtentOfAgent.
+	 */
+	static float assumedExtentOfAgent = 1 ;
+	
+	
+	// ====
 	
 	
 	static class ResultSA {
@@ -105,6 +119,44 @@ public class STVRExperiment {
 		}
 	}
 	
+	Pair<Integer,Integer> get2DTileLocation(Vec3 p) {
+		int x = (int) Math.floor(p.x + 0.5) ;
+		int y = (int) Math.floor(p.z + 0.5) ;
+		return new Pair<>(x,y) ;
+	}
+	
+	Set<Pair<Integer,Integer>> get2DTilesAroundAgent(Vec3 p) {
+		Set<Pair<Integer,Integer>> S = new HashSet<>() ;
+		S.add(get2DTileLocation(p)) ;
+		float xMin = p.x - assumedExtentOfAgent ;
+		float xMax = p.x + assumedExtentOfAgent ;
+		float yMin = p.z - assumedExtentOfAgent ;
+		float yMax = p.z + assumedExtentOfAgent ;
+		float x = xMin ;
+		while (x < xMax) {
+			float y = yMin ;
+			while (y < yMax) {
+				S.add(new Pair<Integer,Integer>((int) x, (int) y)) ;
+				y += 1f ;
+			}
+			x += 1f ;
+		}
+		return S ;
+	}
+	
+	Set<Pair<Integer,Integer>> getCoveredTiles2D(List<Vec3> visitedLocations) {		
+		Set<Pair<Integer,Integer>> covered = new HashSet<>() ;
+		for (var pos : visitedLocations) {
+			if (pos != null) {
+				if (assumedExtentOfAgent <= 0.5)
+					covered.add(get2DTileLocation(pos)) ;
+				else {
+					covered.addAll(get2DTilesAroundAgent(pos)) ;
+				}
+			}
+		}
+		return covered ;	
+	}
 	
 	private static LabRecruitsTestServer labRecruitsTestServer;
 
@@ -128,8 +180,8 @@ public class STVRExperiment {
 	@Test
 	public void executeTestingTask() throws InterruptedException, IOException {
 		//executeTestingTask("agent0","BM2021_diff1_R3_1_1_H","door1",null,5000,true) ;
-		executeTestingTask("agent0","BM2021_diff3_R7_3_3","door6",null,5000,true) ;
-		//executeTestingTask("agent1","sanctuary_1","doorEntrance",null,30000,true) ;
+		//executeTestingTask("agent0","BM2021_diff3_R7_3_3","door6",null,5000,true) ;
+		executeTestingTask("agent1","sanctuary_1","doorEntrance",null,30000,true) ;
 		
 		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3		
 		//executeTestingTask("agent1","durk_1","doorKey4",new Vec3(67f,0,76f),30000,true) ;
@@ -208,7 +260,7 @@ public class STVRExperiment {
 				}
 				if (cycleNumber == 1)
 					Thread.sleep(1500);
-				Thread.sleep(100);
+				Thread.sleep(delayBetweenAgentUpateCycles);
 				System.out.println("*** " + cycleNumber + ", " + testAgent.getState().id + " @"
 						+ testAgent.getState().worldmodel.position);
 
@@ -268,6 +320,15 @@ public class STVRExperiment {
 				}
 			}
 			Result.explorationtime = (int) (explorationTime/1000) ;
+			
+			// calculating area-coverage
+			var walkableTiles = LRFloorMap.firstFloorWalkableTiles(levelFile) ; 
+			var visitedLocations = dataCollector.getTestAgentScalarsTrace(testAgent.getId()).stream()
+				.map(ev -> new Vec3((float) ev.values.get("posx"), 0 , (float) ev.values.get("posz")))
+				.collect(Collectors.toList()) ;
+			var visitedTiles = getCoveredTiles2D(visitedLocations) ;		
+			int covered = (int) visitedTiles.stream().filter(tile -> walkableTiles.contains(tile)).count() ;
+			Result.areaCoverage = (float) covered / (float) walkableTiles.size() ;
 
 			// get information on attempts on doors:
 			List<String> traceTriedDoors = testAgent.getTestDataCollector().getTestAgentTrace(testAgent.getId())
