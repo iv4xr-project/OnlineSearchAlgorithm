@@ -1,6 +1,11 @@
 package stvrExperiment;
 
 import static agents.tactics.OnlineSearch.* ;
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
+import java.nio.file.Files;
+
 import agents.LabRecruitsTestAgent;
 import agents.TestSettings;
 import agents.tactics.GoalLibExtended;
@@ -23,17 +28,13 @@ import reasoningSupport.Prolog;
 
 import static org.junit.jupiter.api.Assertions.* ;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -63,7 +64,7 @@ public class STVRExperiment {
 	
 	static String levelsDir = Paths.get(projectRootDir, "src", "test", "resources", "levels", "STVR").toString() ;
 				
-	static String dataDir =  Paths.get(projectRootDir,"data").toString() ;
+	static String dataDirRoot =  Paths.get(projectRootDir,"data").toString() ;
 	
 	// in ms
 	// static int delayBetweenAgentUpateCycles = 100 ; 
@@ -74,12 +75,95 @@ public class STVRExperiment {
 	 * agent to be a rectangle of size 2 x assumedExtentOfAgent.
 	 */
 	static float assumedExtentOfAgent = 1 ;
+		
+	// ====
+	
+	static int ATEST_repeatNumberPerRun = 3 ;
+	static int LargeLevels_repeatNumberPerRun = 2 ;
+	
+	// ================ ATEST levels =================
+	
+	static String[] ATEST_levels = { 
+		"BM2021_diff1_R3_1_1_H"   // minimum solution: 2
+		,"BM2021_diff1_R4_1_1"    // minimum solution: 4
+		,"BM2021_diff1_R4_1_1_M"  // minimum solution: 3
+		,"BM2021_diff2_R5_2_2_M"  // minimum solution: 2
+		,"BM2021_diff2_R7_2_2"    // minimum solution: 4
+		,"BM2021_diff3_R4_2_2"    // minimum solution: 0
+		,"BM2021_diff3_R4_2_2_M"  // minimum solution: 4
+		,"BM2021_diff3_R7_3_3" // minimum solution: 2
+	} ;
+		
+	// runtime of Samira's alg, in seconds:
+	static int[] ATEST_SAruntime = { 
+		68, 84, 139, 140, 
+		146, 60, 144, 254 } ;
+		
+		
+	static String[] ATEST_targetDoors = {
+		"door1", "door6", "door5", "door4", 
+		"door6", "door6", "door3", "door6"
+	} ;
+		
+		
+	// ================ DDO levels =================
+
+	static String[] DDO_levels = { "sanctuary_1"
+				// , "durk_1"
+		} ;
+	static int[] DDO_SAruntime = { 1492, 2680 } ;
+	static String[] DDO_targetDoors = { "doorEntrance", "doorKey4",  } ;
+		
+
+	// ================ Large-Random level =================
+
+	static String[] LargeRandom_levels = { 
+		  "FBK_largerandom_R9_cleaned"   // F1
+		  // "FBK_largerandom_R9_cleaned",   // F2
+		  //"FBK_largerandom_R9_cleaned",   // F3
+		  //"FBK_largerandom_R9_cleaned",  // F4
+		  //"FBK_largerandom_R9_cleaned",  // F5
+		  //"FBK_largerandom_R9_cleaned",  // F6
+		  //"FBK_largerandom_R9_cleaned",  // F7
+		  //"FBK_largerandom_R9_cleaned",  // F8  unsolvable by SA
+		  //"FBK_largerandom_R9_cleaned",  // F9  unsolvable by SA
+		  //"FBK_largerandom_R9_cleaned",  // F10
+		  //"FBK_largerandom_R9_cleaned"   // F11
+		} ;
+		
+	static int[] LargeRandom_SAruntime = { 
+		   //14,   // F1
+		   //113,  // F2
+		   //954,  // F3
+		   //1045, // F4
+		   1076, // F5
+		   1827, // F6 
+		   1532, 
+		   3000, // one hrs (3000 x 1.2)
+		   3000, // one hrs
+		   1420, // time unknown!
+		   1420 			
+		} ;
+		
+	static String[] LargeRandom_targetDoors = {
+		  //"door26",  // F1
+		  //"door5",   // F2
+		  //"door39",  // F3
+		  //"door33",  // F4
+		  "door16",  // F5
+		  "door37",  // F6
+		  "door34", "door3", "door21", "door22", "door38"}  ;
+		
+	
 	
 	
 	// ====
 	
 	
-	static class ResultSA {
+	enum AlgorithmVariant { OnlineSearch, OnlineMinus } 
+	
+	
+	static class ResultOneRun {
 		String level ;
 		String alg ;
 		int numberOfConnections ;
@@ -115,6 +199,94 @@ public class STVRExperiment {
 			z +=     "\n==    correct :"    + correctConnections ;
 			z +=     "\n==    wrong   :"    + wrongConnections ;	
 			z +=     "\n== area-cov      :" + areaCoverage ;
+			return z ;
+		}
+	}
+	
+	/**
+	 * Averaged results over multiple runs.
+	 */
+	static class ResultMultiRuns {
+		String level ;
+		String alg ;
+		int numberOfRuns ;
+		int numberOfConnections ;
+		float runtime ;
+		float explorationtime ;
+		float numberOfTurns ;
+		int goalsolved ;
+		float connectionsInferred ;
+		float correctConnections ;
+		float wrongConnections ;
+		float connectionsPrecision = 0 ;
+		float connectionsRecall = 0 ;
+		int numberOfDoors ;
+		float doorsInferred ;
+		int numberOfButtons ;
+		float buttonsInferred ;
+		float roomsInferred ;
+		float numOfDoorAttemps ;
+		float areaCoverage ;
+		
+		ResultMultiRuns(ResultOneRun[] runs) {
+			var run0 = runs[0] ;
+			List<ResultOneRun> runs_ = new LinkedList<>() ;
+			for (int k=0; k<runs.length; k++) runs_.add(runs[k]) ;
+			level = run0.level ;
+			alg = run0.alg ;
+			this.numberOfRuns = runs.length ;
+			this.numberOfConnections = run0.numberOfConnections ;
+			this.numberOfButtons = run0.numberOfButtons ;
+			this.numberOfDoors = run0.numberOfDoors ;
+			this.goalsolved = (int) runs_.stream().filter(info -> info.goalsolved).count() ;
+			this.runtime = (float) (double) 
+					runs_.stream().map(info -> info.runtime) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.explorationtime = (float) (double) 
+					runs_.stream().map(info -> info.explorationtime) .collect(Collectors.averagingDouble(i -> (double) i)) ;	
+			this.numberOfTurns = (float) (double) 
+					runs_.stream().map(info -> info.numberOfTurns) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.connectionsInferred = (float) (double) 
+					runs_.stream().map(info -> info.connectionsInferred) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.correctConnections = (float) (double) 
+					runs_.stream().map(info -> info.correctConnections) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.wrongConnections = (float) (double) 
+					runs_.stream().map(info -> info.wrongConnections) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.doorsInferred = (float) (double) 
+					runs_.stream().map(info -> info.doorsInferred) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.buttonsInferred = (float) (double) 
+					runs_.stream().map(info -> info.buttonsInferred) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.roomsInferred = (float) (double) 
+					runs_.stream().map(info -> info.roomsInferred) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.numOfDoorAttemps = (float) (double) 
+					runs_.stream().map(info -> info.numOfDoorAttemps) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.areaCoverage = (float) (double) 
+					runs_.stream().map(info -> info.areaCoverage) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			
+			if (this.correctConnections > 0) {
+				this.connectionsPrecision = this.correctConnections / this.connectionsInferred ;
+				this.connectionsRecall = this.correctConnections / (float) this.numberOfConnections ;
+			}
+		}
+		
+		@Override
+		public String toString() {
+			String z = "== level:" + level ;
+			z +=     "\n== alg  :" + alg ;
+			z +=     "\n== #success on goal:" + goalsolved + "/" + numberOfRuns ;
+			z +=     "\n== avrg runtime(sec)  :" + runtime ;
+			z +=     "\n== avrg exploraion-time(sec):" + explorationtime ;
+			z +=     "\n== avrg #door-attempts:" + numOfDoorAttemps ;	
+			z +=     "\n== avrg #turns        :" + numberOfTurns ;
+			z +=     "\n== avrg #rooms found  :" + roomsInferred  ;
+			z +=     "\n== avrg #doors found  :" + doorsInferred + "/" + numberOfDoors ;
+			z +=     "\n== avrg #buttons found:" + buttonsInferred + "/" + numberOfButtons ;
+			z +=     "\n== #connections    :" + numberOfConnections ;
+			z +=     "\n==    avrg inferred:"    + connectionsInferred ;
+			z +=     "\n==    avrg correct :"    + correctConnections ;
+			z +=     "\n==    avrg wrong   :"    + wrongConnections ;	
+			z +=     "\n==    precision    :"    + connectionsPrecision ;	
+			z +=     "\n==    recall       :"    + connectionsRecall ;	
+			z +=     "\n== avrg area-cov      :" + areaCoverage ;
 			return z ;
 		}
 	}
@@ -178,36 +350,114 @@ public class STVRExperiment {
 
 
 	@Test
-	public void executeTestingTask() throws InterruptedException, IOException {
-		//executeTestingTask("agent0","BM2021_diff1_R3_1_1_H","door1",null,5000,true) ;
-		//executeTestingTask("agent0","BM2021_diff3_R7_3_3","door6",null,5000,true) ;
-		executeTestingTask("agent1","sanctuary_1","doorEntrance",null,30000,true) ;
+	public void test0() throws InterruptedException, IOException {
+		
+		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
+				5000,null,
+				AlgorithmVariant.OnlineMinus) ;
+		/*
+		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2","door6",null,
+				5000,null,
+				AlgorithmVariant.OnlineMinus) ;
+		
+		*/
+		/*
+		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R7_3_3","door6",null,
+				5000,null,
+				AlgorithmVariant.OnlineMinus) ;
+		*/
+		
+		/*
+		executeTestingTask(1,"ATEST","agent1","sanctuary_1","doorEntrance",null,
+				30000,
+				null,
+				AlgorithmVariant.OnlineSearch) ;
+		*/
 		
 		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3		
-		//executeTestingTask("agent1","durk_1","doorKey4",new Vec3(67f,0,76f),30000,true) ;
+		//executeTestingTask(1,"agent1","durk_1","doorKey4",new Vec3(67f,0,76f),30000,true) ;
 		
 		// subdir: "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
 
 	}
+	
+	
+	public void run_ATEST_experiment_Test() throws IOException {
+		String benchMarkName = "ATEST" ;
+		Path dataDir = Paths.get(dataDirRoot,benchMarkName) ;
+		if (Files.notExists(dataDir)) {
+			Files.createDirectories(dataDir) ;
+		}
+		String reportFileName = benchMarkName + "_results.txt" ;
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		LocalDateTime now = LocalDateTime.now();  
+		appendWritelnToFile(dataDir.toString(),reportFileName,">>>> START experiment "
+				+ " " + dtf.format(now)
+				,true) ;	
+		
+		runOneLevel(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
+				5000,null,
+				AlgorithmVariant.OnlineMinus) ;
+		
+	
+	}
+	
+	
+	public List<Set<Pair<Integer,Integer>>> runOneLevel(
+			String benchMarkName,
+			String agentName,
+			String levelName,
+			String targetDoor,
+			Vec3 approximateTargetLocation,
+			Integer budgetInCycles,  // ignored if null
+			Integer budgetInMs,
+			int numberOfRuns,
+			AlgorithmVariant algVariant
+			) throws InterruptedException, IOException {
+		
+		ResultOneRun[] results = new ResultOneRun[numberOfRuns] ;
+		for (int k=0; k<numberOfRuns; k++ ) {
+			results[k] = executeTestingTask(k,benchMarkName,agentName,levelName,targetDoor,approximateTargetLocation,
+					budgetInCycles,
+					budgetInMs,
+					algVariant) ;
+		}
+		ResultMultiRuns combinedResult = new ResultMultiRuns(results) ;
+		String dataDir = Paths.get(dataDirRoot,benchMarkName).toString() ;
+		String reportFileName = benchMarkName + "_results.txt" ;
+		appendWritelnToFile(dataDir,reportFileName,"*********************",true) ;
+		appendWritelnToFile(dataDir,reportFileName,"====== " 
+				+ levelName + " " + targetDoor + " with "
+				+ combinedResult.alg , true) ;
+		appendWritelnToFile(dataDir,reportFileName,combinedResult.toString(),true);
+		
+		return null ;
+	}
 
 	/**
-	 * Execute a tetsing task to verify that the target blocker can be opened.
+	 * A single run of executing a testing task to verify that the target blocker 
+	 * can be opened.
 	 * 
 	 * @param budget Budget expressed in the number of update-cycles to use.
 	 * @param exploitModel  If true, the algorithm will track and exploit a model
 	 * 		of the game under test. 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes"})
-	public ResultSA executeTestingTask(String agentName,
+	public ResultOneRun executeTestingTask(
+			int runNumber,
+			String benchMarkName,
+			String agentName,
 			String levelName,
 			String targetDoor,
 			Vec3 approximateTargetLocation,
-			int budget,  // in #cycles,
-			boolean exploitModel
+			Integer budgetInCycles,  // in #cycles, if not null
+			Integer budgetInMs, // in milli-seccond, if not null
+			AlgorithmVariant algVariant
 			) throws InterruptedException, IOException {
 
-		System.out.println(">>> start testing...");
+		System.out.println(">>> Start a test run ...");
 		
+		// Launching LR and loading the level:
 		var LRconfig = new LabRecruitsConfig(levelName, levelsDir);
 		LRconfig.agent_speed = 0.1f;
 		LRconfig.view_distance = 4f;
@@ -219,6 +469,9 @@ public class STVRExperiment {
 						"You can drag then game window elsewhere for beter viewing. Then hit RETURN to continue.");
 				new Scanner(System.in).nextLine();
 			}
+			
+			// preparing and creating the test agent; including prepping its state, data collector, etc:
+			
 			var beliefState = new BeliefStateExtended();
 
 			var prolog = new Prolog(beliefState);
@@ -239,16 +492,21 @@ public class STVRExperiment {
 				.setTestDataCollector(dataCollector)
 				.setGoal(testingTask);
 
-			var Result = new ResultSA() ;
-			Result.alg = "online-search" ;
-			if (! exploitModel) Result.alg = "online-search WITHOUT model" ;
+			var Result = new ResultOneRun() ;
+			Result.alg = "" + algVariant ;
+			if (algVariant == AlgorithmVariant.OnlineMinus) {
+				beliefState.disabledModelTracking = true ;
+			}
 			Result.level = levelName ;
 			
 			long startTime = System.currentTimeMillis();
 			testAgent.registerEvent(new TimeStampedObservationEvent("startTest"));
 			
+			// the loop to run the agent:
 			int cycleNumber = 0;
+			long runTime = 0 ;
 			while (testingTask.getStatus().inProgress()) {
+				long t0 = System.currentTimeMillis() ;
 				if (testAgent.getState().worldmodel.position != null) {
 					dataCollector.registerEvent(testAgent.getId(),
 						new ScalarTracingEvent(
@@ -270,15 +528,20 @@ public class STVRExperiment {
 				if (beliefState.worldmodel().health <= 0) {
 					DebugUtil.log(">>>> the agent died. Aaaw.");
 				}
-				if (cycleNumber > budget) {
+				if (budgetInCycles != null && cycleNumber > budgetInCycles) {
 					break;
 				}
+				runTime = runTime + (System.currentTimeMillis() - t0) ;
+				if (budgetInMs != null && runTime > budgetInMs) {
+					break ;
+				}
 			}
-
+			// the test is done now (either achieving the test-goal, or it exhausts the budget)
+			
 			testAgent.registerEvent(new TimeStampedObservationEvent("endTest"));
 			long totalTime = System.currentTimeMillis() - startTime;
 			
-			// Collecting and calculating results:
+			// Collecting and analyzing results, and reporting:
 			
 			Result.goalsolved = testingTask.getStatus().success() ;
 			Result.numberOfTurns = cycleNumber ;
@@ -297,7 +560,8 @@ public class STVRExperiment {
 			Result.roomsInferred = prolog.rooms().size() ;
 			
 			// saving location-visits to a file:
-			String visitInfoFileName = levelName + "_visits.csv" ;
+			String dataDir = Paths.get(dataDirRoot , benchMarkName).toString() ;
+			String visitInfoFileName = levelName + "_" + Result.alg + "_visits_run" + runNumber + ".csv" ;
 			dataCollector.saveTestAgentScalarsTraceAsCSV(
 					testAgent.getId(), 
 					Paths.get(dataDir,visitInfoFileName).toString() 
@@ -351,11 +615,8 @@ public class STVRExperiment {
 			sb.append("\n==	attempts on doors:" + traceTriedDoors) ;
 			sb.append("\n===============") ;
 			sb.append("\n" + Result) ;
-			System.out.println(sb.toString()) ;
-			String reportFileName = Paths.get(dataDir, levelName + "_all-info.txt").toString() ;
-			BufferedWriter writer = new BufferedWriter(new FileWriter(reportFileName));
-	        writer.write(sb.toString());
-	        writer.close();
+			String reportFileName = levelName + "_" + Result.alg + "_all-info_run" + runNumber + ".txt" ;
+			writelnToFile(dataDir,reportFileName, sb.toString(),true) ; // echo is true, to also print to screen
 	        
 	        return Result ;
 			
@@ -364,4 +625,35 @@ public class STVRExperiment {
 		}
 
 	}
+	
+	/**
+	 * Append the given string to a file. Create the file if it does not 
+	 * exists.
+	 */
+	void appendWritelnToFile(String dir, String fname, String s, boolean echo) throws IOException {
+	    Files.writeString(
+	        Path.of(dir, fname),
+	        s + "\n",
+	        CREATE, APPEND
+	    );
+	    if (echo) {
+	    	System.out.println(s) ;
+	    }
+	}
+	
+	/**
+	 * Write the given string to a file. Create the file if it does not 
+	 * exists.
+	 */
+	void writelnToFile(String dir, String fname, String s, boolean echo) throws IOException {
+	    Files.writeString(
+	        Path.of(dir, fname),
+	        s + "\n",
+	        CREATE, WRITE
+	    );
+	    if (echo) {
+	    	System.out.println(s) ;
+	    }
+	}
+
 }

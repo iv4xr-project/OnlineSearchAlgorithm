@@ -4,8 +4,10 @@ import static nl.uu.cs.aplib.AplibEDSL.FIRSTof;
 import static nl.uu.cs.aplib.AplibEDSL.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import alice.tuprolog.InvalidTheoryException;
@@ -706,10 +708,15 @@ public class TacticLibExtended extends TacticLib{
   					
   					
   					System.out.println("is locked in the room: " + isLocked +" id: "+ entityId); 									
-  					var getEnablingButtons = belief.prolog.getEnablingButtons(entityId);
-  					System.out.println("get Enabling Doors:size " + getEnablingButtons.size());
+  					Map<String,List<String>> getEnablingButtons = null ;
+  					try {
+  						getEnablingButtons = belief.prolog.getEnablingButtons(entityId);
+  					}
+  					catch(Exception e) {
+  						getEnablingButtons = new HashMap<>() ;
+  					}
   					
-					
+  					System.out.println("get Enabling Doors:size " + getEnablingButtons.size());
   					
   					
   					if(getEnablingButtons.size()== 0) return null;

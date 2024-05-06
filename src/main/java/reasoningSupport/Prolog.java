@@ -126,7 +126,6 @@ public class Prolog {
 	 */
 
 	List<String> pQueryAll(String var_, String q) {
-		
 		if(belief.prolog()
 				   . queryAll(q) == null)
 		System.out.println("pQueryaAll" );

@@ -24,6 +24,13 @@ public class BeliefStateExtended extends BeliefState {
 	
 	public HighLevelGraph highLevelGragh;
 	public Prolog prolog; 
+	
+	/**
+	 * If true, then the {@link #updateState(String)} will not do model tracking.
+	 * Default is false.
+	 */
+	public boolean disabledModelTracking = false ;
+	
 	WorldEntity lastInteractedButton ;
 
 	public BeliefStateExtended () {
@@ -143,7 +150,8 @@ public class BeliefStateExtended extends BeliefState {
 	public void updateState(String id) {
 		super.updateState(worldmodel.agentId);
 		// invoke the model-inferencer here:
-		this.lastInteractedButton = OnlineSearch.trackModel(this, this.lastInteractedButton) ;
+		if (! disabledModelTracking)
+			this.lastInteractedButton = OnlineSearch.trackModel(this, this.lastInteractedButton) ;
 	}
     
 	
