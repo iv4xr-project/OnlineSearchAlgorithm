@@ -78,6 +78,7 @@ public class STVRExperiment {
 		
 	// ====
 	
+	//static int ATEST_repeatNumberPerRun = 10 ;
 	static int ATEST_repeatNumberPerRun = 3 ;
 	static int LargeLevels_repeatNumberPerRun = 2 ;
 	
@@ -94,17 +95,26 @@ public class STVRExperiment {
 		,"BM2021_diff3_R7_3_3" // minimum solution: 2
 	} ;
 		
-	// runtime of Samira's alg, in seconds:
-	static int[] ATEST_SAruntime = { 
-		68, 84, 139, 140, 
-		146, 60, 144, 254 } ;
-		
-		
 	static String[] ATEST_targetDoors = {
 		"door1", "door6", "door5", "door4", 
 		"door6", "door6", "door3", "door6"
 	} ;
-		
+	
+	static Vec3[] ATEST_guidingLocaations = {
+		null, null, null, null,
+		null, null, null, null
+	} ;
+	
+	static int[] ATEST_fullOnline_budget = {
+		8000,8000,8000,8000,
+		8000,8000,8000,8000
+	} ;
+
+	// runtime of Samira's alg, in seconds:
+	static int[] ATEST_SAruntime = { 
+		68, 84, 139, 140, 
+		146, 60, 144, 254 } ;
+	
 		
 	// ================ DDO levels =================
 
@@ -113,7 +123,7 @@ public class STVRExperiment {
 		} ;
 	static int[] DDO_SAruntime = { 1492, 2680 } ;
 	static String[] DDO_targetDoors = { "doorEntrance", "doorKey4",  } ;
-		
+	static Vec3[] DDO_guidingLocaations = { null, new Vec3(67f,0,76f) } ;	
 
 	// ================ Large-Random level =================
 
@@ -154,8 +164,10 @@ public class STVRExperiment {
 		  "door37",  // F6
 		  "door34", "door3", "door21", "door22", "door38"}  ;
 		
-	
-	
+	static Vec3[] LargeRandom_guidingLocaations = { null,
+			null, null, null, null, null, 
+			null, null, null, null, null
+			} ;	
 	
 	// ====
 	
@@ -163,6 +175,9 @@ public class STVRExperiment {
 	enum AlgorithmVariant { OnlineSearch, OnlineMinus } 
 	
 	
+	/**
+	 * Result of a single run on a level.
+	 */
 	static class ResultOneRun {
 		String level ;
 		String alg ;
@@ -212,21 +227,27 @@ public class STVRExperiment {
 		int numberOfRuns ;
 		int numberOfConnections ;
 		float runtime ;
+		float stdDevRuntime ;
 		float explorationtime ;
 		float numberOfTurns ;
 		int goalsolved ;
 		float connectionsInferred ;
+		float stdDevConnectionsInferred ;
 		float correctConnections ;
 		float wrongConnections ;
 		float connectionsPrecision = 0 ;
 		float connectionsRecall = 0 ;
 		int numberOfDoors ;
 		float doorsInferred ;
+		float stdDevDoorsInferred ;
 		int numberOfButtons ;
 		float buttonsInferred ;
+		float stdDevButtonsInferred ;
 		float roomsInferred ;
+		float stdDevRoomsInferred ;
 		float numOfDoorAttemps ;
 		float areaCoverage ;
+		float stdDevAreaCoverage ;
 		
 		ResultMultiRuns(ResultOneRun[] runs) {
 			var run0 = runs[0] ;
@@ -239,28 +260,23 @@ public class STVRExperiment {
 			this.numberOfButtons = run0.numberOfButtons ;
 			this.numberOfDoors = run0.numberOfDoors ;
 			this.goalsolved = (int) runs_.stream().filter(info -> info.goalsolved).count() ;
-			this.runtime = (float) (double) 
-					runs_.stream().map(info -> info.runtime) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.explorationtime = (float) (double) 
-					runs_.stream().map(info -> info.explorationtime) .collect(Collectors.averagingDouble(i -> (double) i)) ;	
-			this.numberOfTurns = (float) (double) 
-					runs_.stream().map(info -> info.numberOfTurns) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.connectionsInferred = (float) (double) 
-					runs_.stream().map(info -> info.connectionsInferred) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.correctConnections = (float) (double) 
-					runs_.stream().map(info -> info.correctConnections) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.wrongConnections = (float) (double) 
-					runs_.stream().map(info -> info.wrongConnections) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.doorsInferred = (float) (double) 
-					runs_.stream().map(info -> info.doorsInferred) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.buttonsInferred = (float) (double) 
-					runs_.stream().map(info -> info.buttonsInferred) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.roomsInferred = (float) (double) 
-					runs_.stream().map(info -> info.roomsInferred) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.numOfDoorAttemps = (float) (double) 
-					runs_.stream().map(info -> info.numOfDoorAttemps) .collect(Collectors.averagingDouble(i -> (double) i)) ;
-			this.areaCoverage = (float) (double) 
-					runs_.stream().map(info -> info.areaCoverage) .collect(Collectors.averagingDouble(i -> (double) i)) ;
+			this.runtime = avrg(runs_.stream().map(info -> (float) info.runtime) .collect(Collectors.toList())) ;
+			this.stdDevRuntime = stdDev(runs_.stream().map(info -> (float) info.runtime) .collect(Collectors.toList())) ;
+			this.explorationtime = avrg(runs_.stream().map(info -> (float) info.explorationtime) .collect(Collectors.toList())) ; 
+			this.numberOfTurns = avrg(runs_.stream().map(info -> (float) info.numberOfTurns) .collect(Collectors.toList())) ;
+			this.connectionsInferred = avrg(runs_.stream().map(info -> (float) info.connectionsInferred) .collect(Collectors.toList())) ;			
+			this.stdDevConnectionsInferred = stdDev(runs_.stream().map(info -> (float) info.connectionsInferred) .collect(Collectors.toList())) ;			
+			this.correctConnections = avrg(runs_.stream().map(info -> (float) info.correctConnections) .collect(Collectors.toList())) ;			
+			this.wrongConnections = avrg(runs_.stream().map(info -> (float) info.wrongConnections) .collect(Collectors.toList())) ;			
+			this.doorsInferred = avrg(runs_.stream().map(info -> (float) info.doorsInferred) .collect(Collectors.toList())) ;			
+			this.stdDevDoorsInferred = stdDev(runs_.stream().map(info -> (float) info.doorsInferred) .collect(Collectors.toList())) ;			
+			this.buttonsInferred = avrg(runs_.stream().map(info -> (float) info.buttonsInferred) .collect(Collectors.toList())) ;			
+			this.stdDevButtonsInferred = stdDev(runs_.stream().map(info -> (float) info.buttonsInferred) .collect(Collectors.toList())) ;			
+			this.roomsInferred = avrg(runs_.stream().map(info -> (float) info.roomsInferred) .collect(Collectors.toList())) ;			
+			this.stdDevRoomsInferred = stdDev(runs_.stream().map(info -> (float) info.roomsInferred) .collect(Collectors.toList())) ;			
+			this.numOfDoorAttemps = avrg(runs_.stream().map(info -> (float) info.numOfDoorAttemps) .collect(Collectors.toList())) ;			
+			this.areaCoverage = avrg(runs_.stream().map(info -> (float) info.areaCoverage) .collect(Collectors.toList())) ;			
+			this.stdDevAreaCoverage = stdDev(runs_.stream().map(info -> (float) info.areaCoverage) .collect(Collectors.toList())) ;			
 			
 			if (this.correctConnections > 0) {
 				this.connectionsPrecision = this.correctConnections / this.connectionsInferred ;
@@ -268,20 +284,31 @@ public class STVRExperiment {
 			}
 		}
 		
+		float avrg(List<Float> values) {
+			double avrg = values.stream().collect(Collectors.averagingDouble(v -> (double) v)) ;
+			return (float) avrg ;
+		}
+		
+		float stdDev(List<Float> values) {
+			double avrg = values.stream().collect(Collectors.averagingDouble(v -> (double) v)) ;
+			double d = values.stream().map(v -> (v - avrg)*(v - avrg)).collect(Collectors.averagingDouble(v -> (double) v)) ;
+			return (float) Math.sqrt(d) ;
+		}
+		
 		@Override
 		public String toString() {
 			String z = "== level:" + level ;
 			z +=     "\n== alg  :" + alg ;
 			z +=     "\n== #success on goal:" + goalsolved + "/" + numberOfRuns ;
-			z +=     "\n== avrg runtime(sec)  :" + runtime ;
+			z +=     "\n== avrg runtime(sec)  :" + runtime + " (" + stdDevRuntime + ")" ;
 			z +=     "\n== avrg exploraion-time(sec):" + explorationtime ;
 			z +=     "\n== avrg #door-attempts:" + numOfDoorAttemps ;	
 			z +=     "\n== avrg #turns        :" + numberOfTurns ;
-			z +=     "\n== avrg #rooms found  :" + roomsInferred  ;
-			z +=     "\n== avrg #doors found  :" + doorsInferred + "/" + numberOfDoors ;
-			z +=     "\n== avrg #buttons found:" + buttonsInferred + "/" + numberOfButtons ;
+			z +=     "\n== avrg #rooms found  :" + roomsInferred + " (" + stdDevRoomsInferred + ")" ;
+			z +=     "\n== avrg #doors found  :" + doorsInferred + "/" + numberOfDoors + " (" + stdDevDoorsInferred + ")" ;
+			z +=     "\n== avrg #buttons found:" + buttonsInferred + "/" + numberOfButtons + " (" + stdDevButtonsInferred + ")" ;
 			z +=     "\n== #connections    :" + numberOfConnections ;
-			z +=     "\n==    avrg inferred:"    + connectionsInferred ;
+			z +=     "\n==    avrg inferred:"    + connectionsInferred + " (" + stdDevConnectionsInferred + ")" ;
 			z +=     "\n==    avrg correct :"    + correctConnections ;
 			z +=     "\n==    avrg wrong   :"    + wrongConnections ;	
 			z +=     "\n==    precision    :"    + connectionsPrecision ;	
@@ -316,6 +343,9 @@ public class STVRExperiment {
 		return S ;
 	}
 	
+	/**
+	 * For calculating covered tiles, given a set of visited locations.
+	 */
 	Set<Pair<Integer,Integer>> getCoveredTiles2D(List<Vec3> visitedLocations) {		
 		Set<Pair<Integer,Integer>> covered = new HashSet<>() ;
 		for (var pos : visitedLocations) {
@@ -330,60 +360,32 @@ public class STVRExperiment {
 		return covered ;	
 	}
 	
-	private static LabRecruitsTestServer labRecruitsTestServer;
-
-	@BeforeAll
-	static public void start() {
-		// TestSettings.USE_SERVER_FOR_TEST = false ;
-		// Uncomment this to make the game's graphic visible:
-		// TestSettings.USE_GRAPHICS = true ;
-		String projectRootDir = System.getProperty("user.dir");
-		labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(projectRootDir);
-	}
-
-	@AfterAll
-	static void close() {
-		if (labRecruitsTestServer != null)
-			labRecruitsTestServer.close();
-	}
-
-
-
-	@Test
-	public void test0() throws InterruptedException, IOException {
+	/**
+	 * Run an experiment with online-search targeting multiple levels in a bench-mark set.
+	 * It will run both the full variant of the algorithm, and the minus-variant (without
+	 * model construction).
+	 * 
+	 * @param numberOfRunsPerLevel The number of runs the algorithm will be run on each level.
+	 * 			Repeated runs are used to obtained averaged results.
+	 * @param algVariant  The variant of the Online-search algorithm to use, either full or
+	 * 			without constructing a model. 
+	 * @param budget The budget. This is specified in an array, one value for each level.
+	 * 			For the full-variant of the online-search algorithm, this budget is  
+	 * 			expressed in the number of the agent's update cycles.
+	 * 			For the minus-variant the budget is in seconds. For the minus-variant,
+	 * 			a multiplier B will be applied to obtain the actual budget from the given budget.
+	 * 			This B could be 1.2 or 1.5 (see in the code).	
+	 */
+	public void run_experiment(String benchMarkName,
+			int numberOfRunsPerLevel,
+			String agentName,
+			String[] levels,
+			String[] targetDoors,
+			Vec3[] guidingLocations,
+			int[] budget, 
+			AlgorithmVariant algVariant
+			) throws IOException, InterruptedException {
 		
-		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
-				5000,null,
-				AlgorithmVariant.OnlineMinus) ;
-		/*
-		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2","door6",null,
-				5000,null,
-				AlgorithmVariant.OnlineMinus) ;
-		
-		*/
-		/*
-		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R7_3_3","door6",null,
-				5000,null,
-				AlgorithmVariant.OnlineMinus) ;
-		*/
-		
-		/*
-		executeTestingTask(1,"ATEST","agent1","sanctuary_1","doorEntrance",null,
-				30000,
-				null,
-				AlgorithmVariant.OnlineSearch) ;
-		*/
-		
-		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3		
-		//executeTestingTask(1,"agent1","durk_1","doorKey4",new Vec3(67f,0,76f),30000,true) ;
-		
-		// subdir: "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
-
-	}
-	
-	
-	public void run_ATEST_experiment_Test() throws IOException {
-		String benchMarkName = "ATEST" ;
 		Path dataDir = Paths.get(dataDirRoot,benchMarkName) ;
 		if (Files.notExists(dataDir)) {
 			Files.createDirectories(dataDir) ;
@@ -395,14 +397,35 @@ public class STVRExperiment {
 				+ " " + dtf.format(now)
 				,true) ;	
 		
-		runOneLevel(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
-				5000,null,
-				AlgorithmVariant.OnlineMinus) ;
-		
-	
+		for (int k=0; k<levels.length; k++) {
+			
+			if (algVariant == AlgorithmVariant.OnlineSearch) {
+				runOneLevel(benchMarkName,agentName,levels[k],targetDoors[k],guidingLocations[k],
+						budget[k], null,
+						numberOfRunsPerLevel,
+						AlgorithmVariant.OnlineSearch) ;
+			}
+			else {
+				runOneLevel(benchMarkName,agentName,levels[k],targetDoors[k],guidingLocations[k],
+						null, (int)((float) budget[k] * 1000 * 1.2) ,
+						numberOfRunsPerLevel,
+						AlgorithmVariant.OnlineMinus) ;
+			}
+		}	
 	}
 	
 	
+	/**
+	 * Running the Online-search algorithm multiple times on the same level. This is meant to
+	 * obtained an averaged result.
+	 * 
+	 * @param targetDoor the target door in the given level. The testing task to do is to verify
+	 * 					that this door can be openned.
+	 * @param budgetInCycles Budget expressed in the number of update-cycles to use, if not null.
+	 * @param budgetInMs Budget expressed in mille secs, if not null.
+	 * @param algVariant  The variant of the Online-search algorithm to use, either full or
+	 * 						without constructing a model. 
+	 */
 	public List<Set<Pair<Integer,Integer>>> runOneLevel(
 			String benchMarkName,
 			String agentName,
@@ -438,9 +461,10 @@ public class STVRExperiment {
 	 * A single run of executing a testing task to verify that the target blocker 
 	 * can be opened.
 	 * 
-	 * @param budget Budget expressed in the number of update-cycles to use.
-	 * @param exploitModel  If true, the algorithm will track and exploit a model
-	 * 		of the game under test. 
+	 * @param budgetInCycles Budget expressed in the number of update-cycles to use, if not null.
+	 * @param budgetInMs Budget expressed in mille secs, if not null.
+	 * @param algVariant  The variant of the Online-search algorithm to use, either full or
+	 * 						without constructing a model. 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes"})
 	public ResultOneRun executeTestingTask(
@@ -481,6 +505,7 @@ public class STVRExperiment {
 
 			beliefState.highLevelGragh.goalPosition = approximateTargetLocation;
 
+			// Instantiate the Online-search algorithm here:
 			var testingTask = onlineSearchAlgorithm1(testAgent, 
 					targetDoor, 
 					approximateTargetLocation,
@@ -654,6 +679,86 @@ public class STVRExperiment {
 	    if (echo) {
 	    	System.out.println(s) ;
 	    }
+	}
+	
+	
+	private static LabRecruitsTestServer labRecruitsTestServer;
+
+	
+	@BeforeAll
+	static public void start() {
+		// TestSettings.USE_SERVER_FOR_TEST = false ;
+		// Uncomment this to make the game's graphic visible:
+		// TestSettings.USE_GRAPHICS = true ;
+		String projectRootDir = System.getProperty("user.dir");
+		labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(projectRootDir);
+	}
+
+	@AfterAll
+	static void close() {
+		if (labRecruitsTestServer != null)
+			labRecruitsTestServer.close();
+	}
+
+	
+	//@Test
+	public void test0() throws InterruptedException, IOException {
+		
+		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
+				5000,null,
+				AlgorithmVariant.OnlineMinus) ;
+		/*
+		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2","door6",null,
+				5000,null,
+				AlgorithmVariant.OnlineMinus) ;
+		
+		*/
+		/*
+		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R7_3_3","door6",null,
+				5000,null,
+				AlgorithmVariant.OnlineMinus) ;
+		*/
+		
+		/*
+		executeTestingTask(1,"ATEST","agent1","sanctuary_1","doorEntrance",null,
+				30000,
+				null,
+				AlgorithmVariant.OnlineSearch) ;
+		*/
+		
+		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3		
+		//executeTestingTask(1,"agent1","durk_1","doorKey4",new Vec3(67f,0,76f),30000,true) ;
+		
+		// subdir: "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
+
+	}
+	
+
+	
+	@Test
+	public void run_onlineFull_on_ATEST_experiment_Test() throws Exception {
+		run_experiment("ATEST",
+				ATEST_repeatNumberPerRun,
+				"agent0",
+				ATEST_levels,
+				ATEST_targetDoors,
+				ATEST_guidingLocaations,
+				ATEST_fullOnline_budget, 
+				AlgorithmVariant.OnlineSearch   
+				) ;
+	}
+		
+	//@Test
+	public void run_onlineMinus_on_ATEST_experiment_Test() throws Exception {
+		run_experiment("ATEST",
+				ATEST_repeatNumberPerRun,
+				"agent0",
+				ATEST_levels,
+				ATEST_targetDoors,
+				ATEST_guidingLocaations,
+				ATEST_SAruntime,
+				AlgorithmVariant.OnlineMinus
+				) ;
 	}
 
 }
