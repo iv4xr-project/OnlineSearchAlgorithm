@@ -67,8 +67,8 @@ public class STVRExperiment {
 	static String dataDirRoot =  Paths.get(projectRootDir,"data").toString() ;
 	
 	// in ms
-	// static int delayBetweenAgentUpateCycles = 100 ; 
-	static int delayBetweenAgentUpateCycles = 50 ; 
+	static int delayBetweenAgentUpateCycles = 100 ; 
+	//static int delayBetweenAgentUpateCycles = 50 ; 
 	
 	/**
 	 * For the purpose of calculating area coverage ({@see #coveredTiles2D}), we pretend the
@@ -106,15 +106,19 @@ public class STVRExperiment {
 	} ;
 	
 	static int[] ATEST_fullOnline_budget = {
-		8000,8000,8000,8000,
-		8000,8000,8000,8000
+		6000,6000,6000,6000,
+		6000,6000,6000,6000
 	} ;
 
 	// runtime of Samira's alg, in seconds:
+	/* from orignal paper:
 	static int[] ATEST_SAruntime = { 
 		68, 84, 139, 140, 
 		146, 60, 144, 254 } ;
-	
+	*/
+	static int[] ATEST_SAruntime = { 
+		75, 107, 135, 160, 
+		135, 379, 127, 215 } ;
 		
 	// ================ DDO levels =================
 
@@ -735,7 +739,7 @@ public class STVRExperiment {
 	
 
 	
-	@Test
+	//@Test
 	public void run_onlineFull_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
@@ -748,7 +752,7 @@ public class STVRExperiment {
 				) ;
 	}
 		
-	//@Test
+	@Test
 	public void run_onlineMinus_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
