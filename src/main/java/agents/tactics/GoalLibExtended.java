@@ -275,6 +275,8 @@ public class GoalLibExtended extends GoalLib {
 
 			if (Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq() <= 1.5
 					&& (belief.evaluateEntity(entity.id, e -> belief.age(e) == 0)))
+			//if (Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq() <= 1.5
+			//	&& (belief.evaluateEntity(entity.id, e -> belief.age(e) <= 5)))
 				return true;
 			return false;
 

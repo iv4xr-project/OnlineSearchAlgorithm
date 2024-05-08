@@ -36,6 +36,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class STVRExperiment {
 	
 	//static int ATEST_repeatNumberPerRun = 10 ;
 	static int ATEST_repeatNumberPerRun = 3 ;
-	static int LargeLevels_repeatNumberPerRun = 2 ;
+	static int LargeLevels_repeatNumberPerRun = 3 ;
 	
 	// ================ ATEST levels =================
 	
@@ -122,19 +123,23 @@ public class STVRExperiment {
 		
 	// ================ DDO levels =================
 
-	static String[] DDO_levels = { "sanctuary_1"
-				// , "durk_1"
+	static String[] DDO_levels = { 
+			"sanctuary_1"
+		  , "durk_1"
 		} ;
-	static int[] DDO_SAruntime = { 1492, 2680 } ;
+	static int[] DDO_fullOnline_budget = { 30000,30000 } ;
+	//static int[] DDO_SAruntime = { 1492, 2680 } ; original
+	static int[] DDO_SAruntime = { 1538, 2483 } ;
 	static String[] DDO_targetDoors = { "doorEntrance", "doorKey4",  } ;
-	static Vec3[] DDO_guidingLocaations = { null, new Vec3(67f,0,76f) } ;	
+	//static Vec3[] DDO_guidingLocaations = { null, new Vec3(67f,0,76f) } ;	
+	static Vec3[] DDO_guidingLocaations = { null, null } ;	
 
 	// ================ Large-Random level =================
 
 	static String[] LargeRandom_levels = { 
-		  "FBK_largerandom_R9_cleaned"   // F1
-		  // "FBK_largerandom_R9_cleaned",   // F2
-		  //"FBK_largerandom_R9_cleaned",   // F3
+		  "FBK_largerandom_R9_cleaned",   // F1
+		  "FBK_largerandom_R9_cleaned",   // F2
+		  "FBK_largerandom_R9_cleaned"   // F3
 		  //"FBK_largerandom_R9_cleaned",  // F4
 		  //"FBK_largerandom_R9_cleaned",  // F5
 		  //"FBK_largerandom_R9_cleaned",  // F6
@@ -145,6 +150,12 @@ public class STVRExperiment {
 		  //"FBK_largerandom_R9_cleaned"   // F11
 		} ;
 		
+	static int[] LargeRandom_fullOnline_budget = {
+			6000,
+			6000,6000,6000,6000,
+			6000,6000,6000,6000
+		} ;	
+	
 	static int[] LargeRandom_SAruntime = { 
 		   //14,   // F1
 		   //113,  // F2
@@ -160,10 +171,10 @@ public class STVRExperiment {
 		} ;
 		
 	static String[] LargeRandom_targetDoors = {
-		  //"door26",  // F1
-		  //"door5",   // F2
-		  //"door39",  // F3
-		  //"door33",  // F4
+		  "door26",  // F1
+		  "door5",   // F2
+		  "door39",  // F3
+		  "door33",  // F4
 		  "door16",  // F5
 		  "door37",  // F6
 		  "door34", "door3", "door21", "door22", "door38"}  ;
@@ -199,7 +210,12 @@ public class STVRExperiment {
 		int buttonsInferred ;
 		int roomsInferred ;
 		int numOfDoorAttemps ;
-		float areaCoverage ;
+		float areaCoverage ;		
+		/**
+		 * Well... for the LargeRandom experiment we need to bubble up area coverage
+		 * information :(  Piggy-backing it here.
+		 */
+		Set<Pair<Integer,Integer>> visitedTiles ;
 		
 		@Override
 		public String toString() {
@@ -252,6 +268,11 @@ public class STVRExperiment {
 		float numOfDoorAttemps ;
 		float areaCoverage ;
 		float stdDevAreaCoverage ;
+		/**
+		 * Well... for the LargeRandom experiment we need to bubble up area coverage
+		 * information :(  Piggy-backing it here.
+		 */
+		List<Set<Pair<Integer,Integer>>> visitedTiles ;
 		
 		ResultMultiRuns(ResultOneRun[] runs) {
 			var run0 = runs[0] ;
@@ -401,21 +422,54 @@ public class STVRExperiment {
 				+ " " + dtf.format(now)
 				,true) ;	
 		
+		ResultMultiRuns[] results = new ResultMultiRuns[levels.length] ;
+		
 		for (int k=0; k<levels.length; k++) {
 			
 			if (algVariant == AlgorithmVariant.OnlineSearch) {
-				runOneLevel(benchMarkName,agentName,levels[k],targetDoors[k],guidingLocations[k],
+				results[k] = runOneLevel(
+						benchMarkName,agentName,levels[k],targetDoors[k],guidingLocations[k],
 						budget[k], null,
 						numberOfRunsPerLevel,
 						AlgorithmVariant.OnlineSearch) ;
 			}
 			else {
-				runOneLevel(benchMarkName,agentName,levels[k],targetDoors[k],guidingLocations[k],
+				results[k] = runOneLevel(
+						benchMarkName,agentName,levels[k],targetDoors[k],guidingLocations[k],
 						null, (int)((float) budget[k] * 1000 * 1.2) ,
 						numberOfRunsPerLevel,
 						AlgorithmVariant.OnlineMinus) ;
 			}
 		}	
+		
+		// special part for LargeRandom, to calculate the sum of the area coverage of all tests
+		boolean allLevelsTheSame = Arrays.stream(levels).filter(z -> z.equals(levels[0])).count() == levels.length ;
+		if (! allLevelsTheSame)
+			return ;
+
+		String levelFile = Paths.get(levelsDir, levels[0] + ".csv").toString() ;
+		var walkableTiles = LRFloorMap.firstFloorWalkableTiles(levelFile) ; 
+		float[] totalAreaCoverage = new float[numberOfRunsPerLevel] ;
+		float sum = 0 ;
+		// calculate the combined coverage for each run:
+		for (int runNr=0; runNr<numberOfRunsPerLevel; runNr++) {
+			var info_0 = results[0].visitedTiles.get(runNr) ; // coverage of target-0
+			// add the coverage of all targets to that of target-0
+			for (int k=1; k<levels.length; k++) {
+				var info_k = results[k].visitedTiles.get(runNr) ; // coverage of target-k
+				// combine:
+				info_0.addAll(info_k) ;
+			}
+			int covered = (int) info_0.stream().filter(tile -> walkableTiles.contains(tile)).count() ;
+			totalAreaCoverage[runNr] = (float) covered / (float) walkableTiles.size() ;
+			sum += totalAreaCoverage[runNr] ;
+		}
+		float avrgTotalAreaCoverage = sum / (float) numberOfRunsPerLevel ;
+		
+		appendWritelnToFile(dataDir.toString(),reportFileName,"=== Average TOTAL area coverage: "
+				+ avrgTotalAreaCoverage
+				,true) ;	
+		
 	}
 	
 	
@@ -430,7 +484,7 @@ public class STVRExperiment {
 	 * @param algVariant  The variant of the Online-search algorithm to use, either full or
 	 * 						without constructing a model. 
 	 */
-	public List<Set<Pair<Integer,Integer>>> runOneLevel(
+	public ResultMultiRuns runOneLevel(
 			String benchMarkName,
 			String agentName,
 			String levelName,
@@ -458,7 +512,13 @@ public class STVRExperiment {
 				+ combinedResult.alg , true) ;
 		appendWritelnToFile(dataDir,reportFileName,combinedResult.toString(),true);
 		
-		return null ;
+		// for bubbling up area-coverage information, for the LargeRandom experiment only:
+		
+		combinedResult.visitedTiles = new LinkedList<>() ;
+		for (int k=0; k<numberOfRuns; k++ ) {
+			combinedResult.visitedTiles.add(results[k].visitedTiles) ;
+		}
+		return combinedResult ;
 	}
 
 	/**
@@ -489,6 +549,7 @@ public class STVRExperiment {
 		var LRconfig = new LabRecruitsConfig(levelName, levelsDir);
 		LRconfig.agent_speed = 0.1f;
 		LRconfig.view_distance = 4f;
+		//LRconfig.view_distance = 10f;
 		var environment = new LabRecruitsEnvironment(LRconfig);
 
 		try {
@@ -590,7 +651,9 @@ public class STVRExperiment {
 			
 			// saving location-visits to a file:
 			String dataDir = Paths.get(dataDirRoot , benchMarkName).toString() ;
-			String visitInfoFileName = levelName + "_" + Result.alg + "_visits_run" + runNumber + ".csv" ;
+			String visitInfoFileName = levelName + "_" + Result.alg 
+					+ "_" + targetDoor 
+					+ "_visits_run" + runNumber + ".csv" ;
 			dataCollector.saveTestAgentScalarsTraceAsCSV(
 					testAgent.getId(), 
 					Paths.get(dataDir,visitInfoFileName).toString() 
@@ -619,8 +682,8 @@ public class STVRExperiment {
 			var visitedLocations = dataCollector.getTestAgentScalarsTrace(testAgent.getId()).stream()
 				.map(ev -> new Vec3((float) ev.values.get("posx"), 0 , (float) ev.values.get("posz")))
 				.collect(Collectors.toList()) ;
-			var visitedTiles = getCoveredTiles2D(visitedLocations) ;		
-			int covered = (int) visitedTiles.stream().filter(tile -> walkableTiles.contains(tile)).count() ;
+			Result.visitedTiles = getCoveredTiles2D(visitedLocations) ;		
+			int covered = (int) Result.visitedTiles.stream().filter(tile -> walkableTiles.contains(tile)).count() ;
 			Result.areaCoverage = (float) covered / (float) walkableTiles.size() ;
 
 			// get information on attempts on doors:
@@ -644,7 +707,9 @@ public class STVRExperiment {
 			sb.append("\n==	attempts on doors:" + traceTriedDoors) ;
 			sb.append("\n===============") ;
 			sb.append("\n" + Result) ;
-			String reportFileName = levelName + "_" + Result.alg + "_all-info_run" + runNumber + ".txt" ;
+			String reportFileName = levelName + "_" + Result.alg 
+					+ "_" + targetDoor
+					+ "_all-info_run" + runNumber + ".txt" ;
 			writelnToFile(dataDir,reportFileName, sb.toString(),true) ; // echo is true, to also print to screen
 	        
 	        return Result ;
@@ -707,10 +772,11 @@ public class STVRExperiment {
 	
 	//@Test
 	public void test0() throws InterruptedException, IOException {
-		
+		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
 				5000,null,
 				AlgorithmVariant.OnlineMinus) ;
+		*/
 		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2","door6",null,
 				5000,null,
@@ -724,16 +790,24 @@ public class STVRExperiment {
 		*/
 		
 		/*
-		executeTestingTask(1,"ATEST","agent1","sanctuary_1","doorEntrance",null,
+		executeTestingTask(1,"DDO","agent1","sanctuary_1","doorEntrance",null,
 				30000,
 				null,
 				AlgorithmVariant.OnlineSearch) ;
 		*/
 		
 		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3		
-		//executeTestingTask(1,"agent1","durk_1","doorKey4",new Vec3(67f,0,76f),30000,true) ;
+		executeTestingTask(1,"DDO","agent1","durk_1","doorKey4",new Vec3(67f,0,76f),
+				30000,null,
+				AlgorithmVariant.OnlineSearch) ;
 		
-		// subdir: "MutatedFiles\\MOSA\\selectedLevels\\1649941005014";
+		/*
+		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door33",
+				null,
+				//new Vec3(12,0,124),
+				30000,null,
+				AlgorithmVariant.OnlineSearch) ;
+		*/
 
 	}
 	
@@ -752,7 +826,7 @@ public class STVRExperiment {
 				) ;
 	}
 		
-	@Test
+	//@Test
 	public void run_onlineMinus_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
@@ -762,6 +836,45 @@ public class STVRExperiment {
 				ATEST_guidingLocaations,
 				ATEST_SAruntime,
 				AlgorithmVariant.OnlineMinus
+				) ;
+	}
+	
+	@Test
+	public void run_onlineFull_on_DDO_experiment_Test() throws Exception {
+	run_experiment("DDO",
+				LargeLevels_repeatNumberPerRun,
+				"agent1",
+				DDO_levels,
+				DDO_targetDoors,
+				DDO_guidingLocaations,
+				DDO_fullOnline_budget, 
+				AlgorithmVariant.OnlineSearch   
+				) ;
+	}
+	
+	//@Test
+	public void run_onlineMinus_on_DDO_experiment_Test() throws Exception {
+	run_experiment("DDO",
+				LargeLevels_repeatNumberPerRun,
+				"agent1",
+				DDO_levels,
+				DDO_targetDoors,
+				DDO_guidingLocaations,
+				DDO_SAruntime,
+				AlgorithmVariant.OnlineMinus
+				) ;
+	}
+	
+	//@Test
+	public void run_onlineFull_on_LargeRandom_experiment_Test() throws Exception {
+		run_experiment("LargeRandom",
+				LargeLevels_repeatNumberPerRun,
+				"agent1",
+				LargeRandom_levels,
+				LargeRandom_targetDoors,
+				LargeRandom_guidingLocaations,
+				LargeRandom_fullOnline_budget, 
+				AlgorithmVariant.OnlineSearch   
 				) ;
 	}
 
