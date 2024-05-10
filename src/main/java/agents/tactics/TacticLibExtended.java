@@ -693,7 +693,7 @@ public class TacticLibExtended extends TacticLib{
      * buttons, it selects a door based on some policies.
      *  */
   	public static Tactic unlockAgent(BeliefState b, TestAgent agent, String s) {			
-  		var addNewGoal =   action("use prolog to help an agent to untrapped").do1(
+  		var addNewGoal =   action("use prolog to help an agent to unlock itself").do1(
   				(BeliefStateExtended belief)-> {
   					var isLocked = belief.prolog.isLockedInCurrentRoom();
   					String entityId = "";
@@ -708,18 +708,18 @@ public class TacticLibExtended extends TacticLib{
   					
   					
   					System.out.println("is locked in the room: " + isLocked +" id: "+ entityId); 									
-  					Map<String,List<String>> getEnablingButtons = null ;
+  					Map<String,List<String>> enablingButtons = null ;
   					try {
-  						getEnablingButtons = belief.prolog.getEnablingButtons(entityId);
+  						enablingButtons = belief.prolog.getEnablingButtons(entityId);
   					}
   					catch(Exception e) {
-  						getEnablingButtons = new HashMap<>() ;
+  						enablingButtons = new HashMap<>() ;
   					}
   					
-  					System.out.println("get Enabling Doors:size " + getEnablingButtons.size());
+  					System.out.println("#enabling buttons:" + enablingButtons.size());
+  					if(enablingButtons.size()== 0) 
+  						return null;
   					
-  					
-  					if(getEnablingButtons.size()== 0) return null;
   					float distance   = Float.valueOf(0);
   					//this should return the agent current position
   					Vec3 agentPosition = belief.worldmodel.position;
@@ -729,14 +729,14 @@ public class TacticLibExtended extends TacticLib{
   				    // if there is more than one set of door and button, select a set which the door
   					// is near to the agent position. suppose the agent was in its way and faced with 
   				    // the blocked door. So, it should select the one which is near to the agent position
-  				    if(getEnablingButtons.size() == 1) {
-  						var door = getEnablingButtons.keySet().toArray()[0];
+  				    if(enablingButtons.size() == 1) {
+  						var door = enablingButtons.keySet().toArray()[0];
   						System.out.println(door);
   						selectedDoor = door.toString();
   					}else {
-	  					for(int i=0; i< getEnablingButtons.size(); i++) {	
-	  						var door = getEnablingButtons.keySet().toArray()[i];
-	  						var buttons = getEnablingButtons.values().toArray()[i];
+	  					for(int i=0; i< enablingButtons.size(); i++) {	
+	  						var door = enablingButtons.keySet().toArray()[i];
+	  						var buttons = enablingButtons.values().toArray()[i];
 	  						var dist  = Vec3.dist(agentPosition, belief.worldmodel.getElement(door.toString()).position);
 	  						System.out.print("get enabeling door and correspanding button: " + buttons + door );
 	  						if(distance == 0) {
@@ -752,7 +752,7 @@ public class TacticLibExtended extends TacticLib{
   					}
   					
   					// get the set of buttons connected to the selected node
-  					var setOFButtons = getEnablingButtons.get(selectedDoor);
+  					var setOFButtons = enablingButtons.get(selectedDoor);
   					System.out.print("set OF Buttons" + setOFButtons + setOFButtons.size());
   					if(setOFButtons.size()> 1) {
   						//if there are more than one button connected to a door,

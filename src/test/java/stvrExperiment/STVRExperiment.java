@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import agents.LabRecruitsTestAgent;
 import agents.TestSettings;
 import agents.tactics.GoalLibExtended;
+import agents.tactics.TacticLib;
 
 import static agents.TestSettings.*;
 import au.com.bytecode.opencsv.CSVReader;
@@ -45,21 +46,21 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import game.Platform;
 import leveldefUtil.LRFloorMap;
 import leveldefUtil.LRconnectionLogic;
 import myUtils.DebugUtil;
 import game.LabRecruitsTestServer;
-
-
+import world.BeliefState;
 import world.BeliefStateExtended;
+import world.LRNavGraphRepair;
 
 public class STVRExperiment {
 	
 	// ===== common parameters
+	
+	static boolean USE_GRAPHICS = false ;
 	
 	static String projectRootDir = System.getProperty("user.dir") ;
 	
@@ -101,7 +102,7 @@ public class STVRExperiment {
 		"door6", "door6", "door3", "door6"
 	} ;
 	
-	static Vec3[] ATEST_guidingLocaations = {
+	static Vec3[] ATEST_guidingLocations = {
 		null, null, null, null,
 		null, null, null, null
 	} ;
@@ -127,40 +128,75 @@ public class STVRExperiment {
 			"sanctuary_1"
 		  , "durk_1"
 		} ;
+	static String[] DDO_targetDoors = { "doorEntrance", "doorKey4",  } ;
+	//static Vec3[] DDO_guidingLocaations = { null, new Vec3(67f,0,76f) } ;	
+	static Vec3[] DDO_guidingLocations = { null, null } ;	
 	static int[] DDO_fullOnline_budget = { 30000,30000 } ;
 	//static int[] DDO_SAruntime = { 1492, 2680 } ; original
 	static int[] DDO_SAruntime = { 1538, 2483 } ;
-	static String[] DDO_targetDoors = { "doorEntrance", "doorKey4",  } ;
-	//static Vec3[] DDO_guidingLocaations = { null, new Vec3(67f,0,76f) } ;	
-	static Vec3[] DDO_guidingLocaations = { null, null } ;	
 
 	// ================ Large-Random level =================
 
 	static String[] LargeRandom_levels = { 
-		  "FBK_largerandom_R9_cleaned",   // F1
-		  "FBK_largerandom_R9_cleaned",   // F2
-		  "FBK_largerandom_R9_cleaned"   // F3
-		  //"FBK_largerandom_R9_cleaned",  // F4
-		  //"FBK_largerandom_R9_cleaned",  // F5
-		  //"FBK_largerandom_R9_cleaned",  // F6
-		  //"FBK_largerandom_R9_cleaned",  // F7
-		  //"FBK_largerandom_R9_cleaned",  // F8  unsolvable by SA
-		  //"FBK_largerandom_R9_cleaned",  // F9  unsolvable by SA
-		  //"FBK_largerandom_R9_cleaned",  // F10
-		  //"FBK_largerandom_R9_cleaned"   // F11
+		  "FBK_largerandom_R9_cleaned",   
+		  "FBK_largerandom_R9_cleaned",   
+		  "FBK_largerandom_R9_cleaned",   
+		  "FBK_largerandom_R9_cleaned",  
+		  "FBK_largerandom_R9_cleaned",  
+		  "FBK_largerandom_R9_cleaned",  
+		  "FBK_largerandom_R9_cleaned",  
+		  "FBK_largerandom_R9_cleaned",  
+		  "FBK_largerandom_R9_cleaned",  
+		  "FBK_largerandom_R9_cleaned"
+		  //"FBK_largerandom_R9_cleaned"   
 		} ;
 		
+	/* Original targets
+	static String[] LargeRandom_targetDoors = {
+		  "door26",  // F1
+		  "door5",   // F2
+		  "door39",  // F3
+		  "door33",  // F4
+		  "door16",  // F5
+		  "door37",  // F6
+		  "door34",  // F7
+		  "door3",   // F8 unsolvable by SA
+		  "door21",  // F9 unsolvable by SA
+		  "door22",  // F10
+		  "door38"   // F11
+		  }  ;
+	*/
+	static String[] LargeRandom_targetDoors = { // new targets, 10x
+			  "door17",  
+			  "door12",   
+			  "door5",  
+			  "door39",  
+			  "door2",
+			  // ----
+			  "door33",  
+			  "door16",  
+			  "door30",   
+			  "door15",  
+			  "door9"  
+	} ;
+		
+	static Vec3[] LargeRandom_guidingLocations = { null,
+			null, null, null, null, null, 
+			null, null, null, null, null
+			} ;	
+	
 	static int[] LargeRandom_fullOnline_budget = {
-			6000,
-			6000,6000,6000,6000,
-			6000,6000,6000,6000
+			30000,30000,30000,30000,30000,
+			30000,30000,30000,30000,30000
 		} ;	
 	
-	static int[] LargeRandom_SAruntime = { 
-		   //14,   // F1
-		   //113,  // F2
-		   //954,  // F3
-		   //1045, // F4
+	/*
+	// from the orig. experiment:
+	static int[] LargeRandom_SAruntime = {  
+		   14,   // F1
+		   113,  // F2
+		   954,  // F3
+		   1045, // F4
 		   1076, // F5
 		   1827, // F6 
 		   1532, 
@@ -169,20 +205,22 @@ public class STVRExperiment {
 		   1420, // time unknown!
 		   1420 			
 		} ;
+	*/
+	
+	static int[] LargeRandom_SAruntime = {  
+			   47,   // d17 solved
+			   82,   // d12 solved
+			   162,  // d5  solved
+			   333,  // d39 solved
+			   460,  // d2  ... mostly Online could not solve
+			   // ==
+			   453,  // d33 Online could not solve 
+			   217,  // d16 solved
+			   460,  // d30 not solved
+			   470,  // d15 not solved
+			   445,  // d9  not solved			
+			} ;
 		
-	static String[] LargeRandom_targetDoors = {
-		  "door26",  // F1
-		  "door5",   // F2
-		  "door39",  // F3
-		  "door33",  // F4
-		  "door16",  // F5
-		  "door37",  // F6
-		  "door34", "door3", "door21", "door22", "door38"}  ;
-		
-	static Vec3[] LargeRandom_guidingLocaations = { null,
-			null, null, null, null, null, 
-			null, null, null, null, null
-			} ;	
 	
 	// ====
 	
@@ -422,8 +460,7 @@ public class STVRExperiment {
 				+ " " + dtf.format(now)
 				,true) ;	
 		
-		ResultMultiRuns[] results = new ResultMultiRuns[levels.length] ;
-		
+		ResultMultiRuns[] results = new ResultMultiRuns[levels.length] ;		
 		for (int k=0; k<levels.length; k++) {
 			
 			if (algVariant == AlgorithmVariant.OnlineSearch) {
@@ -549,7 +586,11 @@ public class STVRExperiment {
 		var LRconfig = new LabRecruitsConfig(levelName, levelsDir);
 		LRconfig.agent_speed = 0.1f;
 		LRconfig.view_distance = 4f;
-		//LRconfig.view_distance = 10f;
+		if (levelName.contains("largerandom")) {
+			// using different conf for Large-Random:
+			LRconfig.view_distance = 7f;
+		}
+		
 		var environment = new LabRecruitsEnvironment(LRconfig);
 
 		try {
@@ -595,6 +636,8 @@ public class STVRExperiment {
 			// the loop to run the agent:
 			int cycleNumber = 0;
 			long runTime = 0 ;
+			// positions sampled every 10 cycles, to facilitate stuck detection
+			List<Vec3> sampledPositions = new LinkedList<>() ;
 			while (testingTask.getStatus().inProgress()) {
 				long t0 = System.currentTimeMillis() ;
 				if (testAgent.getState().worldmodel.position != null) {
@@ -606,15 +649,19 @@ public class STVRExperiment {
 							new Pair<String,Number>("turn", cycleNumber), 
 							new Pair<String,Number>("tick", 1)));
 				}
-				if (cycleNumber == 1)
+				if (cycleNumber == 1) {
 					Thread.sleep(1500);
+					// force nav-mesh fix here:
+					LRNavGraphRepair.repairMissingEdges(beliefState) ;
+					LRNavGraphRepair.checkUnreachableNodes(beliefState) ;
+				}
 				Thread.sleep(delayBetweenAgentUpateCycles);
 				System.out.println("*** " + cycleNumber + ", " + testAgent.getState().id + " @"
 						+ testAgent.getState().worldmodel.position);
 
 				cycleNumber++;
 				testAgent.update();
-
+				
 				if (beliefState.worldmodel().health <= 0) {
 					DebugUtil.log(">>>> the agent died. Aaaw.");
 				}
@@ -625,6 +672,19 @@ public class STVRExperiment {
 				if (budgetInMs != null && runTime > budgetInMs) {
 					break ;
 				}
+				if (cycleNumber % 100 == 0 && sampledPositions.size() >= 9) {
+					var p0 = sampledPositions.get(0) ;
+					if (sampledPositions.stream().allMatch(p -> Vec3.distSq(p,p0) <= 1f)) {
+						// agent seems to be stuck!
+						DebugUtil.log(">>>> The agent seems to be stuck. Terminating its run.");
+						break ;
+					}
+					sampledPositions.clear();
+				}
+				if (cycleNumber % 10 == 0) {
+					sampledPositions.add(testAgent.getState().worldmodel.position) ;
+				}
+
 			}
 			// the test is done now (either achieving the test-goal, or it exhausts the budget)
 			
@@ -758,7 +818,7 @@ public class STVRExperiment {
 	static public void start() {
 		// TestSettings.USE_SERVER_FOR_TEST = false ;
 		// Uncomment this to make the game's graphic visible:
-		// TestSettings.USE_GRAPHICS = true ;
+		TestSettings.USE_GRAPHICS = USE_GRAPHICS ;
 		String projectRootDir = System.getProperty("user.dir");
 		labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(projectRootDir);
 	}
@@ -768,9 +828,17 @@ public class STVRExperiment {
 		if (labRecruitsTestServer != null)
 			labRecruitsTestServer.close();
 	}
+	
+	@BeforeEach
+	void resetSomeThresholds() {
+		// these are the standard values. Restore it here, because some tests
+		// override them:
+	    TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.5f ;
+		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD =  0.5f ;
+	}
 
 	
-	//@Test
+	@Test
 	public void test0() throws InterruptedException, IOException {
 		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
@@ -797,17 +865,23 @@ public class STVRExperiment {
 		*/
 		
 		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3		
+		/*
 		executeTestingTask(1,"DDO","agent1","durk_1","doorKey4",new Vec3(67f,0,76f),
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
+		*/
 		
-		/*
-		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door33",
+		// d37 problem, seems like the algorihm runs out of node to select??
+		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
+		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
+		// FBK_largerandom_R9_cleaned
+		// FBK_largerandom_samiraorig
+		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door2",
 				null,
-				//new Vec3(12,0,124),
+				//new Vec3(12,0,124), // d33
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
-		*/
+		
 
 	}
 	
@@ -820,7 +894,7 @@ public class STVRExperiment {
 				"agent0",
 				ATEST_levels,
 				ATEST_targetDoors,
-				ATEST_guidingLocaations,
+				ATEST_guidingLocations,
 				ATEST_fullOnline_budget, 
 				AlgorithmVariant.OnlineSearch   
 				) ;
@@ -833,20 +907,20 @@ public class STVRExperiment {
 				"agent0",
 				ATEST_levels,
 				ATEST_targetDoors,
-				ATEST_guidingLocaations,
+				ATEST_guidingLocations,
 				ATEST_SAruntime,
 				AlgorithmVariant.OnlineMinus
 				) ;
 	}
 	
-	@Test
+	// @Test
 	public void run_onlineFull_on_DDO_experiment_Test() throws Exception {
 	run_experiment("DDO",
 				LargeLevels_repeatNumberPerRun,
 				"agent1",
 				DDO_levels,
 				DDO_targetDoors,
-				DDO_guidingLocaations,
+				DDO_guidingLocations,
 				DDO_fullOnline_budget, 
 				AlgorithmVariant.OnlineSearch   
 				) ;
@@ -859,7 +933,7 @@ public class STVRExperiment {
 				"agent1",
 				DDO_levels,
 				DDO_targetDoors,
-				DDO_guidingLocaations,
+				DDO_guidingLocations,
 				DDO_SAruntime,
 				AlgorithmVariant.OnlineMinus
 				) ;
@@ -867,14 +941,31 @@ public class STVRExperiment {
 	
 	//@Test
 	public void run_onlineFull_on_LargeRandom_experiment_Test() throws Exception {
+		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
+		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
 		run_experiment("LargeRandom",
 				LargeLevels_repeatNumberPerRun,
 				"agent1",
 				LargeRandom_levels,
 				LargeRandom_targetDoors,
-				LargeRandom_guidingLocaations,
-				LargeRandom_fullOnline_budget, 
+				LargeRandom_guidingLocations,
+				LargeRandom_SAruntime, 
 				AlgorithmVariant.OnlineSearch   
+				) ;
+	}
+	
+	// @Test
+	public void run_onlineMinus_on_LargeRandom_experiment_Test() throws Exception {
+		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
+		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
+		run_experiment("LargeRandom",
+				LargeLevels_repeatNumberPerRun,
+				"agent1",
+				LargeRandom_levels,
+				LargeRandom_targetDoors,
+				LargeRandom_guidingLocations,
+				LargeRandom_fullOnline_budget, 
+				AlgorithmVariant.OnlineMinus   
 				) ;
 	}
 

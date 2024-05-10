@@ -260,7 +260,6 @@ public class GoalLibExtended extends GoalLib {
 	 * Navigate to the selected button which the id nor the position is not known up
 	 * front.
 	 */
-
 	public static GoalStructure navigateToDoor(BeliefStateExtended b) {
 		return goal("This entity is in visible distance: navigate to door").toSolve((BeliefStateExtended belief) -> {
 
@@ -273,14 +272,20 @@ public class GoalLibExtended extends GoalLib {
 								+ ",distance: "
 								+ Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq());
 
-			if (Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq() <= 1.5
-					&& (belief.evaluateEntity(entity.id, e -> belief.age(e) == 0)))
+			// WP-modification. This original logic is less robust if e.g. the agent somehow cannot get
+			// close to the door. Since all it needs is to see the door, I change it:
+			//
 			//if (Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq() <= 1.5
-			//	&& (belief.evaluateEntity(entity.id, e -> belief.age(e) <= 5)))
+			//		&& (belief.evaluateEntity(entity.id, e -> belief.age(e) == 0)))
+			//
+			// To just checking the time-stamp:
+			//
+			if (belief.age(entity.id) == 0)
 				return true;
 			return false;
 
-		}).withTactic(FIRSTof(TacticLibExtended.navigateToClosestReachableNode(), // try to move to the entity
+		}).withTactic(FIRSTof(
+				TacticLibExtended.navigateToClosestReachableNode(), // try to move to the entity
 				TacticLibExtended.guidedExplore(), // find the entity
 				ABORT())).lift();
 
@@ -360,7 +365,9 @@ public class GoalLibExtended extends GoalLib {
 		System.out.println(" Find corresponding button to open the blocked entity");
 
 		return WHILEDO(
-				(BeliefStateExtended belif) -> GoalLibExtended.checkExploreAndButtons(belif), SEQ(
+				(BeliefStateExtended belif) -> GoalLibExtended.checkExploreAndButtons(belif), 
+				
+				SEQ(
 				/*
 				 * look for a button, if there is a neighbor select one, if not select indirect
 				 * neighbor.after trying all has seen button, the agent will explore the world
@@ -386,10 +393,12 @@ public class GoalLibExtended extends GoalLib {
 				// button is locked
 
 				
-				  SEQ( IFELSE2( GoalLibExtended.navigateTo(b) , SUCCESS() , SEQ(
-				  findingAButtonToUnlockedAgent(b,agent,"door"), GoalLibExtended.navigateTo(b)
-				  ,removeDynamicGoal(agent, "temporaryDoor")			  
-				  ) ) ,interact() )
+				  SEQ( IFELSE2( GoalLibExtended.navigateTo(b) , 
+						  SUCCESS(), 
+						  SEQ(findingAButtonToUnlockedAgent(b,agent,"door"), 
+							  GoalLibExtended.navigateTo(b),
+							  removeDynamicGoal(agent, "temporaryDoor"))),
+					   interact())
 				 
 				,
 
@@ -404,10 +413,8 @@ public class GoalLibExtended extends GoalLib {
 				// if we want to use prolog to unblock the agent
 				
 				  SEQ( 
-						  
 							  IFELSE2(
-								  GoalLibExtended.explorationTo(b.worldmodel.getElement(b.highLevelGragh.
-								  currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity) ,
+								  GoalLibExtended.explorationTo(b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,b.highLevelGragh.currentBlockedEntity) ,
 								  SUCCESS() ,
 								  WHILEDO((BeliefStateExtended belif) -> GoalLibExtended.checkEntityVisibilityPredicate(belif),
 									  SEQ(
@@ -416,9 +423,6 @@ public class GoalLibExtended extends GoalLib {
 											  GoalLibExtended.explorationTo(
 													  b.worldmodel.getElement(b.highLevelGragh.currentBlockedEntity).position,
 													  b.highLevelGragh.currentBlockedEntity)
-											  
-											  
-											  
 										) 
 							  ) 
 						  ),
