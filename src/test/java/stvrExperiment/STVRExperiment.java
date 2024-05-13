@@ -80,9 +80,10 @@ public class STVRExperiment {
 		
 	// ====
 	
-	//static int ATEST_repeatNumberPerRun = 10 ;
-	static int ATEST_repeatNumberPerRun = 3 ;
-	static int LargeLevels_repeatNumberPerRun = 3 ;
+	static int ATEST_repeatNumberPerRun = 10 ;
+	//static int ATEST_repeatNumberPerRun = 3 ;
+	static int LargeLevels_repeatNumberPerRun = 5 ;
+	//static int LargeLevels_repeatNumberPerRun = 3 ;
 	
 	// ================ ATEST levels =================
 	
@@ -233,6 +234,7 @@ public class STVRExperiment {
 	 */
 	static class ResultOneRun {
 		String level ;
+		String goalName ;
 		String alg ;
 		int numberOfConnections ;
 		int runtime ;
@@ -259,7 +261,7 @@ public class STVRExperiment {
 		public String toString() {
 			String z = "== level:" + level ;
 			z +=     "\n== alg  :" + alg ;
-			z +=     "\n== goal :" + (goalsolved ? "ACHIEVED" : "X") ;
+			z +=     "\n== goal " + goalName + ":" + (goalsolved ? "ACHIEVED" : "X") ;
 			z +=     "\n== runtime(sec)  :" + runtime ;
 			z +=     "\n== exploraion-time(sec):" + explorationtime ;
 			z +=     "\n== #door-attempts:" + numOfDoorAttemps ;	
@@ -629,6 +631,7 @@ public class STVRExperiment {
 				beliefState.disabledModelTracking = true ;
 			}
 			Result.level = levelName ;
+			Result.goalName = targetDoor ;
 			
 			long startTime = System.currentTimeMillis();
 			testAgent.registerEvent(new TimeStampedObservationEvent("startTest"));
@@ -949,7 +952,7 @@ public class STVRExperiment {
 				LargeRandom_levels,
 				LargeRandom_targetDoors,
 				LargeRandom_guidingLocations,
-				LargeRandom_SAruntime, 
+				LargeRandom_fullOnline_budget,
 				AlgorithmVariant.OnlineSearch   
 				) ;
 	}
@@ -964,7 +967,7 @@ public class STVRExperiment {
 				LargeRandom_levels,
 				LargeRandom_targetDoors,
 				LargeRandom_guidingLocations,
-				LargeRandom_fullOnline_budget, 
+				LargeRandom_SAruntime,  
 				AlgorithmVariant.OnlineMinus   
 				) ;
 	}
