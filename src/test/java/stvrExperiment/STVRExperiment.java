@@ -82,9 +82,9 @@ public class STVRExperiment {
 	// ====
 	
 	//static int ATEST_repeatNumberPerRun = 10 ;
-	static int ATEST_repeatNumberPerRun = 3 ;
+	static int ATEST_repeatNumberPerRun = 2 ;
 	//static int LargeLevels_repeatNumberPerRun = 5 ;
-	static int LargeLevels_repeatNumberPerRun = 3 ;
+	static int LargeLevels_repeatNumberPerRun = 2 ;
 	
 	// ================ ATEST levels =================
 	
@@ -100,7 +100,8 @@ public class STVRExperiment {
 	} ;
 		
 	static String[] ATEST_targetDoors = {
-		"door1", "door6", "door5", "door4", 
+		"door3", //"door1", 
+		"door6", "door5", "door4", 
 		"door6", "door6", "door3", "door6"
 	} ;
 	
@@ -513,7 +514,7 @@ public class STVRExperiment {
 			long totExperimentTime = (System.currentTimeMillis() - experimentStartTime)/1000 ;
 			float hours = (float) totExperimentTime / 3600f ;
 			appendWritelnToFile(dataDir.toString(),reportFileName,
-				"=== tot experiment time: " + totExperimentTime + "s (" + hours + " hrs"
+				"=== tot experiment time: " + totExperimentTime + "s (" + hours + " hrs)"
 				,true) ;
 	}
 	
@@ -660,9 +661,12 @@ public class STVRExperiment {
 				}
 				if (cycleNumber == 1) {
 					Thread.sleep(1500);
-					// force nav-mesh fix here:
-					LRNavGraphRepair.repairMissingEdges(beliefState) ;
-					LRNavGraphRepair.checkUnreachableNodes(beliefState) ;
+					if (levelName.contains("largerandom") || levelName.contains("BM2021") ) {
+						// force nav-mesh fix here:
+						LRNavGraphRepair.repairMissingEdges(beliefState) ;
+						LRNavGraphRepair.checkUnreachableNodes(beliefState) ;
+					}
+					
 				}
 				Thread.sleep(delayBetweenAgentUpateCycles);
 				System.out.println("*** " + cycleNumber + ", " + testAgent.getState().id + " @"
@@ -848,7 +852,7 @@ public class STVRExperiment {
 	}
 
 	
-	@Test
+	//@Test
 	public void test0() throws InterruptedException, IOException {
 		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff1_R3_1_1_H","door1",null,
@@ -905,7 +909,7 @@ public class STVRExperiment {
 	
 
 	
-	//@Test
+	@Test
 	public void run_onlineFull_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
