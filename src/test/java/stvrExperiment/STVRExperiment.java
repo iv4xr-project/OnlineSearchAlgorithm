@@ -72,6 +72,7 @@ public class STVRExperiment {
 	static int delayBetweenAgentUpateCycles = 100 ; 
 	//static int delayBetweenAgentUpateCycles = 50 ; 
 	
+	
 	/**
 	 * For the purpose of calculating area coverage ({@see #coveredTiles2D}), we pretend the
 	 * agent to be a rectangle of size 2 x assumedExtentOfAgent.
@@ -82,8 +83,8 @@ public class STVRExperiment {
 	
 	//static int ATEST_repeatNumberPerRun = 10 ;
 	static int ATEST_repeatNumberPerRun = 3 ;
-	static int LargeLevels_repeatNumberPerRun = 5 ;
-	//static int LargeLevels_repeatNumberPerRun = 3 ;
+	//static int LargeLevels_repeatNumberPerRun = 5 ;
+	static int LargeLevels_repeatNumberPerRun = 3 ;
 	
 	// ================ ATEST levels =================
 	
@@ -451,6 +452,7 @@ public class STVRExperiment {
 			AlgorithmVariant algVariant
 			) throws IOException, InterruptedException {
 		
+		var experimentStartTime = System.currentTimeMillis() ;
 		Path dataDir = Paths.get(dataDirRoot,benchMarkName) ;
 		if (Files.notExists(dataDir)) {
 			Files.createDirectories(dataDir) ;
@@ -481,34 +483,38 @@ public class STVRExperiment {
 			}
 		}	
 		
-		// special part for LargeRandom, to calculate the sum of the area coverage of all tests
 		boolean allLevelsTheSame = Arrays.stream(levels).filter(z -> z.equals(levels[0])).count() == levels.length ;
-		if (! allLevelsTheSame)
-			return ;
-
-		String levelFile = Paths.get(levelsDir, levels[0] + ".csv").toString() ;
-		var walkableTiles = LRFloorMap.firstFloorWalkableTiles(levelFile) ; 
-		float[] totalAreaCoverage = new float[numberOfRunsPerLevel] ;
-		float sum = 0 ;
-		// calculate the combined coverage for each run:
-		for (int runNr=0; runNr<numberOfRunsPerLevel; runNr++) {
-			var info_0 = results[0].visitedTiles.get(runNr) ; // coverage of target-0
-			// add the coverage of all targets to that of target-0
-			for (int k=1; k<levels.length; k++) {
-				var info_k = results[k].visitedTiles.get(runNr) ; // coverage of target-k
-				// combine:
-				info_0.addAll(info_k) ;
+		if (allLevelsTheSame) {
+			// special part for LargeRandom, to calculate the sum of the area coverage of all tests
+				
+			String levelFile = Paths.get(levelsDir, levels[0] + ".csv").toString() ;
+			var walkableTiles = LRFloorMap.firstFloorWalkableTiles(levelFile) ; 
+			float[] totalAreaCoverage = new float[numberOfRunsPerLevel] ;
+			float sum = 0 ;
+			// calculate the combined coverage for each run:
+			for (int runNr=0; runNr<numberOfRunsPerLevel; runNr++) {
+				var info_0 = results[0].visitedTiles.get(runNr) ; // coverage of target-0
+				// add the coverage of all targets to that of target-0
+				for (int k=1; k<levels.length; k++) {
+					var info_k = results[k].visitedTiles.get(runNr) ; // coverage of target-k
+					// combine:
+					info_0.addAll(info_k) ;
+				}
+				int covered = (int) info_0.stream().filter(tile -> walkableTiles.contains(tile)).count() ;
+				totalAreaCoverage[runNr] = (float) covered / (float) walkableTiles.size() ;
+				sum += totalAreaCoverage[runNr] ;
 			}
-			int covered = (int) info_0.stream().filter(tile -> walkableTiles.contains(tile)).count() ;
-			totalAreaCoverage[runNr] = (float) covered / (float) walkableTiles.size() ;
-			sum += totalAreaCoverage[runNr] ;
-		}
-		float avrgTotalAreaCoverage = sum / (float) numberOfRunsPerLevel ;
+			float avrgTotalAreaCoverage = sum / (float) numberOfRunsPerLevel ;
 		
-		appendWritelnToFile(dataDir.toString(),reportFileName,"=== Average TOTAL area coverage: "
-				+ avrgTotalAreaCoverage
-				,true) ;	
-		
+			appendWritelnToFile(dataDir.toString(),reportFileName,"=== Average TOTAL area coverage: "
+					+ avrgTotalAreaCoverage
+					,true) ;	
+			}
+			long totExperimentTime = (System.currentTimeMillis() - experimentStartTime)/1000 ;
+			float hours = (float) totExperimentTime / 3600f ;
+			appendWritelnToFile(dataDir.toString(),reportFileName,
+				"=== tot experiment time: " + totExperimentTime + "s (" + hours + " hrs"
+				,true) ;
 	}
 	
 	
@@ -587,7 +593,7 @@ public class STVRExperiment {
 		// Launching LR and loading the level:
 		var LRconfig = new LabRecruitsConfig(levelName, levelsDir);
 		LRconfig.agent_speed = 0.1f;
-		LRconfig.view_distance = 4f;
+		LRconfig.view_distance = 4f ;
 		if (levelName.contains("largerandom")) {
 			// using different conf for Large-Random:
 			LRconfig.view_distance = 7f;
@@ -675,6 +681,7 @@ public class STVRExperiment {
 				if (budgetInMs != null && runTime > budgetInMs) {
 					break ;
 				}
+				
 				if (cycleNumber % 100 == 0 && sampledPositions.size() >= 9) {
 					var p0 = sampledPositions.get(0) ;
 					if (sampledPositions.stream().allMatch(p -> Vec3.distSq(p,p0) <= 1f)) {
@@ -841,11 +848,13 @@ public class STVRExperiment {
 	}
 
 	
-	//@Test
+	@Test
 	public void test0() throws InterruptedException, IOException {
+		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff1_R3_1_1_H","door1",null,
 				5000,null,
 				AlgorithmVariant.OnlineSearch) ;
+		*/
 		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
 				5000,null,
@@ -870,12 +879,14 @@ public class STVRExperiment {
 				AlgorithmVariant.OnlineSearch) ;
 		*/
 		
-		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3		
-		/*
-		executeTestingTask(1,"DDO","agent1","durk_1","doorKey4",new Vec3(67f,0,76f),
+		// Vec3 goalPosition = new Vec3(106f,0,81f); // guide for Durk DoorKey3	
+		// new Vec3(67f,0,76f) for doorkey4
+		//TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
+		//BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
+		executeTestingTask(1,"DDO","agent1","durk_1","doorKey4",null,
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
-		*/
+		
 		
 		// d37 problem, seems like the algorihm runs out of node to select??
 		/*
@@ -894,7 +905,7 @@ public class STVRExperiment {
 	
 
 	
-	@Test
+	//@Test
 	public void run_onlineFull_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
@@ -920,7 +931,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	// @Test
+	//@Test
 	public void run_onlineFull_on_DDO_experiment_Test() throws Exception {
 	run_experiment("DDO",
 				LargeLevels_repeatNumberPerRun,
