@@ -102,7 +102,8 @@ public class OnlineSearch {
 				if(e.timestamp == state.worldmodel.timestamp) {
 					var sqdist = Vec3.distSq(state.worldmodel.position,e.position) ;
 					if(sqdist <= SqDistanceThreshord) {
-						try {
+					//if(true) {
+								try {
 							if(e.type.equals(LabEntity.SWITCH)) {			
 								state.prolog.registerButton(e.id);
 							}

@@ -151,7 +151,7 @@ public class BeliefStateExtended extends BeliefState {
 		super.updateState(worldmodel.agentId);
 		// invoke the model-inferencer here:
 		if (! disabledModelTracking)
-			this.lastInteractedButton = OnlineSearch.trackModel(this, this.lastInteractedButton) ;
+		    this.lastInteractedButton = OnlineSearch.trackModel(this, this.lastInteractedButton) ;
 	}
     
 	

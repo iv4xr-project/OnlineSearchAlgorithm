@@ -277,10 +277,12 @@ public class GoalLibExtended extends GoalLib {
 			//
 			//if (Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq() <= 1.5
 			//		&& (belief.evaluateEntity(entity.id, e -> belief.age(e) == 0)))
+			if (Vec3.sub(belief.worldmodel().getFloorPosition(), entity.getFloorPosition()).lengthSq() <= 3.5
+				&& (belief.evaluateEntity(entity.id, e -> belief.age(e) == 0)))
 			//
 			// To just checking the time-stamp:
 			//
-			if (belief.age(entity.id) == 0)
+			//if (belief.age(entity.id) == 0)
 				return true;
 			return false;
 
@@ -310,7 +312,8 @@ public class GoalLibExtended extends GoalLib {
 			if (entityId.contains("door")) {
 				System.out.println("navigateTo a door: "
 						+ Vec3.dist(belief.worldmodel().getFloorPosition(), e.getFloorPosition()));
-				result = Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq() <= 4;
+				//result = Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq() <= 4;
+				result = Vec3.sub(belief.worldmodel().getFloorPosition(), e.getFloorPosition()).lengthSq() <= 3.5;
 
 			} else {
 				System.out.println("navigateTo a button: " + e.id + " ,dis, "

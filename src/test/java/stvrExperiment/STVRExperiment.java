@@ -80,8 +80,8 @@ public class STVRExperiment {
 		
 	// ====
 	
-	static int ATEST_repeatNumberPerRun = 10 ;
-	//static int ATEST_repeatNumberPerRun = 3 ;
+	//static int ATEST_repeatNumberPerRun = 10 ;
+	static int ATEST_repeatNumberPerRun = 3 ;
 	static int LargeLevels_repeatNumberPerRun = 5 ;
 	//static int LargeLevels_repeatNumberPerRun = 3 ;
 	
@@ -841,8 +841,11 @@ public class STVRExperiment {
 	}
 
 	
-	@Test
+	//@Test
 	public void test0() throws InterruptedException, IOException {
+		executeTestingTask(1,"ATEST","agent0","BM2021_diff1_R3_1_1_H","door1",null,
+				5000,null,
+				AlgorithmVariant.OnlineSearch) ;
 		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
 				5000,null,
@@ -875,6 +878,7 @@ public class STVRExperiment {
 		*/
 		
 		// d37 problem, seems like the algorihm runs out of node to select??
+		/*
 		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
 		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
 		// FBK_largerandom_R9_cleaned
@@ -884,13 +888,13 @@ public class STVRExperiment {
 				//new Vec3(12,0,124), // d33
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
-		
+		*/
 
 	}
 	
 
 	
-	//@Test
+	@Test
 	public void run_onlineFull_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
