@@ -815,12 +815,14 @@ public class Prolog {
 //		}
 		
 		List<String> finalPath = null;
-		for(int i=0; i<allRooms.size(); i++) {
+		//System.out.println("pathbetween " + blockedDoorRoom + " to " + currentRoom + ", #rooms=" + allRooms.size()) ;
+		// put a max on path-length search, lese prolog may take a long time to infer
+		int K = Math.min(8, allRooms.size()) ;
+		for(int i=0; i<K ; i++) {
 			var pathBetweenRooms1 = pQueryAll("S",
 					pathBetweenRooms.on(currentRoom,blockedDoorRoom,"S",i)
 					   );
-			
-			System.out.println("pathbetween to room" + pathBetweenRooms1);
+			System.out.println("pathbetween length " + i + ":" + pathBetweenRooms1);
 			if(!pathBetweenRooms1.isEmpty()) { finalPath= pathBetweenRooms1;  break;}
 		}
 		

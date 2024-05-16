@@ -82,9 +82,9 @@ public class STVRExperiment {
 	// ====
 	
 	//static int ATEST_repeatNumberPerRun = 10 ;
-	static int ATEST_repeatNumberPerRun = 2 ;
+	static int ATEST_repeatNumberPerRun = 3 ;
 	//static int LargeLevels_repeatNumberPerRun = 5 ;
-	static int LargeLevels_repeatNumberPerRun = 2 ;
+	static int LargeLevels_repeatNumberPerRun = 3 ;
 	
 	// ================ ATEST levels =================
 	
@@ -590,6 +590,7 @@ public class STVRExperiment {
 			) throws InterruptedException, IOException {
 
 		System.out.println(">>> Start a test run ...");
+		startLR() ;
 		
 		// Launching LR and loading the level:
 		var LRconfig = new LabRecruitsConfig(levelName, levelsDir);
@@ -602,16 +603,19 @@ public class STVRExperiment {
 		
 		var environment = new LabRecruitsEnvironment(LRconfig);
 
+		if (TestSettings.USE_GRAPHICS) {
+			System.out.println(
+					"You can drag then game window elsewhere for beter viewing. Then hit RETURN to continue.");
+			new Scanner(System.in).nextLine();
+		}
+
+		BeliefStateExtended beliefState = null ;
+		
 		try {
-			if (TestSettings.USE_GRAPHICS) {
-				System.out.println(
-						"You can drag then game window elsewhere for beter viewing. Then hit RETURN to continue.");
-				new Scanner(System.in).nextLine();
-			}
 			
 			// preparing and creating the test agent; including prepping its state, data collector, etc:
 			
-			var beliefState = new BeliefStateExtended();
+			beliefState = new BeliefStateExtended();
 
 			var prolog = new Prolog(beliefState);
 			var testAgent = new LabRecruitsTestAgent(agentName) 
@@ -790,6 +794,8 @@ public class STVRExperiment {
 			
 		} finally {
 			environment.close();
+			beliefState.prolog().prolog.clearTheory() ;
+			closeLR() ;
 		}
 
 	}
@@ -828,19 +834,20 @@ public class STVRExperiment {
 	private static LabRecruitsTestServer labRecruitsTestServer;
 
 	
-	@BeforeAll
-	static public void start() {
+	static public void startLR() {
 		// TestSettings.USE_SERVER_FOR_TEST = false ;
 		// Uncomment this to make the game's graphic visible:
+		System.out.println(">>>> launching LR.") ;
 		TestSettings.USE_GRAPHICS = USE_GRAPHICS ;
 		String projectRootDir = System.getProperty("user.dir");
 		labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(projectRootDir);
 	}
 
-	@AfterAll
-	static void close() {
-		if (labRecruitsTestServer != null)
+	static void closeLR() {
+		if (labRecruitsTestServer != null) {
+			System.out.println(">>>> closing LR.") ;
 			labRecruitsTestServer.close();
+		}
 	}
 	
 	@BeforeEach
@@ -855,10 +862,11 @@ public class STVRExperiment {
 	//@Test
 	public void test0() throws InterruptedException, IOException {
 		/*
-		executeTestingTask(1,"ATEST","agent0","BM2021_diff1_R3_1_1_H","door1",null,
+		executeTestingTask(1,"ATEST","agent0","BM2021_diff2_R7_2_2","door6",null,
 				5000,null,
 				AlgorithmVariant.OnlineSearch) ;
 		*/
+		
 		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff3_R4_2_2_M","door3",null,
 				5000,null,
@@ -887,23 +895,32 @@ public class STVRExperiment {
 		// new Vec3(67f,0,76f) for doorkey4
 		//TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
 		//BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
+		/*
 		executeTestingTask(1,"DDO","agent1","durk_1","doorKey4",null,
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
-		
+		*/
 		
 		// d37 problem, seems like the algorihm runs out of node to select??
-		/*
+		
 		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
 		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
 		// FBK_largerandom_R9_cleaned
 		// FBK_largerandom_samiraorig
-		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door2",
+		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door16",
 				null,
 				//new Vec3(12,0,124), // d33
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
-		*/
+		
+		
+		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door16",
+				null,
+				//new Vec3(12,0,124), // d33
+				30000,null,
+				AlgorithmVariant.OnlineSearch) ;
+				
+		
 
 	}
 	
@@ -961,7 +978,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	//@Test
+	// @Test
 	public void run_onlineFull_on_LargeRandom_experiment_Test() throws Exception {
 		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
 		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
