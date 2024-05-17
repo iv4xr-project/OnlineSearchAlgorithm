@@ -84,7 +84,7 @@ public class STVRExperiment {
 	//static int ATEST_repeatNumberPerRun = 10 ;
 	static int ATEST_repeatNumberPerRun = 3 ;
 	//static int LargeLevels_repeatNumberPerRun = 5 ;
-	static int LargeLevels_repeatNumberPerRun = 2 ;
+	static int LargeLevels_repeatNumberPerRun = 3 ;
 	
 	// ================ ATEST levels =================
 	
@@ -146,12 +146,12 @@ public class STVRExperiment {
 		  "FBK_largerandom_R9_cleaned",   
 		  "FBK_largerandom_R9_cleaned",  
 		  "FBK_largerandom_R9_cleaned",  
+		  
 		  "FBK_largerandom_R9_cleaned",  
 		  "FBK_largerandom_R9_cleaned",  
-		  "FBK_largerandom_R9_cleaned",  
+		  "FBK_largerandom_R9_cleaned",
 		  "FBK_largerandom_R9_cleaned",  
 		  "FBK_largerandom_R9_cleaned"
-		  //"FBK_largerandom_R9_cleaned"   
 		} ;
 		
 	/* Original targets
@@ -183,9 +183,18 @@ public class STVRExperiment {
 			  "door9"  
 	} ;
 		
-	static Vec3[] LargeRandom_guidingLocations = { null,
-			null, null, null, null, null, 
-			null, null, null, null, null
+	static Vec3[] LargeRandom_guidingLocations = { 
+			null, 
+			null, 
+			null, 
+			null, 
+			new Vec3(107,0,104), //d2
+			// ----
+			new Vec3(12,0,124),  //d33
+			new Vec3(84,0,81),   //d16 
+			new Vec3(104,0,156), //d30
+			new Vec3(144,0,61),  // d15
+			new Vec3(144,0,118)  //d9
 			} ;	
 	
 	static int[] LargeRandom_fullOnline_budget = {
@@ -912,9 +921,13 @@ public class STVRExperiment {
 		//new Vec3(104,0,178), // d37
 		//new Vec3(107,0,104), // d2
 		//new Vec3(72,0,124), // d5
+		//new Vec3(84,0,81),  //d16 
+		//new Vec3(104,0,156), //d30
+		//new Vec3(144,0,118)   //d9
+		//new Vec3(144,0,61)   //d15
 		
-		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door37",
-				new Vec3(104,0,178),		
+		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door15",
+				new Vec3(144,0,57),		
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
 		
@@ -957,7 +970,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	@Test
+	//@Test
 	public void run_onlineFull_on_DDO_experiment_Test() throws Exception {
 	run_experiment("DDO",
 				LargeLevels_repeatNumberPerRun,
@@ -983,7 +996,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	// @Test
+	//@Test
 	public void run_onlineFull_on_LargeRandom_experiment_Test() throws Exception {
 		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
 		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
