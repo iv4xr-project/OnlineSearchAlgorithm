@@ -84,7 +84,7 @@ public class STVRExperiment {
 	//static int ATEST_repeatNumberPerRun = 10 ;
 	static int ATEST_repeatNumberPerRun = 3 ;
 	//static int LargeLevels_repeatNumberPerRun = 5 ;
-	static int LargeLevels_repeatNumberPerRun = 3 ;
+	static int LargeLevels_repeatNumberPerRun = 2 ;
 	
 	// ================ ATEST levels =================
 	
@@ -907,26 +907,31 @@ public class STVRExperiment {
 		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
 		// FBK_largerandom_R9_cleaned
 		// FBK_largerandom_samiraorig
+		//new Vec3(12,0,124), // d33
+		//new Vec3(108,0,145), // d34
+		//new Vec3(104,0,178), // d37
+		//new Vec3(107,0,104), // d2
+		//new Vec3(72,0,124), // d5
+		
+		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door37",
+				new Vec3(104,0,178),		
+				30000,null,
+				AlgorithmVariant.OnlineSearch) ;
+		
+		/*
 		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door16",
 				null,
 				//new Vec3(12,0,124), // d33
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
-		
-		
-		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door16",
-				null,
-				//new Vec3(12,0,124), // d33
-				30000,null,
-				AlgorithmVariant.OnlineSearch) ;
-				
+		*/
 		
 
 	}
 	
 
 	
-	@Test
+	//@Test
 	public void run_onlineFull_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
@@ -952,7 +957,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	//@Test
+	@Test
 	public void run_onlineFull_on_DDO_experiment_Test() throws Exception {
 	run_experiment("DDO",
 				LargeLevels_repeatNumberPerRun,

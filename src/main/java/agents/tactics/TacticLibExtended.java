@@ -195,20 +195,26 @@ public class TacticLibExtended extends TacticLib{
 								selectedNode = i;	
 								//considering agent position and nearest node to the goal position
 								if(goalPosition != null) {
-								distances.add(y);
-								distances.add(goalDistance);}
+								   distances.add(y);
+								   distances.add(goalDistance);
+								}
 							}
 							else {	
 								if(goalPosition == null) {
-							//just consider the nearest node to the agent position
-								if(y>distance) { distance = y; selectedNode = i; }
+							        //just consider the nearest node to the agent position
+									// WP: this looks to favor nodes furthest from the agent...
+								    if(y>distance) { distance = y; selectedNode = i; }
 								}else {
-							//	System.out.println("distances"+ belief.highLevelGragh.entities.get(i).id+ distances.get(0) +","+ distances.get(1) +","+ y +","+  goalDistance);
-							// considering agent position and nearest node to the goal position
+							     //	System.out.println("distances"+ belief.highLevelGragh.entities.get(i).id+ distances.get(0) +","+ distances.get(1) +","+ y +","+  goalDistance);
+							     // considering agent position and nearest node to the goal position
 									System.out.println(">>>>>>goal distance: " + goalId + "previous dist : " + distances.get(1) + "new dist: " + goalDistance);
 									if((goalDistance < distances.get(1))  ) {		
-									distances.set(0, y); distances.set(1, goalDistance);  selectedNode = i; 
-									}	}							
+									    distances.set(0, y); distances.set(1, goalDistance);  
+									    selectedNode = i;
+									    //System.out.println(">>>>>* goal:" + goalPosition + ", selected-node:" + belief.highLevelGragh.vertices.get(i));
+										
+									}	
+								}							
 							}
 						}					
 					} 
@@ -251,8 +257,8 @@ public class TacticLibExtended extends TacticLib{
 									selectedNode = element;
 									//considering agent position and nearest node to the goal position
 									if(goalPosition != null) {
-									distances.add(y);
-									distances.add(goalDistance);}
+									   distances.add(y);
+									   distances.add(goalDistance);}
 								}
 								else {
 									if(goalPosition == null) {
@@ -262,7 +268,9 @@ public class TacticLibExtended extends TacticLib{
 										// considering agent position and nearest node to the goal position
 										System.out.println(">>>>>>goal distance: " + goalId + "previous dist : " + distances.get(1) + "new dist: " + goalDistance);
 										if(goalDistance < distances.get(1) ) {
-											distances.set(0, y); distances.set(1, goalDistance);  selectedNode = element; 
+											distances.set(0, y); distances.set(1, goalDistance);  
+											selectedNode = element; 
+										    System.out.println(">>>>** goal:" + goalPosition + ", selected-node:" + belief.highLevelGragh.vertices.get(element));
 											}
 										}
 								}
@@ -311,7 +319,8 @@ public class TacticLibExtended extends TacticLib{
 										// considering agent position and nearest node to the goal position
 											if((y>distances.get(0) && goalDistance < distances.get(1)) || 
 												(y<distances.get(0) && goalDistance < distances.get(1)) ) {
-												distances.set(0, y); distances.set(1, goalDistance);  selectedNode = j; 
+												distances.set(0, y); distances.set(1, goalDistance);  
+												selectedNode = j; 
 											}
 										}
 									}
@@ -325,11 +334,13 @@ public class TacticLibExtended extends TacticLib{
 					belief.highLevelGragh.entities.forEach(e -> System.out.println("entites id : " + e.id + " statuse: "+belief.isOpen(e.id)));
 					
 					
-					
-					
 					//if there are some unvisited doors in the neighbors, we give the priority to select between them.
 					System.out.println("There is more than one door in nighberhood : " +doors.size() );
-					if(!doors.isEmpty() && !belief.highLevelGragh.entities.get(tempSelectedNode).id.contains("door")) {							
+					//
+					// WP MODIFICATION; only prioritize door in neighborhood if goal-position is not given:
+					//
+					if(belief.highLevelGragh.goalPosition == null
+							&& !doors.isEmpty() && !belief.highLevelGragh.entities.get(tempSelectedNode).id.contains("door")) {							
 						if(doors.size()>1) {
 							
 							distance = 0;	
@@ -1313,15 +1324,36 @@ public class TacticLibExtended extends TacticLib{
 
     			. on((BeliefState belief) -> {
     				 if(memo.stateIs("S0")) {
+    					 var belief_ = (BeliefStateExtended) belief ;
     					 // in this state we must decide a new exploration target:
 
                          //get the location of the closest unexplored node
         				 var position = belief.worldmodel().getFloorPosition() ;
         				 //System.out.println(">>> #explored nodes:" + belief.pathfinder.numberOfSeen()) ;
-        				 var path = belief.pathfinder().explore(position,BeliefState.DIST_TO_FACE_THRESHOLD) ;
+        				 List<Integer> path = null ;
+        				 if (belief_.highLevelGragh.goalPosition == null) {
+               				 path = belief.pathfinder().explore(position,BeliefState.DIST_TO_FACE_THRESHOLD) ;       					 
+        				 }
+        				 else {
+        					 List<Integer> frontiers = belief.pathfinder().getFrontier() ;
+        					 var gx = belief_.highLevelGragh.goalPosition ;
+        					 frontiers.sort((i,k)
+        							 -> Float.compare(
+        									 Vec3.distSq(gx,  belief.pathfinder().vertices.get(i)),
+        									 Vec3.distSq(gx,  belief.pathfinder().vertices.get(k)))
+        							 ) ;
+        					 for (int i : frontiers) {
+        						 var v = belief.pathfinder().vertices.get(i) ;
+        						 path = belief.pathfinder().findPath(position,v,BeliefState.DIST_TO_FACE_THRESHOLD) ;
+        						 if (path != null) break ;
+        					 }
+        				 }
+        				  
 
         				 if (path==null || path.isEmpty()) {
-        					memo.moveState("exhausted") ;
+        					// WP MODIFICATION, don't move it to exhausted, as the tactic will then get stuck
+        					// in that state
+        					// memo.moveState("exhausted") ;
                             System.out.println("### no new and reachable navigation point found; agent is @" + belief.worldmodel.position) ;
                             return null ;
         				 }
