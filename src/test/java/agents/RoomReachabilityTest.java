@@ -17,6 +17,7 @@ import environments.LabRecruitsConfig;
 import environments.LabRecruitsEnvironment;
 import eu.iv4xr.framework.mainConcepts.TestDataCollector;
 import eu.iv4xr.framework.mainConcepts.WorldEntity;
+import eu.iv4xr.framework.spatial.Vec3;
 import helperclasses.datastructures.linq.QArrayList;
 import logger.JsonLoggerInstrument;
 import nl.uu.cs.aplib.mainConcepts.Environment;
@@ -49,7 +50,7 @@ public class RoomReachabilityTest {
     static void start() {
     	// TestSettings.USE_SERVER_FOR_TEST = false ;
     	// Uncomment this to make the game's graphic visible:
-    	//TestSettings.USE_GRAPHICS = true ;
+    	// TestSettings.USE_GRAPHICS = true ;
     	String labRecruitesExeRootDir = System.getProperty("user.dir") ;
     	labRecruitsTestServer = TestSettings.start_LabRecruitsTestServer(labRecruitesExeRootDir) ;
     }
@@ -146,6 +147,45 @@ public class RoomReachabilityTest {
 	        assertTrue(testAgent.success());
 	        // close
 	        testAgent.printStatus();
+        }
+        finally { environment.close(); }
+    }
+    
+    
+    
+    //@Test
+    public void test0() throws InterruptedException {
+
+    	var buttonToTest = "button1" ;
+    	var doorToTest = "door1" ;
+
+        // Create an environment
+    	var config = new LabRecruitsConfig("buttons_doors_1") ;
+    	config.light_intensity = 0.3f ;
+    	var environment = new LabRecruitsEnvironment(config);
+        if(USE_INSTRUMENT) instrument(environment) ;
+
+        try {
+        	if(TestSettings.USE_GRAPHICS) {
+        		System.out.println("You can drag then game window elsewhere for beter viewing. Then hit RETURN to continue.") ;
+        		new Scanner(System.in) . nextLine() ;
+        	}
+        	
+        	var o = environment.observe("agent1") ;
+        	System.out.println(">>> p = " + o.position) ;
+        	environment.observe("agent1") ;
+        	environment.observe("agent1") ;
+        	o = environment.moveToward("agent1", o.position, new Vec3(1,0,5f)) ;
+        	System.out.println(">>> p = " + o.position) ;
+        	o = environment.observe("agent1") ;
+        	System.out.println(">>> p = " + o.position) ;
+        	Thread.sleep(5000);
+        	o = environment.observe("agent1") ;
+        	System.out.println(">>> p = " + o.position) ;
+        	
+	       // environment.moveToward(null, null, null)
+
+	        
         }
         finally { environment.close(); }
     }

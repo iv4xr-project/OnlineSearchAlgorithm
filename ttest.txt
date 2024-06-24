@@ -1,0 +1,66 @@
+    Search mean: 0.9052631578947368, stdev: 0.22354484822731896
+      ** t-test   Search vs SearchMin, p=0.06443188753664304
+      ** wilcoxon Search vs SearchMin, p=0.020210535712797628
+      ** t-test   Search vs Random, p=0.0015742876821244435
+      ** wilcoxon Search vs Random, p=0.00216583400102514
+      ** t-test   Search vs Evo, p=8.491473972348896e-05
+      ** wilcoxon Search vs Evo, p=0.0009618222539686676
+      ** t-test   Search vs MCTS, p=0.0012855503080697855
+      ** wilcoxon Search vs MCTS, p=0.002078847936935441
+      ** t-test   Search vs Q, p=5.857744716357011e-05
+      ** wilcoxon Search vs Q, p=0.0009618222539686676
+    SearchMin mean: 0.7052631578947368, stdev: 0.38453483068648064
+      ** t-test   SearchMin vs Search, p=0.06443188753664304
+      ** wilcoxon SearchMin vs Search, p=0.020210535712797628
+      ** t-test   SearchMin vs Random, p=0.23647370697547335
+      ** wilcoxon SearchMin vs Random, p=0.34447227396873026
+      ** t-test   SearchMin vs Evo, p=0.04973932345643919
+      ** wilcoxon SearchMin vs Evo, p=0.05539216468655298
+      ** t-test   SearchMin vs MCTS, p=0.18103325142966603
+      ** wilcoxon SearchMin vs MCTS, p=0.21987368470854018
+      ** t-test   SearchMin vs Q, p=0.03280254512645371
+      ** wilcoxon SearchMin vs Q, p=0.09118779772105347
+    Random mean: 0.5526315789473685, stdev: 0.3760856859989441
+      ** t-test   Random vs Search, p=0.0015742876821244435
+      ** wilcoxon Random vs Search, p=0.00216583400102514
+      ** t-test   Random vs SearchMin, p=0.23647370697547335
+      ** wilcoxon Random vs SearchMin, p=0.34447227396873026
+      ** t-test   Random vs Evo, p=0.40749571437864385
+      ** wilcoxon Random vs Evo, p=0.43188067365799454
+      ** t-test   Random vs MCTS, p=0.8405087006144375
+      ** wilcoxon Random vs MCTS, p=0.8201374695011017
+      ** t-test   Random vs Q, p=0.2959087526951384
+      ** wilcoxon Random vs Q, p=0.15158090848642497
+    Evo mean: 0.4473684210526316, stdev: 0.37748254899033906
+      ** t-test   Evo vs Search, p=8.491473972348896e-05
+      ** wilcoxon Evo vs Search, p=0.0009618222539686676
+      ** t-test   Evo vs SearchMin, p=0.04973932345643919
+      ** wilcoxon Evo vs SearchMin, p=0.05539216468655298
+      ** t-test   Evo vs Random, p=0.40749571437864385
+      ** wilcoxon Evo vs Random, p=0.43188067365799454
+      ** t-test   Evo vs MCTS, p=0.5476237787254343
+      ** wilcoxon Evo vs MCTS, p=0.2928809725606021
+      ** t-test   Evo vs Q, p=0.8083556372437818
+      ** wilcoxon Evo vs Q, p=0.6366016325636008
+    MCTS mean: 0.5263157894736841, stdev: 0.40241652323400584
+      ** t-test   MCTS vs Search, p=0.0012855503080697855
+      ** wilcoxon MCTS vs Search, p=0.002078847936935441
+      ** t-test   MCTS vs SearchMin, p=0.18103325142966603
+      ** wilcoxon MCTS vs SearchMin, p=0.21987368470854018
+      ** t-test   MCTS vs Random, p=0.8405087006144375
+      ** wilcoxon MCTS vs Random, p=0.8201374695011017
+      ** t-test   MCTS vs Evo, p=0.5476237787254343
+      ** wilcoxon MCTS vs Evo, p=0.2928809725606021
+      ** t-test   MCTS vs Q, p=0.41267694457434845
+      ** wilcoxon MCTS vs Q, p=0.10247043485974937
+    Q mean: 0.4157894736842105, stdev: 0.39770811552236973
+      ** t-test   Q vs Search, p=5.857744716357011e-05
+      ** wilcoxon Q vs Search, p=0.0009618222539686676
+      ** t-test   Q vs SearchMin, p=0.03280254512645371
+      ** wilcoxon Q vs SearchMin, p=0.09118779772105347
+      ** t-test   Q vs Random, p=0.2959087526951384
+      ** wilcoxon Q vs Random, p=0.15158090848642497
+      ** t-test   Q vs Evo, p=0.8083556372437818
+      ** wilcoxon Q vs Evo, p=0.6366016325636008
+      ** t-test   Q vs MCTS, p=0.41267694457434845
+      ** wilcoxon Q vs MCTS, p=0.10247043485974937

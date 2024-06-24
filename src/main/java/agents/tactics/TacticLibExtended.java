@@ -718,7 +718,7 @@ public class TacticLibExtended extends TacticLib{
   					}
   					
   					
-  					System.out.println("is locked in the room: " + isLocked +" id: "+ entityId); 									
+  					System.out.println("is locked in the room: " + isLocked +", id: "+ entityId); 									
   					Map<String,List<String>> enablingButtons = null ;
   					try {
   						enablingButtons = belief.prolog.getEnablingButtons(entityId);

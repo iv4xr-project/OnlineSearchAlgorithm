@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import agents.LabRecruitsTestAgent;
 import agents.TestSettings;
 import agents.tactics.GoalLibExtended;
+import agents.tactics.OnlineSearch;
 import agents.tactics.TacticLib;
 
 import static agents.TestSettings.*;
@@ -70,6 +71,8 @@ public class STVRExperiment {
 	
 	// in ms
 	static int delayBetweenAgentUpateCycles = 100 ; 
+	//static int delayBetweenAgentUpateCycles = 150 ; 
+	
 	//static int delayBetweenAgentUpateCycles = 50 ; 
 	
 	
@@ -699,17 +702,20 @@ public class STVRExperiment {
 					break ;
 				}
 				
-				if (cycleNumber % 100 == 0 && sampledPositions.size() >= 9) {
-					var p0 = sampledPositions.get(0) ;
-					if (sampledPositions.stream().allMatch(p -> Vec3.distSq(p,p0) <= 1f)) {
-						// agent seems to be stuck!
-						DebugUtil.log(">>>> The agent seems to be stuck. Terminating its run.");
-						break ;
-					}
-					sampledPositions.clear();
-				}
-				if (cycleNumber % 10 == 0) {
+				// mechanism to detect no-progess
+				int noProgressSamplingInterval = 10 ;
+				//int noProgressSamplingInterval = 50 ;
+				if (cycleNumber % noProgressSamplingInterval == 0) {
 					sampledPositions.add(testAgent.getState().worldmodel.position) ;
+					if (sampledPositions.size() >= 10) {
+						var p0 = sampledPositions.get(0) ;
+						if (sampledPositions.stream().allMatch(p -> Vec3.distSq(p,p0) <= 1f)) {
+							// agent seems to be stuck!
+							DebugUtil.log(">>>> The agent seems to be stuck. Terminating its run.");
+							break ;
+						}
+						sampledPositions.clear();
+					}
 				}
 
 			}
@@ -868,7 +874,7 @@ public class STVRExperiment {
 	}
 
 	
-	//@Test
+	@Test
 	public void test0() throws InterruptedException, IOException {
 		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff2_R7_2_2","door6",null,
@@ -914,6 +920,7 @@ public class STVRExperiment {
 		
 		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
 		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
+		//BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 1f ;
 		// FBK_largerandom_R9_cleaned
 		// FBK_largerandom_samiraorig
 		//new Vec3(12,0,124), // d33
@@ -927,7 +934,8 @@ public class STVRExperiment {
 		//new Vec3(144,0,61)   //d15
 		
 		executeTestingTask(1,"LargeRandom","agent1","FBK_largerandom_R9_cleaned","door15",
-				new Vec3(144,0,57),		
+				new Vec3(144,0,82),		
+				//new Vec3(144,0,78),		
 				30000,null,
 				AlgorithmVariant.OnlineSearch) ;
 		
