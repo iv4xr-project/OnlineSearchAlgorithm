@@ -1,0 +1,25 @@
+
+===============
+== Inferred MODEL:
+buttons: []
+doors  : []
+rooms  : []
+== Ground-truth connection logic: [<button34,door34>, <button10,door10>, <button11,door11>, <button12,door12>, <button40,door40>, <button29,door29>, <button42,door42>, <button38,door38>, <button41,door41>, <button33,door33>, <button35,door35>, <button30,door30>, <button13,door13>, <button26,door26>, <button24,door24>, <button36,door36>, <button39,door39>, <button14,door14>, <button15,door15>, <button23,door23>, <button19,door19>, <button32,door32>, <button25,door25>, <button27,door27>, <buttonQuestGoal1,doorToSouthWing>, <button20,door20>, <button28,door28>, <button37,door37>, <button31,door31>, <button21,door21>, <button44,door44>, <button22,door22>, <button2,door2>, <button3,door3>, <button1,door1>, <buttonLever,doorGuardian3>, <button9,door9>, <button8,door8>, <buttonLever,doorEntrance>, <button6,door6>, <button7,door7>, <button5,door5>, <buttonLever,doorGuardian1>, <buttonLever,doorGuardian2>, <buttonKeyToEastWing,doorCenter2>, <buttonKeyToEastWing,doorCenter1>]
+== MODEL's high-level nav-graph edges: [doorEntrance, door2, button2, door1, button1, button37, door36, doorCenter1, doorCenter2, button36, door37, buttonKeyToEastWing, button38, door38, door39, button39, button33, door33, button42, door42, button40][door2, doorEntrance, button2, door1, button1][button2, doorEntrance, door2, door1, button1][door1, doorEntrance, door2, button2, button1][button1, doorEntrance, door2, button2, door1][button37, doorEntrance, door36, button36, door37, button38, door38][door36, doorEntrance, button37, button36, door37, buttonKeyToEastWing, button38, door38][doorCenter1, doorEntrance][doorCenter2, doorEntrance][button36, doorEntrance, button37, door36, door37, button38, door38][door37, doorEntrance, button37, door36, button36][buttonKeyToEastWing, doorEntrance, door36][button38, doorEntrance, button33, door33, button37, door36, button36, door38, door39, button39][door38, doorEntrance, button37, door36, button36, button38, door39, button39][door39, doorEntrance, button42, door42, button40, button38, door38, button39][button39, doorEntrance, button42, door42, button40, button38, door38, door39][button33, doorEntrance, door33, button38][door33, button33, doorEntrance, button38][button42, doorEntrance, door42, button40, door39, button39][door42, doorEntrance, button42, button40, door39, button39][button40, doorEntrance, button42, door42, door39, button39]
+==	attempts on doors:[doorEntrance]
+===============
+== level:sanctuary_1
+== alg  :OnlineMinus
+== goal doorEntrance:X
+== runtime(sec)  :264
+== exploraion-time(sec):73
+== #door-attempts:1
+== #turns        :1200
+== #rooms found  :0
+== #doors found  :0/46
+== #buttons found:0/43
+== #connections  :46
+==    inferred:0
+==    correct :0
+==    wrong   :0
+== area-cov      :0.2632613

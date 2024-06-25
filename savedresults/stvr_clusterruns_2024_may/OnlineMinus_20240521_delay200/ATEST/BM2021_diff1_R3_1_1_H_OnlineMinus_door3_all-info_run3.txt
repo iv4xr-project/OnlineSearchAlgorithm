@@ -1,0 +1,25 @@
+
+===============
+== Inferred MODEL:
+buttons: []
+doors  : []
+rooms  : []
+== Ground-truth connection logic: [<button3,door2>, <button2,door3>, <button1,door1>, <button6,door4>]
+== MODEL's high-level nav-graph edges: [button2, button3][button3, button2, door2, button1][door2, button3, button1, button5][button1, button3, door2, button5][button5, door2, button1, door4][door4, button5]
+==	attempts on doors:[door2, door4]
+===============
+== level:BM2021_diff1_R3_1_1_H
+== alg  :OnlineMinus
+== goal door3:X
+== runtime(sec)  :89
+== exploraion-time(sec):10
+== #door-attempts:2
+== #turns        :400
+== #rooms found  :0
+== #doors found  :0/4
+== #buttons found:0/5
+== #connections  :4
+==    inferred:0
+==    correct :0
+==    wrong   :0
+== area-cov      :0.4888889

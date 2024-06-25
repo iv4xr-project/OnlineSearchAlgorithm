@@ -1,0 +1,29 @@
+
+===============
+== Inferred MODEL:
+buttons: [button3, button2]
+doors  : [door26]
+rooms  : [room0]
+  doors and buttons in room0:
+      [door26]
+      [button3, button2]
+conections: button2 toggles door26
+== Ground-truth connection logic: [<button2,door23>, <button2,door15>, <button2,door17>, <button2,door18>, <button48,door11>, <button49,door15>, <button69,door18>, <button69,door19>, <button3,door29>, <button12,door16>, <button49,door14>, <button28,door30>, <button69,door17>, <button70,door15>, <button30,door15>, <button2,door26>, <button48,door21>, <button53,door14>, <button48,door15>, <button24,door10>, <button69,door14>, <button71,door22>, <button69,door35>, <button35,door23>, <button2,door27>, <button3,door19>, <button53,door28>, <button71,door14>, <button70,door39>, <button2,door28>, <button23,door10>, <button53,door24>, <button30,door20>, <button3,door17>, <button3,door18>, <button37,door37>, <button48,door18>, <button53,door19>, <button47,door11>, <button70,door18>, <button25,door20>, <button64,door19>, <button69,door30>, <button71,door36>, <button3,door26>, <button12,door28>, <button47,door19>, <button77,door31>, <button48,door25>, <button32,door36>, <button86,door38>, <button2,door32>, <button3,door15>, <button3,door4>, <button3,door33>, <button49,door13>, <button70,door17>, <button28,door34>, <button49,door28>, <button12,door4>, <button3,door11>, <button53,door12>, <button25,door14>, <button69,door22>, <button53,door11>, <button3,door14>, <button2,door4>, <button3,door5>, <button12,door3>, <button2,door5>, <button12,door2>, <button3,door0>, <button12,door0>, <button2,door0>, <button3,door1>, <button2,door1>, <button3,door8>, <button2,door8>, <button3,door9>, <button2,door9>, <button3,door7>, <button2,door7>, <button12,door8>, <button12,door6>, <button70,door7>, <button70,door5>, <button70,door4>, <button70,door2>, <button70,door1>, <button70,door0>, <button69,door8>, <button69,door7>, <button69,door5>, <button69,door4>, <button70,door9>, <button53,door5>, <button53,door4>, <button53,door1>, <button53,door0>, <button48,door9>, <button49,door8>, <button48,door8>, <button49,door6>, <button48,door5>, <button49,door4>, <button48,door4>, <button47,door4>, <button69,door2>, <button69,door1>, <button69,door0>, <button53,door7>, <button53,door6>, <button25,door4>, <button47,door3>, <button49,door2>, <button48,door2>, <button47,door2>, <button49,door1>, <button48,door1>, <button49,door0>, <button48,door0>, <button30,door8>]
+== MODEL's high-level nav-graph edges: [button2, button3, door26][button3, button2, door26][door26, button2, button3, button69, door17][button69, door26, door17][door17, door26, button69]
+==	attempts on doors:[door26]
+===============
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== goal door17:ACHIEVED
+== runtime(sec)  :51
+== exploraion-time(sec):13
+== #door-attempts:1
+== #turns        :150
+== #rooms found  :1
+== #doors found  :1/40
+== #buttons found:2/63
+== #connections  :122
+==    inferred:1
+==    correct :1
+==    wrong   :0
+== area-cov      :0.017732559

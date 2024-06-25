@@ -1,0 +1,57 @@
+
+===============
+== Inferred MODEL:
+buttons: [button18, buttonKey4, button20, button22, button19, button21, button23, button25, button24, button13, button8, button15, button14, button10, button12, button11, button7, button9, button6, button5, button4, button3, button1]
+doors  : [door32, doorKey3, door18, door20, door22, door19, door21, door25, door23, door24, doorKey4, doorKey2, doorKey1, door13, door8, door15, door14, door31, door30, door29, door28, door10, door11, door12, door9, door7, door6, door5, door27, door4, door26, door3, door1]
+rooms  : [room2, room1, room0]
+  doors and buttons in room2:
+      [door22]
+      [buttonKey4]
+  doors and buttons in room1:
+      [door32, doorKey3, door18, door20, door22, door19, door21, door25, door23, door24, doorKey4, doorKey2, doorKey1, door13, door8, door15, door14, door31, door30, door29, door28, door10, door11, door12, door9, door7, door6, door5, door27, door4, door26, door3, door1]
+      [button18, button20, button22, button19, button21, button23, button25, button24, button13, button8, button15, button14, button10, button12, button11, button7, button9, button6, button5, button4, button3, button1]
+  doors and buttons in room0:
+      [door1]
+      []
+conections: button22 toggles door22
+conections: button25 toggles door25
+conections: button24 toggles door24
+conections: button21 toggles door21
+conections: button12 toggles door12
+conections: button20 toggles door20
+conections: button23 toggles door23
+conections: button22 toggles door19
+conections: button14 toggles door14
+conections: button11 toggles door11
+conections: button13 toggles door13
+conections: button13 toggles door15
+conections: button10 toggles door10
+conections: button18 toggles door18
+conections: button4 toggles door4
+conections: button3 toggles door3
+conections: button1 toggles door1
+conections: button9 toggles door9
+conections: button8 toggles door8
+conections: button6 toggles door6
+conections: button5 toggles door5
+conections: button18 toggles doorKey4
+conections: button15 toggles door7
+== Ground-truth connection logic: [<button15,door15>, <button10,door10>, <button23,door23>, <button11,door11>, <button21,door21>, <button24,door24>, <button22,door22>, <button12,door12>, <button13,door13>, <buttonKey1,doorKey1>, <buttonKey4,doorKey4>, <buttonKey3,doorKey3>, <buttonKey2,doorKey2>, <button14,door14>, <button16,door16>, <button17,door17>, <button25,door25>, <button20,door20>, <button18,door18>, <button19,door19>, <button4,door4>, <button2,door2>, <button3,door3>, <button1,door1>, <button9,door9>, <button8,door8>, <button6,door6>, <button7,door7>, <button5,door5>]
+== MODEL's high-level nav-graph edges: [door1, button1, door3, button3][button1, door1, door3, button3][door3, door1, button1, button3, door26][button3, door1, button1, door3][door26, door3, button4, door27, door5, button5, door4, button6, door6, button7, button9, door9, button12, button11, door11, door12, button10, door10, door28, door29, door30, doorKey1, door31, doorKey2, button14, button15, door14, door15, button8, door8, door7, button13, door32, doorKey4, button24, door13, door24, button25, door25, button23, door23, button21, door21, button19, button22, button20, door22, buttonKey4, door20, door18, door19, button18, doorKey3, door33][button4, door26, door27, door5, button5, door4, button6, door6][door27, door26, button4, door5][door5, door26, button4, door27, button5, door4][button5, door26, button4, door5, door4, button6, door6][door4, door26, button4, door5, button5][button6, door26, button4, button5, door6][door6, door26, button4, button5, button6][button7, door8, door26, button9, button8][button9, door8, door26, button7, door9, button8][door9, door26, button9][button12, button11, door11, door12, button13, door26][button11, door11, door12, door26, button12][door11, button11, door12, door26, button12][door12, button11, door11, door26, button12][button10, door10, door26][door10, button10, door26][door28, door26, door29][door29, door26, door28][door30, door26, doorKey1, door31][doorKey1, door26, door30, door31, doorKey2][door31, door32, door26, door30, doorKey1, doorKey2][doorKey2, door32, door26, doorKey1, door31][button14, door26, button15, door14, door15][button15, door26, button14, door14, door15][door14, door26, button14, button15, door15][door15, door26, button14, button15, door14][button8, door8, door7, door26, button7, button9][door8, door7, door26, button7, button9, button8][door7, door8, door26, button8][button13, door26, door13, button12][door32, door26, door31, doorKey2][doorKey4, door26][button24, door26, door24, button25, door25, button23, door23][door13, button13, door26][door24, door26, button24][button25, door26, button24, door25, button23, door23, button21, door21][door25, door26, button24, button25, button23, door23, button21, door21][button23, door26, button24, button25, door25, door23, button21, door21][door23, door26, button24, button25, door25, button23][button21, button20, door20, door26, door18, door19, button18, button25, door25, button23, door21, button19, button22][door21, button20, door26, button25, door25, button23, button21, button19][button19, button20, door20, door26, door18, door19, button18, doorKey3, button21, door21][button22, door22, door26, button21][button20, door20, door26, door18, door19, button18, doorKey3, button21, door21, button19][door22, door26, button22][buttonKey4, door26][door20, button20, door18, door26, door19, button18, button21, button19][door18, button20, door20, door26, door19, button18, doorKey3, button21, button19][door19, button20, door20, door18, door26, button18, button21, button19][button18, button20, door20, door18, door26, door19, doorKey3, button21, button19][doorKey3, button20, door18, door26, button18, button19][door33, door26]
+==	attempts on doors:[door1, door3, door26]
+===============
+== level:durk_1
+== alg  :OnlineSearch
+== goal doorKey4:ACHIEVED
+== runtime(sec)  :2476
+== exploraion-time(sec):1089
+== #door-attempts:3
+== #turns        :11741
+== #rooms found  :3
+== #doors found  :33/36
+== #buttons found:23/28
+== #connections  :29
+==    inferred:23
+==    correct :19
+==    wrong   :4
+== area-cov      :0.615942

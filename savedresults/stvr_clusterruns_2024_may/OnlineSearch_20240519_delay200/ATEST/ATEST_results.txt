@@ -1,0 +1,154 @@
+>>>> START experiment  2024/05/18 14:07:44
+*********************
+====== BM2021_diff1_R3_1_1_H door3 with OnlineSearch
+== level:BM2021_diff1_R3_1_1_H
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :77.3 (0.64031243)
+== avrg exploraion-time(sec):10.0
+== avrg #door-attempts:3.0
+== avrg #turns        :322.8
+== avrg #rooms found  :2.0 (0.0)
+== avrg #doors found  :2.0/4 (0.0)
+== avrg #buttons found:5.0/5 (0.0)
+== #connections    :4
+==    avrg inferred:2.0 (0.0)
+==    avrg correct :2.0
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.5
+== avrg area-cov      :0.6814815
+*********************
+====== BM2021_diff1_R4_1_1 door6 with OnlineSearch
+== level:BM2021_diff1_R4_1_1
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :138.7 (9.592184)
+== avrg exploraion-time(sec):37.7
+== avrg #door-attempts:5.0
+== avrg #turns        :603.5
+== avrg #rooms found  :4.0 (0.0)
+== avrg #doors found  :6.0/6 (0.0)
+== avrg #buttons found:8.0/10 (0.0)
+== #connections    :6
+==    avrg inferred:5.1 (0.3)
+==    avrg correct :5.0
+==    avrg wrong   :0.1
+==    precision    :0.98039216
+==    recall       :0.8333333
+== avrg area-cov      :0.643686
+*********************
+====== BM2021_diff1_R4_1_1_M door5 with OnlineSearch
+== level:BM2021_diff1_R4_1_1_M
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :220.8 (40.530975)
+== avrg exploraion-time(sec):49.0
+== avrg #door-attempts:6.6
+== avrg #turns        :970.1
+== avrg #rooms found  :3.0 (0.0)
+== avrg #doors found  :5.0/6 (0.0)
+== avrg #buttons found:8.0/8 (0.0)
+== #connections    :5
+==    avrg inferred:5.0 (0.0)
+==    avrg correct :4.9
+==    avrg wrong   :0.1
+==    precision    :0.98
+==    recall       :0.98
+== avrg area-cov      :0.7631285
+*********************
+====== BM2021_diff2_R5_2_2_M door4 with OnlineSearch
+== level:BM2021_diff2_R5_2_2_M
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :201.7 (18.19368)
+== avrg exploraion-time(sec):38.7
+== avrg #door-attempts:6.0
+== avrg #turns        :885.4
+== avrg #rooms found  :5.3 (0.45825756)
+== avrg #doors found  :4.0/4 (0.0)
+== avrg #buttons found:5.4/7 (0.48989794)
+== #connections    :6
+==    avrg inferred:5.0 (0.0)
+==    avrg correct :5.0
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.8333333
+== avrg area-cov      :0.5869159
+*********************
+====== BM2021_diff2_R7_2_2 door6 with OnlineSearch
+== level:BM2021_diff2_R7_2_2
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :252.9 (2.0712316)
+== avrg exploraion-time(sec):91.8
+== avrg #door-attempts:3.0
+== avrg #turns        :1155.3
+== avrg #rooms found  :4.0 (0.0)
+== avrg #doors found  :6.0/6 (0.0)
+== avrg #buttons found:4.0/9 (0.0)
+== #connections    :11
+==    avrg inferred:5.0 (0.0)
+==    avrg correct :5.0
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.45454547
+== avrg area-cov      :0.6958525
+*********************
+====== BM2021_diff3_R4_2_2 door6 with OnlineSearch
+== level:BM2021_diff3_R4_2_2
+== alg  :OnlineSearch
+== #success on goal:0/10
+== avrg runtime(sec)  :65.5 (2.291288)
+== avrg exploraion-time(sec):8.0
+== avrg #door-attempts:0.7
+== avrg #turns        :300.0
+== avrg #rooms found  :2.0 (0.0)
+== avrg #doors found  :2.0/6 (0.0)
+== avrg #buttons found:5.0/10 (0.0)
+== #connections    :9
+==    avrg inferred:0.0 (0.0)
+==    avrg correct :0.0
+==    avrg wrong   :0.0
+==    precision    :0.0
+==    recall       :0.0
+== avrg area-cov      :0.27745098
+*********************
+====== BM2021_diff3_R4_2_2_M door3 with OnlineSearch
+== level:BM2021_diff3_R4_2_2_M
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :178.9 (11.665762)
+== avrg exploraion-time(sec):58.0
+== avrg #door-attempts:3.1
+== avrg #turns        :817.2
+== avrg #rooms found  :5.0 (0.0)
+== avrg #doors found  :4.0/4 (0.0)
+== avrg #buttons found:4.1/9 (0.3)
+== #connections    :7
+==    avrg inferred:4.1 (0.3)
+==    avrg correct :4.1
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.5857143
+== avrg area-cov      :0.60948277
+*********************
+====== BM2021_diff3_R7_3_3 door6 with OnlineSearch
+== level:BM2021_diff3_R7_3_3
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :206.0 (34.68429)
+== avrg exploraion-time(sec):71.5
+== avrg #door-attempts:3.0
+== avrg #turns        :936.9
+== avrg #rooms found  :2.3 (0.64031243)
+== avrg #doors found  :5.7/6 (0.45825756)
+== avrg #buttons found:2.3/9 (0.64031243)
+== #connections    :16
+==    avrg inferred:4.7 (0.781025)
+==    avrg correct :4.7
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.29375
+== avrg area-cov      :0.62622225
+=== tot experiment time: 13573s (3.7702777 hrs)

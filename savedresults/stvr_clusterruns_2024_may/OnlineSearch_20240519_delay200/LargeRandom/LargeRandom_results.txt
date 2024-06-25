@@ -1,0 +1,193 @@
+20 minutes>>>> START experiment  2024/05/18 14:47:37
+*********************
+====== FBK_largerandom_R9_cleaned door17 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :53.0 (7.694154)
+== avrg exploraion-time(sec):13.9
+== avrg #door-attempts:1.0
+== avrg #turns        :162.0
+== avrg #rooms found  :1.2 (0.6)
+== avrg #doors found  :1.1/40 (0.3)
+== avrg #buttons found:2.1/63 (0.3)
+== #connections    :122
+==    avrg inferred:1.0 (0.0)
+==    avrg correct :1.0
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.008196721
+== avrg area-cov      :0.018401163
+*********************
+====== FBK_largerandom_R9_cleaned door12 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :107.6 (19.865547)
+== avrg exploraion-time(sec):31.6
+== avrg #door-attempts:3.0
+== avrg #turns        :394.0
+== avrg #rooms found  :3.3 (0.45825756)
+== avrg #doors found  :4.0/40 (0.0)
+== avrg #buttons found:5.0/63 (0.0)
+== #connections    :122
+==    avrg inferred:5.0 (0.0)
+==    avrg correct :5.0
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.040983606
+== avrg area-cov      :0.044389535
+*********************
+====== FBK_largerandom_R9_cleaned door5 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :732.8 (212.20453)
+== avrg exploraion-time(sec):180.0
+== avrg #door-attempts:11.3
+== avrg #turns        :3264.1
+== avrg #rooms found  :10.7 (2.238303)
+== avrg #doors found  :10.1/40 (1.5779734)
+== avrg #buttons found:11.9/63 (2.118962)
+== #connections    :122
+==    avrg inferred:10.3 (1.4866068)
+==    avrg correct :10.1
+==    avrg wrong   :0.2
+==    precision    :0.98058254
+==    recall       :0.08278689
+== avrg area-cov      :0.14732558
+*********************
+====== FBK_largerandom_R9_cleaned door39 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:9/10
+== avrg runtime(sec)  :238.9 (38.92159)
+== avrg exploraion-time(sec):96.7
+== avrg #door-attempts:4.1
+== avrg #turns        :997.7
+== avrg #rooms found  :6.3 (0.9)
+== avrg #doors found  :6.4/40 (1.2)
+== avrg #buttons found:7.1/63 (0.7)
+== #connections    :122
+==    avrg inferred:6.2 (0.6)
+==    avrg correct :6.2
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.05081967
+== avrg area-cov      :0.093110465
+*********************
+====== FBK_largerandom_R9_cleaned door2 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:10/10
+== avrg runtime(sec)  :189.4 (52.66536)
+== avrg exploraion-time(sec):60.7
+== avrg #door-attempts:4.3
+== avrg #turns        :760.7
+== avrg #rooms found  :7.8 (0.8717798)
+== avrg #doors found  :8.3/40 (0.45825756)
+== avrg #buttons found:6.9/63 (1.6401219)
+== #connections    :122
+==    avrg inferred:4.9 (1.3747727)
+==    avrg correct :4.9
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.040163934
+== avrg area-cov      :0.08101744
+*********************
+====== FBK_largerandom_R9_cleaned door33 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:8/10
+== avrg runtime(sec)  :574.7 (518.2318)
+== avrg exploraion-time(sec):115.9
+== avrg #door-attempts:8.4
+== avrg #turns        :2536.8
+== avrg #rooms found  :7.5 (2.539685)
+== avrg #doors found  :7.4/40 (2.8)
+== avrg #buttons found:9.8/63 (3.6)
+== #connections    :122
+==    avrg inferred:6.4 (2.8)
+==    avrg correct :5.6
+==    avrg wrong   :0.8
+==    precision    :0.875
+==    recall       :0.045901638
+== avrg area-cov      :0.0994186
+*********************
+====== FBK_largerandom_R9_cleaned door16 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:9/10
+== avrg runtime(sec)  :169.2 (29.33871)
+== avrg exploraion-time(sec):48.8
+== avrg #door-attempts:4.1
+== avrg #turns        :666.2
+== avrg #rooms found  :7.6 (1.2)
+== avrg #doors found  :6.6/40 (1.2)
+== avrg #buttons found:6.9/63 (0.3)
+== #connections    :122
+==    avrg inferred:4.0 (0.0)
+==    avrg correct :4.0
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.032786883
+== avrg area-cov      :0.06688953
+*********************
+====== FBK_largerandom_R9_cleaned door30 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:9/10
+== avrg runtime(sec)  :425.0 (4.732864)
+== avrg exploraion-time(sec):168.2
+== avrg #door-attempts:6.9
+== avrg #turns        :1839.7
+== avrg #rooms found  :12.3 (0.45825756)
+== avrg #doors found  :13.0/40 (0.0)
+== avrg #buttons found:13.0/63 (0.0)
+== #connections    :122
+==    avrg inferred:8.9 (0.3)
+==    avrg correct :8.9
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.07295082
+== avrg area-cov      :0.1471221
+*********************
+====== FBK_largerandom_R9_cleaned door15 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:0/10
+== avrg runtime(sec)  :1388.5 (275.7391)
+== avrg exploraion-time(sec):642.8
+== avrg #door-attempts:9.2
+== avrg #turns        :5750.0
+== avrg #rooms found  :14.6 (1.7435596)
+== avrg #doors found  :14.3/40 (2.1)
+== avrg #buttons found:17.0/63 (3.193744)
+== #connections    :122
+==    avrg inferred:8.4 (2.87054)
+==    avrg correct :8.2
+==    avrg wrong   :0.2
+==    precision    :0.9761905
+==    recall       :0.06721311
+== avrg area-cov      :0.20127907
+*********************
+====== FBK_largerandom_R9_cleaned door9 with OnlineSearch
+== level:FBK_largerandom_R9_cleaned
+== alg  :OnlineSearch
+== #success on goal:8/10
+== avrg runtime(sec)  :467.5 (321.34912)
+== avrg exploraion-time(sec):123.3
+== avrg #door-attempts:7.0
+== avrg #turns        :1897.4
+== avrg #rooms found  :10.4 (0.8)
+== avrg #doors found  :9.4/40 (0.8)
+== avrg #buttons found:10.6/63 (1.2)
+== #connections    :122
+==    avrg inferred:6.2 (2.4)
+==    avrg correct :6.2
+==    avrg wrong   :0.0
+==    precision    :1.0
+==    recall       :0.05081967
+== avrg area-cov      :0.12238372
+=== Average TOTAL area coverage: 0.35598835
+=== tot experiment time: 44816s (12.448889 hrs)

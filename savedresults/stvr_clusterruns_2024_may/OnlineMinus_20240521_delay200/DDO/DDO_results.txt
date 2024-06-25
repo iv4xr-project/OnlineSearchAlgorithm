@@ -1,0 +1,40 @@
+>>>> START experiment  2024/05/21 08:55:30
+*********************
+====== sanctuary_1 doorEntrance with OnlineMinus
+== level:sanctuary_1
+== alg  :OnlineMinus
+== #success on goal:5/10
+== avrg runtime(sec)  :1272.2 (673.8391)
+== avrg exploraion-time(sec):355.6
+== avrg #door-attempts:11.3
+== avrg #turns        :5954.5
+== avrg #rooms found  :0.0 (0.0)
+== avrg #doors found  :0.0/46 (0.0)
+== avrg #buttons found:0.0/43 (0.0)
+== #connections    :46
+==    avrg inferred:0.0 (0.0)
+==    avrg correct :0.0
+==    avrg wrong   :0.0
+==    precision    :0.0
+==    recall       :0.0
+== avrg area-cov      :0.60039294
+*********************
+====== durk_1 doorKey4 with OnlineMinus
+== level:durk_1
+== alg  :OnlineMinus
+== #success on goal:9/10
+== avrg runtime(sec)  :2347.6 (568.1567)
+== avrg exploraion-time(sec):1048.4
+== avrg #door-attempts:3.0
+== avrg #turns        :11149.6
+== avrg #rooms found  :0.0 (0.0)
+== avrg #doors found  :0.0/36 (0.0)
+== avrg #buttons found:0.0/28 (0.0)
+== #connections    :29
+==    avrg inferred:0.0 (0.0)
+==    avrg correct :0.0
+==    avrg wrong   :0.0
+==    precision    :0.0
+==    recall       :0.0
+== avrg area-cov      :0.5869008
+=== tot experiment time: 36242s (10.067223 hrs)

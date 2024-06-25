@@ -72,7 +72,6 @@ public class STVRExperiment {
 	// in ms
 	static int delayBetweenAgentUpateCycles = 100 ; 
 	//static int delayBetweenAgentUpateCycles = 150 ; 
-	
 	//static int delayBetweenAgentUpateCycles = 50 ; 
 	
 	
@@ -85,9 +84,11 @@ public class STVRExperiment {
 	// ====
 	
 	//static int ATEST_repeatNumberPerRun = 10 ;
+	//static int ATEST_repeatNumberPerRun = 5 ;
 	static int ATEST_repeatNumberPerRun = 3 ;
-	//static int LargeLevels_repeatNumberPerRun = 5 ;
-	static int LargeLevels_repeatNumberPerRun = 3 ;
+	//static int LargeLevels_repeatNumberPerRun = 10 ;
+	static int LargeLevels_repeatNumberPerRun = 5 ;
+	//static int LargeLevels_repeatNumberPerRun = 3 ;
 	
 	// ================ ATEST levels =================
 	
@@ -97,7 +98,7 @@ public class STVRExperiment {
 		,"BM2021_diff1_R4_1_1_M"  // minimum solution: 3
 		,"BM2021_diff2_R5_2_2_M"  // minimum solution: 2
 		,"BM2021_diff2_R7_2_2"    // minimum solution: 4
-		,"BM2021_diff3_R4_2_2"    // minimum solution: 0
+		//,"BM2021_diff3_R4_2_2"    // minimum solution: 0
 		,"BM2021_diff3_R4_2_2_M"  // minimum solution: 4
 		,"BM2021_diff3_R7_3_3" // minimum solution: 2
 	} ;
@@ -105,7 +106,9 @@ public class STVRExperiment {
 	static String[] ATEST_targetDoors = {
 		"door3", //"door1", 
 		"door6", "door5", "door4", 
-		"door6", "door6", "door3", "door6"
+		"door6", 
+		//"door6", 
+		"door3", "door6"
 	} ;
 	
 	static Vec3[] ATEST_guidingLocations = {
@@ -126,7 +129,9 @@ public class STVRExperiment {
 	*/
 	static int[] ATEST_SAruntime = { 
 		77, 138, 221, 202, 
-		253, 66, 179, 206 } ;
+		253, 
+		//66, 
+		179, 206 } ;
 		
 	// ================ DDO levels =================
 
@@ -874,7 +879,7 @@ public class STVRExperiment {
 	}
 
 	
-	@Test
+	//@Test
 	public void test0() throws InterruptedException, IOException {
 		/*
 		executeTestingTask(1,"ATEST","agent0","BM2021_diff2_R7_2_2","door6",null,
@@ -952,7 +957,7 @@ public class STVRExperiment {
 	
 
 	
-	//@Test
+	@Test
 	public void run_onlineFull_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
@@ -965,7 +970,7 @@ public class STVRExperiment {
 				) ;
 	}
 		
-	//@Test
+	@Test
 	public void run_onlineMinus_on_ATEST_experiment_Test() throws Exception {
 		run_experiment("ATEST",
 				ATEST_repeatNumberPerRun,
@@ -978,7 +983,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	//@Test
+	@Test
 	public void run_onlineFull_on_DDO_experiment_Test() throws Exception {
 	run_experiment("DDO",
 				LargeLevels_repeatNumberPerRun,
@@ -991,7 +996,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	//@Test
+	@Test
 	public void run_onlineMinus_on_DDO_experiment_Test() throws Exception {
 	run_experiment("DDO",
 				LargeLevels_repeatNumberPerRun,
@@ -1004,7 +1009,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	//@Test
+	@Test
 	public void run_onlineFull_on_LargeRandom_experiment_Test() throws Exception {
 		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
 		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;
@@ -1019,7 +1024,7 @@ public class STVRExperiment {
 				) ;
 	}
 	
-	// @Test
+	@Test
 	public void run_onlineMinus_on_LargeRandom_experiment_Test() throws Exception {
 		TacticLib.EXPLORATION_TARGET_DIST_THRESHOLD = 0.8f ;
 		BeliefState.DIST_TO_WAYPOINT_UPDATE_THRESHOLD = 0.8f ;

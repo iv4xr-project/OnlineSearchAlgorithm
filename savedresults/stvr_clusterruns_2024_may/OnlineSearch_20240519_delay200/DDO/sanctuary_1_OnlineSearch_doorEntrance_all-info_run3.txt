@@ -1,0 +1,83 @@
+
+===============
+== Inferred MODEL:
+buttons: [buttonLever, button15, button29, button30, button14, button13, button28, button12, button11, button9, button10, buttonQuestGoal1, button24, button23, button25, button22, button26, button21, button44, button20, button19, button32, button8, button7, button6, button5, button3, button41, button40, button42, button43, button35, button34, button39, button33, button38, buttonKeyToEastWing, button36, button37, button2, button1]
+doors  : [doorGuardian1, door15, door14, door13, door28, door12, door11, door9, door10, doorToSouthWing, door24, door23, door25, door22, door26, door21, door44, door20, doorCenter2, door19, door41, door42, door7, door32, door8, door6, door5, door3, door40, door34, door35, door39, door33, door38, doorCenter1, door36, door37, door1, door2, doorEntrance]
+rooms  : [room5, room4, room3, room2, room1, room0]
+  doors and buttons in room5:
+      [doorGuardian1, door15, door14, door13, door28, door12, door11, door9, door10, doorToSouthWing]
+      [buttonLever, button15, button29, button30, button14, button13, button28, button12, button11, button9, button10]
+  doors and buttons in room4:
+      [door23]
+      [buttonQuestGoal1]
+  doors and buttons in room3:
+      [doorToSouthWing, door24, door23, door25, door22, door26, door21, door44, door20, doorCenter2, door19, doorCenter1]
+      [button24, button23, button25, button22, button26, button21, button44, button20, button19]
+  doors and buttons in room2:
+      [door36]
+      [buttonKeyToEastWing]
+  doors and buttons in room1:
+      [doorCenter2, door41, door42, door7, door32, door8, door6, door5, door3, door40, door34, door35, door39, door33, door38, doorCenter1, door36, door37, door1, door2, doorEntrance]
+      [button32, button8, button7, button6, button5, button3, button41, button40, button42, button43, button35, button34, button39, button33, button38, button36, button37, button2, button1]
+  doors and buttons in room0:
+      [doorEntrance]
+      []
+conections: button24 toggles door24
+conections: button25 toggles door25
+conections: button19 toggles door19
+conections: button44 toggles door44
+conections: button36 toggles door36
+conections: button35 toggles door35
+conections: button32 toggles door32
+conections: button26 toggles door26
+conections: button37 toggles door37
+conections: button21 toggles door21
+conections: button20 toggles door20
+conections: button23 toggles door23
+conections: button22 toggles door22
+conections: button39 toggles door39
+conections: button10 toggles door10
+conections: button38 toggles door38
+conections: button32 toggles door40
+conections: button28 toggles door28
+conections: button11 toggles door11
+conections: button42 toggles door42
+conections: button41 toggles door41
+conections: button34 toggles door34
+conections: buttonQuestGoal1 toggles doorToSouthWing
+conections: button14 toggles door14
+conections: button12 toggles door12
+conections: button13 toggles door13
+conections: button33 toggles door33
+conections: button15 toggles door15
+conections: button2 toggles door2
+conections: button3 toggles door3
+conections: button1 toggles door1
+conections: button19 toggles doorCenter2
+conections: button9 toggles door9
+conections: button8 toggles door7
+conections: button8 toggles door8
+conections: buttonLever toggles doorEntrance
+conections: button6 toggles door6
+conections: button5 toggles door5
+conections: buttonLever toggles doorGuardian1
+conections: button41 toggles doorCenter1
+== Ground-truth connection logic: [<button10,door10>, <button11,door11>, <button12,door12>, <button13,door13>, <button28,door28>, <button14,door14>, <button15,door15>, <button39,door39>, <button19,door19>, <button33,door33>, <button31,door31>, <button37,door37>, <button41,door41>, <buttonQuestGoal1,doorToSouthWing>, <button24,door24>, <button29,door29>, <button20,door20>, <button38,door38>, <button34,door34>, <button23,door23>, <button30,door30>, <button32,door32>, <button36,door36>, <button21,door21>, <button44,door44>, <button22,door22>, <button26,door26>, <button42,door42>, <button25,door25>, <button27,door27>, <button35,door35>, <button40,door40>, <button2,door2>, <button3,door3>, <button1,door1>, <buttonLever,doorGuardian3>, <button9,door9>, <button8,door8>, <buttonLever,doorEntrance>, <button6,door6>, <button7,door7>, <button5,door5>, <buttonLever,doorGuardian1>, <buttonLever,doorGuardian2>, <buttonKeyToEastWing,doorCenter2>, <buttonKeyToEastWing,doorCenter1>]
+== MODEL's high-level nav-graph edges: [doorEntrance, door2, button2, door1, button1, button37, door36, doorCenter1, doorCenter2, button36, door37, buttonKeyToEastWing, button38, door38, button33, door33, door39, button39, button43, button35, door35, button34, door34, button42, door42, button40, button3, door3, button5, button6, door5, door6, button8, button7, button32, door32, door8, button41, door40, button19, doorToSouthWing, button20, door20, door19, button44, door44, button21, door21, button26, door26, button23, button22, door22, door23, button25, button24, door24, door25, buttonQuestGoal1, button10, button9, door9, button11, door10, door11, door28, button12, door12, button28, button14, button13, door13, door14, button30, button15, door15, doorGuardian1, buttonLever][door2, doorEntrance, button2, door1, button1][button2, doorEntrance, door2, door1, button1, button3, door3][door1, doorEntrance, door2, button2, button1][button1, doorEntrance, door2, button2, door1][button37, doorEntrance, door36, button36, door37, button38, door38][door36, doorEntrance, button37, button36, door37, buttonKeyToEastWing, button38, door38][doorCenter1, doorEntrance, button19][doorCenter2, doorEntrance][button36, doorEntrance, button37, door36, door37, button38, door38][door37, doorEntrance, button37, door36, button36][buttonKeyToEastWing, doorEntrance, door36][button38, doorEntrance, door39, button39, button37, door36, button36, door38, button33, door33][door38, doorEntrance, door39, button39, button37, door36, button36, button38][button33, doorEntrance, button38, door33][door33, doorEntrance, button38, button33][door39, doorEntrance, button39, button42, door42, button40, button38, door38][button39, door39, doorEntrance, button41, door41, button42, door42, button40, button38, door38][button43, doorEntrance, button35, door35, button34, door34][button35, doorEntrance, button43, door35, button34, door34][door35, doorEntrance, button43, button35, button34, door34][button34, doorEntrance, button43, button35, door35, door34][door34, doorEntrance, button43, button35, door35, button34][button42, door39, doorEntrance, button39, button41, door41, door40, door42, button40][door42, door39, doorEntrance, button39, button41, door41, button42, button40][button40, door39, doorEntrance, button39, button41, door41, button42, door40, door42][button3, doorEntrance, button2, door3, button5, button6, door5, door6][door3, doorEntrance, button2, button3][button5, doorEntrance, button8, button7, button32, button3, button6, door5, door6][button6, doorEntrance, button8, button7, button32, door32, door8, button3, button5, door5, door6][door5, doorEntrance, button8, button7, button32, button3, button5, button6, door6][door6, doorEntrance, button8, button7, button3, button5, button6, door5][button8, doorEntrance, button7, button32, door32, door8, button5, button6, door5, door6][button7, button8, doorEntrance, button32, door32, door8, button5, button6, door5, door6][button32, button8, doorEntrance, button7, door32, door8, button5, button6, door5][door32, button8, doorEntrance, button7, button32, door8, button6][door8, button8, doorEntrance, button7, button32, door32, button6][button41, doorEntrance, button39, door41, button42, door40, door42, button40][door41, button39, button41, button42, door42, button40][door40, doorEntrance, button41, button42, button40][button19, doorEntrance, doorCenter1, button20, door20, door19, button44, door44][doorToSouthWing, doorEntrance, button10, button9, door9][button20, doorEntrance, door21, button26, button19, door20, door19, button44, door44, button21][door20, doorEntrance, button19, button20, door19, button44, door44][door19, doorEntrance, button19, button20, door20][button44, doorEntrance, door21, button26, button19, button20, door20, door44, button21][door44, doorEntrance, door21, button26, button19, button20, door20, button44, button21][button21, door21, doorEntrance, button26, door26, button23, button22, door22, door23, button25, button20, button44, door44][door21, doorEntrance, button20, button44, door44, button21][button26, doorEntrance, door26, button23, button22, door22, door23, button25, button20, button44, door44, button21][door26, doorEntrance, button26, button23, button22, door22, door23, button25, button21][button23, doorEntrance, button26, door26, button22, door22, door23, button25, button24, door24, door25, buttonQuestGoal1, button21][button22, doorEntrance, button26, door26, button23, door22, door23, button25, button24, door24, door25, buttonQuestGoal1, button21][door22, doorEntrance, button26, door26, button23, button22, door23, button25, button21][door23, doorEntrance, button26, door26, button23, button22, door22, button25, button24, door24, door25, buttonQuestGoal1, button21][button25, doorEntrance, button26, door26, button23, button22, door22, door23, button24, door24, door25, buttonQuestGoal1, button21][button24, doorEntrance, button23, button22, door23, button25, door24, door25, buttonQuestGoal1][door24, doorEntrance, button23, button22, door23, button25, button24, door25, buttonQuestGoal1][door25, doorEntrance, button23, button22, door23, button25, button24, door24, buttonQuestGoal1][buttonQuestGoal1, doorEntrance, button23, button22, door23, button25, button24, door24, door25][button10, doorEntrance, door10, door11, door28, button12, door12, doorToSouthWing, button9, door9, button11][button9, doorEntrance, door10, door11, door28, button12, door12, doorToSouthWing, button10, door9, button11][door9, doorEntrance, door10, door11, doorToSouthWing, button10, button9, button11][button11, door10, doorEntrance, door11, door28, button12, door12, button28, button14, button13, door13, door14, button10, button9, door9][door10, doorEntrance, door11, button10, button9, door9, button11][door11, door10, doorEntrance, door28, button12, door12, button28, button10, button9, door9, button11][door28, doorEntrance, door11, button12, door12, button28, button30, button10, button9, button11][button12, doorEntrance, door11, door28, door12, button14, button13, door13, door14, button10, button9, button11][door12, doorEntrance, door11, door28, button12, button14, button13, door13, door14, button10, button9, button11][button28, doorEntrance, door11, door28, button30, button11][button14, doorEntrance, button12, door12, button13, door13, door14, button15, door15, button11][button13, doorEntrance, button12, door12, button14, door13, door14, button11][door13, doorEntrance, button12, door12, button14, button13, door14, button11][door14, doorEntrance, button12, door12, button14, button13, door13, button11][button30, doorEntrance, door28, button28][button15, doorEntrance, button14, door15, doorGuardian1][door15, doorEntrance, button14, button15, doorGuardian1][doorGuardian1, doorEntrance, button15, door15, buttonLever][buttonLever, doorEntrance, doorGuardian1]
+==	attempts on doors:[doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance, doorEntrance]
+===============
+== level:sanctuary_1
+== alg  :OnlineSearch
+== goal doorEntrance:ACHIEVED
+== runtime(sec)  :1840
+== exploraion-time(sec):538
+== #door-attempts:16
+== #turns        :8618
+== #rooms found  :6
+== #doors found  :40/46
+== #buttons found:41/43
+== #connections  :46
+==    inferred:40
+==    correct :36
+==    wrong   :4
+== area-cov      :0.7721022

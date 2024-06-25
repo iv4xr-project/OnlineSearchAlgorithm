@@ -1,0 +1,45 @@
+
+===============
+== Inferred MODEL:
+buttons: [button6, button5, button4, button3, button2]
+doors  : [door4, door3, door2, door1]
+rooms  : [room4, room3, room2, room1, room0]
+  doors and buttons in room4:
+      [door2, door3]
+      [button6]
+  doors and buttons in room3:
+      [door3, door4]
+      []
+  doors and buttons in room2:
+      [door2, door2, door3]
+      []
+  doors and buttons in room1:
+      [door2, door1]
+      [button5, button4]
+  doors and buttons in room0:
+      [door1]
+      [button3, button2]
+conections: button5 toggles door3
+conections: button6 toggles door3
+conections: button2 toggles door2
+conections: button3 toggles door1
+conections: button6 toggles door4
+== Ground-truth connection logic: [<button5,door3>, <button6,door3>, <button3,door2>, <button2,door2>, <button3,door1>, <button6,door4>]
+== MODEL's high-level nav-graph edges: [button2, door1][door1, button2, button3, button4][button3, door1][button4, door1, button5, door2][button5, button4, door2, door3][door2, button4, button5, button6][button6, door2][door3, button5, door4][door4, door3]
+==	attempts on doors:[door1, door2, door1, door4, door3, door3]
+===============
+== level:BM2021_diff2_R5_2_2_M
+== alg  :OnlineSearch
+== goal door4:ACHIEVED
+== runtime(sec)  :190
+== exploraion-time(sec):35
+== #door-attempts:6
+== #turns        :827
+== #rooms found  :5
+== #doors found  :4/4
+== #buttons found:5/7
+== #connections  :6
+==    inferred:5
+==    correct :5
+==    wrong   :0
+== area-cov      :0.54672897
