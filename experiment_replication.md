@@ -13,7 +13,7 @@ The set of testing tasks are grouped in three groups: _ATEST_ (seven), _DDO_ (tw
 The experiment runner can be found in the class [`STVRExperiment`](./src/test/java/stvrExperiment/STVRExperiment.java).
 In principle you can set various experiment parameters yourself; they are configured in this class. The _SearchMinus_ setup is configured to run with the budget of 1.2*T where T is the time it took the _Search_ setup to solve the same testing task. In the configuration in `STVRExperiment` this T is based on previous runs, and we explicitly put the numbers in the configuration, in variablels `ATEST_SAruntime`, `DDO_SAruntime`, and `LargeRandom_SAruntime`.
 
-Each run of the test agent on a given testing task is set to be repeated 5 times. This is set in the variable `ATEST_repeatNumberPerRun` and `LargeLevels_repeatNumberPerRun`. You can change these to e.g. 10 times, or just 2 times if you want to get faster results.
+Each run of the test agent on a given testing task is set to be repeated 3 times. This is set in the variable `ATEST_repeatNumberPerRun` and `LargeLevels_repeatNumberPerRun`. You can change these to e.g. 10 times.
 
 The variable `delayBetweenAgentUpateCycles` controls the delay (in ms) inserted between agent updates. The test agent controls the game through a socket interface. For efficiency reason, the control is asynchronous. The delay allows the game to progress (e.g. to allow the in-game player character to move some small distance), without the agent keeps spamming command literally at every game's frame update. In the configuration the delay is set to 100ms, which works well in Mac and Windows. For a Linux VM running in the cloud we found that 200ms delay works.
 
