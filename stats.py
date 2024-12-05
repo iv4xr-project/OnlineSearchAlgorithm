@@ -1,15 +1,16 @@
 #
 # For performing t-test, wilcoxon-test, and  other stats on collected data.
-# The data are copied explicitly into the tables in this script.
-#  
-import numpy as np  
+# The data are copied explicitly into the tables in this script. They
+# are the same as the tables in the paper.
+#
+import numpy as np
 from scipy import stats
 #
 successRate = {
-    "Search"    : [1,1,1,1, 
-                   1,1,1, 
-                   0.9,1, 
-                   1,1,1,0.9,1,  
+    "Search"    : [1,1,1,1,
+                   1,1,1,
+                   0.9,1,
+                   1,1,1,0.9,1,
                    0.8,0.9,0.9,0,0.8 ],
     "SearchMin" : [0,.8,0,0,
                    1,0.8,1,
@@ -38,6 +39,40 @@ successRate = {
                    0.1,0.4,0,0,0.1]
 }
 
+runTime = {
+   "Search"    : [ 77, 139, 221, 202,
+                   253, 179, 206,
+                   2344, 1808,
+                   53, 108, 733, 239, 189,
+                   575, 169, 425, 1389, 468
+                  ],
+   "Random"    : [ 42, 333, 202, 388,
+                   184, 463, 178,
+                   3047,
+                   3295,
+                   31, 1117, 45, 3023, 3244,
+                   3320, 2664, 3569, 3651, 3667
+                 ],
+   "Evo"       : [ 181, 1604, 1114, 701,
+                   902, 1279, 566,
+                   4528, 4472,
+                   144, 5424, 143, 4970, 3130,
+                   4451, 3695, 5451, 5504, 5430
+                 ],
+   "MCTS"      : [ 98, 1064, 670, 354,
+                   468, 787, 228,
+                   3849, 3933,
+                   118, 4043, 118, 2876, 1816,
+                   2611, 3307, 4535, 4849, 4571
+                 ],
+   "Q"         : [ 108, 910, 561, 370,
+                   432, 787, 212,
+                   4144, 3964,
+                   113, 3775, 183, 3440, 4203,
+                   4399, 4271, 5975, 6777, 7159
+                  ]
+}
+
 physicalCoverage = {
     "Search"    : [ 0.68, 0.64, 0.76, 0.58,
                     0.69, 0.6,  0.62,
@@ -46,10 +81,10 @@ physicalCoverage = {
                     0.099, 0.067, 0.147, 0.20 ,  0.122
                       ],
     "Random"    : [ 0.52, 0.67, 0.78, 0.7,
-                    0.65, 0.59, 0.65, 
+                    0.65, 0.59, 0.65,
                     0.6,  0.74,
                     0.015, 0.170, 0.05, 0.197, 0.2,
-                    0.204, 0.184, 0.21, 0.21,  0.21  
+                    0.204, 0.184, 0.21, 0.21,  0.21
                   ],
     "Evo"       : [ 0.74, 0.56, 0.76, 0.79,
                     0.76, 0.67, 0.7,
@@ -69,7 +104,7 @@ physicalCoverage = {
                     0.124, 0.236, 0.124, 0.232, 0.235,
                     0.235, 0.217, 0.224, 0.212, 0.209
                       ]
-}
+    }
 
 modelRecall = {
    "Search"    : [  0.5, 0.83, 0.98, 0.83,
@@ -90,12 +125,12 @@ modelRecall = {
    "MCTS"      : [ 0.42, 0.83, 0.71, 0.36,
                    0.69, 0.54, 0.43,
                    0.36, 0.43,
-                   0.07  
+                   0.07
                  ],
-   "Q"         : [ 0.65, 0.81, 0.84, 0.51, 
+   "Q"         : [ 0.65, 0.81, 0.84, 0.51,
                    0.74, 0.59, 0.51,
                    0.35, 0.43,
-                   0.05  ]  
+                   0.05  ]
 }
 
 modelPrecision = {
@@ -107,7 +142,7 @@ modelPrecision = {
    "Random"    : [ 1, 0.84, 0.91, 0.71,
                   0.81, 0.79, 0.84,
                   0.8, 0.72,
-                  0.87       
+                  0.87
                   ],
    "Evo"       : [ 1, 0.76, 1, 1,
                    1, 0.97, 1,
@@ -117,13 +152,13 @@ modelPrecision = {
    "MCTS"      : [ 1, 0.83, 1, 1,
                    1, 0.9, 1,
                    0.89, 0.77,
-                   0.88       
+                   0.88
                  ],
    "Q"         : [ 1, 0.87, 1, 0.93,
                    1, 0.59, 1,
                    0.95, 0.75,
-                   0.91   
-                 ]  
+                   0.91
+                 ]
     }
 
 experimentTime = [
@@ -132,11 +167,11 @@ experimentTime = [
     # SearchMin:
     3.27, 10.07, 13.95,
     # ATEST-Gym:
-    154996.0/3600.0, 
+    154996.0/3600.0,
     # DDO-Gym:
     312373.0/3600.0,
     # Large-Random: Rnd/Evo/MCTS/Q:
-    67.86, 106.53, 79.86, 112.01, 
+    67.86, 106.53, 79.86, 112.01,
     # Mutation test:
     62
     ]
@@ -144,13 +179,13 @@ experimentTime = [
 def check(data, expectedCount):
     for x in data:
        if (len(data[x]) != expectedCount) : return False
-    return True 
+    return True
 
 def compare(title, data, numberOfProps):
     print("======================")
     print(f"*** {title}") ;
-    ok = check(data,numberOfProps) 
-    if not ok : 
+    ok = check(data,numberOfProps)
+    if not ok :
         print("=== the rows are not all of the same length! Aborting.")
         return
     allTotal = 0.0
@@ -175,10 +210,10 @@ def avrgAreaCov_LargeRandom() :
         print(f"== {alg} Large-Random area-cov, n={len(largeRandom)}, mean: {np.mean(largeRandom)}")
 
 compare("Success-rate",successRate,19)
+compare("Execution time",runTime,19)
 compare("Physical coverage",physicalCoverage,19)
 compare("Model recall",modelRecall,10)
 compare("Model precision",modelPrecision,10)
 
 avrgAreaCov_LargeRandom()
 print(f"== Total experiment time: {sum(experimentTime)} hrs ({sum(experimentTime)/24.0} days)")
-
